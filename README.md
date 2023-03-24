@@ -107,7 +107,7 @@ https://benlangmead.github.io/aws-indexes/k2
 
 #### Usage 
  ```
-$ ~/script/kraken2.sh
+$ ~/shell_script/kraken2.sh
  ```
 ## ARGs Profile
 ### ARGs-OAP

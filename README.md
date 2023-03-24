@@ -132,7 +132,9 @@ $ args_oap stage_two -i ~/args_oap/stage_one_output -o ~/args_oap/stage_two_outp
 https://github.com/biobakery/humann/tree/8d69f3c84ca7bfd7519ced7fcf94b8356c915090
 #### Installation
 ```
-$ conda create --name mpa -c bioconda python=3.7
+# conda install hunman doesn't seem to stop, so install mamba instead
+$ conda install mamba -n base -c conda-forge
+$ conda create --name mpa
 $ conda activate mpa
-$ conda install humann
+$ mamba install humann
 ```

@@ -1,4 +1,4 @@
-# airborne_arg_uwtp
+# Airborne ARGs in UWTP
 A comprehensive metagenomic pipeline for airborne ARGs (Antibiotic Resistance Genes) in UWTP (Urban wastewater Treatment Plant)
 
 ## Table of Contents

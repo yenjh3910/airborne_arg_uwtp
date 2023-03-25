@@ -132,10 +132,26 @@ $ args_oap stage_two -i ~/args_oap/stage_one_output -o ~/args_oap/stage_two_outp
 https://github.com/biobakery/humann/tree/8d69f3c84ca7bfd7519ced7fcf94b8356c915090
 #### Installation
 ```
-# conda install hunman doesn't seem to stop, so install mamba instead
-$ conda install mamba -n base -c conda-forge # Install mamba in base
-$ conda create --name mpa
-$ conda activate mpa
-$ conda install mamba -n mpa -c bioconda -c conda-forge -c biobakery # Install mamba in mpa
-$ mamba install -c biobakery humann
+# Create environment
+$ conda create --name humann3
+$ conda activate humann3
+
+# Add channel
+$ conda config --add channels defaults
+$ conda config --add channels bioconda
+$ conda config --add channels conda-forge
+$ conda config --add channels biobakery
+
+# Install
+$ conda install -c biobakery humann
+
+# Test
+$ humann_test
+```
+#### Download database
+```
+$ humann_databases --download chocophlan full ~/db/humann3_db --update-config yes # ChocoPhlAn database
+$ humann_databases --download uniref uniref90_diamond ~/db/humann3_db --update-config yes # Translated search databases
+$ humann_databases --download utility_mapping full  ~/db/humann3_db --update-config yes # HUMAnN 3.0 utility mapping files
+
 ```

@@ -137,5 +137,5 @@ $ conda install mamba -n base -c conda-forge # Install mamba in base
 $ conda create --name mpa
 $ conda activate mpa
 $ conda install mamba -n mpa -c bioconda -c conda-forge -c biobakery # Install mamba in mpa
-$ mamba install humann
+$ mamba install -c biobakery humann
 ```

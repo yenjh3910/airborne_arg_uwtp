@@ -133,8 +133,9 @@ https://github.com/biobakery/humann/tree/8d69f3c84ca7bfd7519ced7fcf94b8356c91509
 #### Installation
 ```
 # conda install hunman doesn't seem to stop, so install mamba instead
-$ conda install mamba -n base -c conda-forge
+$ conda install mamba -n base -c conda-forge # Install mamba in base
 $ conda create --name mpa
 $ conda activate mpa
+$ conda install mamba -n mpa -c bioconda -c conda-forge # Install mamba in mpa
 $ mamba install humann
 ```

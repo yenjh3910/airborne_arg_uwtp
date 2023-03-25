@@ -11,7 +11,7 @@ library(RColorBrewer)
 library(scales)
 
 # Read ARG_type file (Something wrong with read.table, so read by )
-arg_subtype <- read.xlsx("D:/ARG_project/Shell/args_oap/stage_two_output/normalized_cell.subtype.xlsx",
+arg_subtype <- read.xlsx("D:/ARG_project/Shell/args_oap/ARG/stage_two_output/normalized_cell.subtype.xlsx",
                          sheet = 1)
 
 # Preview raw data

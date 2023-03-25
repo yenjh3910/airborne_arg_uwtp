@@ -119,13 +119,33 @@ $ conda activate args_oap
 $ conda config --set channel_priority flexible
 $ conda install -c bioconda -c conda-forge args_oap
 ```
-#### Usage
+#### ARGs analysis
 ```
 # Stage one
-$ args_oap stage_one -i ~/clean_read -o ~/args_oap/stage_one_output -f fastq -t 16
+$ args_oap stage_one -i ~/clean_read -o ~/args_oap/ARG/stage_one_output -f fastq -t 16
 
 # Stage two (e_value: 1e-7, identity: 80, aa_length,25)
-$ args_oap stage_two -i ~/args_oap/stage_one_output -o ~/args_oap/stage_two_output -t 16
+$ args_oap stage_two -i ~/args_oap/ARG/stage_one_output -o ~/args_oap/ARG/stage_two_output -t 16
+```
+#### MGEs analysis
+Database: https://github.com/KatariinaParnanen/MobileGeneticElementDatabase
+1. Covert nucleotide acid to amino acid under fasta format
+2. Create MGE_structure.txt manually or use curated structure already made
+```
+mkdir ~/args_oap/MGE
+cd ~/args_oap/MGE
+
+# (Optional)
+echo '>level1' | cat - MGEs_database_amino.fasta | grep '^>' | cut -d ' ' -f 1 | cut -c2- > MGE_structure.txt
+
+# The database should be indexed manually (protein or nucleotide, in fasta):
+args_oap make_db -i MGEs_database_dna.fasta
+
+# Stage one
+args_oap stage_one -i ~/clean_read -o ~/args_oap/MGE/stage_one_output -f fastq -t 16 --database ~/args_oap/MGE/MGEs_database_dna.fasta
+
+# Stage two
+args_oap stage_two -i ~/args_oap/MGE/stage_one_output -t 16 --database ~/args_oap/MGE/MGEs_database_dna.fasta --structure1 ~/args_oap/MGE/MGE_structure.txt
 ```
 ## Functional Profile
 ### HUMAnN 3.0

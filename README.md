@@ -132,31 +132,43 @@ Database: https://github.com/KatariinaParnanen/MobileGeneticElementDatabase
 1. Covert nucleotide acid to amino acid under fasta format
 2. Create MGE_structure.txt manually or use curated structure already made
 ```
-mkdir ~/args_oap/MGE
-cd ~/args_oap/MGE
+$ mkdir ~/args_oap/MGE
+$ cd ~/args_oap/MGE
 
 ### Amino acid (blastn)
 # (Optional)
-echo '>level1' | cat - MGEs_database_aa.fasta | grep '^>' | cut -d ' ' -f 1 | cut -c2- > MGE_AA_structure.txt
+$ echo '>level1' | cat - MGEs_database_aa.fasta | grep '^>' | cut -d ' ' -f 1 | cut -c2- > MGE_AA_structure.txt
 
 # The database should be indexed manually (protein or nucleotide, in fasta)
-args_oap make_db -i MGEs_database_aa.fasta
+$ args_oap make_db -i MGEs_database_aa.fasta
 
 # Stage one
-args_oap stage_one -i ~/clean_read -o ~/args_oap/MGE/AA_stage_one_output -f fastq -t 16 --database ~/args_oap/MGE/MGEs_database_aa.fasta
+$ args_oap stage_one -i ~/clean_read -o ~/args_oap/MGE/AA_stage_one_output -f fastq -t 16 --database ~/args_oap/MGE/MGEs_database_aa.fasta
 
 # Stage two
-args_oap stage_two -i ~/args_oap/MGE/AA_stage_one_output -o ~/args_oap/MGE/AA_stage_two_output -t 16 --database ~/args_oap/MGE/MGEs_database_aa.fasta --structure1 ~/args_oap/MGE/MGE_curated_structure.txt
+$ args_oap stage_two -i ~/args_oap/MGE/AA_stage_one_output -o ~/args_oap/MGE/AA_stage_two_output -t 16 --database ~/args_oap/MGE/MGEs_database_aa.fasta --structure1 ~/args_oap/MGE/MGE_curated_structure.txt
 
 ### DNA blast (blastx)
 # The database should be indexed manually (protein or nucleotide, in fasta)
-args_oap make_db -i MGEs_database_dna.fasta
+$ args_oap make_db -i MGEs_database_dna.fasta
 
 # Stage one
-args_oap stage_one -i ~/clean_read -o ~/args_oap/MGE/DNA_stage_one_output -f fastq -t 16 --database ~/args_oap/MGE/MGEs_database_dna.fasta
+$ args_oap stage_one -i ~/clean_read -o ~/args_oap/MGE/DNA_stage_one_output -f fastq -t 16 --database ~/args_oap/MGE/MGEs_database_dna.fasta
 
 # Stage two
-args_oap stage_two -i ~/args_oap/MGE/DNA_stage_one_output -o ~/args_oap/MGE/DNA_stage_two_output -t 16 --database ~/args_oap/MGE/MGEs_database_dna.fasta --structure1 ~/args_oap/MGE/MGE_curated_structure.txt
+$ args_oap stage_two -i ~/args_oap/MGE/DNA_stage_one_output -o ~/args_oap/MGE/DNA_stage_two_output -t 16 --database ~/args_oap/MGE/MGEs_database_dna.fasta --structure1 ~/args_oap/MGE/MGE_curated_structure.txt
+```
+### MRG (Metal Resistance Gene) analysis
+```
+# The database should be indexed manually (protein or nucleotide, in fasta)
+$ args_oap make_db -i BacMet_exp_modified.fasta
+
+# Stage one
+$ args_oap stage_one -i ~/clean_read -o ~/args_oap/BacMet/stage_one_output -f fastq -t 16 --database ~/args_oap/BacMet/BacMet_exp_modified.fasta
+
+# Stage two
+$ args_oap stage_two -i ~/args_oap/BacMet/stage_one_output -o ~/args_oap/BacMet/stage_two_output -t 16 --database ~/args_oap/BacMet/BacMet_exp_modified.fasta --structure1 ~/args_oap/BacMet/metal_only_structure.txt
+
 ```
 ## Functional Profile
 ### HUMAnN 3.0

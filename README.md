@@ -135,17 +135,28 @@ Database: https://github.com/KatariinaParnanen/MobileGeneticElementDatabase
 mkdir ~/args_oap/MGE
 cd ~/args_oap/MGE
 
+### Amino acid (blastn)
 # (Optional)
-echo '>level1' | cat - MGEs_database_amino.fasta | grep '^>' | cut -d ' ' -f 1 | cut -c2- > MGE_structure.txt
+echo '>level1' | cat - MGEs_database_aa.fasta | grep '^>' | cut -d ' ' -f 1 | cut -c2- > MGE_AA_structure.txt
 
-# The database should be indexed manually (protein or nucleotide, in fasta):
+# The database should be indexed manually (protein or nucleotide, in fasta)
+args_oap make_db -i MGEs_database_aa.fasta
+
+# Stage one
+args_oap stage_one -i ~/clean_read -o ~/args_oap/MGE/AA_stage_one_output -f fastq -t 16 --database ~/args_oap/MGE/MGEs_database_aa.fasta
+
+# Stage two
+args_oap stage_two -i ~/args_oap/MGE/AA_stage_one_output -o ~/args_oap/MGE/AA_stage_two_output -t 16 --database ~/args_oap/MGE/MGEs_database_aa.fasta --structure1 ~/args_oap/MGE/MGE_curated_structure.txt
+
+### DNA blast (blastx)
+# The database should be indexed manually (protein or nucleotide, in fasta)
 args_oap make_db -i MGEs_database_dna.fasta
 
 # Stage one
-args_oap stage_one -i ~/clean_read -o ~/args_oap/MGE/stage_one_output -f fastq -t 16 --database ~/args_oap/MGE/MGEs_database_dna.fasta
+args_oap stage_one -i ~/clean_read -o ~/args_oap/MGE/DNA_stage_one_output -f fastq -t 16 --database ~/args_oap/MGE/MGEs_database_dna.fasta
 
 # Stage two
-args_oap stage_two -i ~/args_oap/MGE/stage_one_output -t 16 --database ~/args_oap/MGE/MGEs_database_dna.fasta --structure1 ~/args_oap/MGE/MGE_structure.txt
+args_oap stage_two -i ~/args_oap/MGE/DNA_stage_one_output -o ~/args_oap/MGE/DNA_stage_two_output -t 16 --database ~/args_oap/MGE/MGEs_database_dna.fasta --structure1 ~/args_oap/MGE/MGE_curated_structure.txt
 ```
 ## Functional Profile
 ### HUMAnN 3.0

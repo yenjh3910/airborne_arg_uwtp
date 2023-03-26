@@ -1,0 +1,453 @@
+gene	subtype	type
+BAC0003	acn	Iron (Fe)
+BAC0004	acr3	Arsenic (As)
+BAC0563	acrD	Multi-metal
+BAC0567	actA	Multi-metal
+BAC0012	actP	Multi-metal
+BAC0568	actP	Copper (Cu)
+BAC0570	actP	Tellurium (Te)
+BAC0565	actR	Multi-metal
+BAC0566	actS	Multi-metal
+BAC0020	aioA/aoxB	Arsenic (As)
+BAC0021	aioB/aoxA	Arsenic (As)
+BAC0715	aioE	Arsenic (As)
+BAC0022	aioR/aoxR	Arsenic (As)
+BAC0023	aioS/aoxS	Arsenic (As)
+BAC0024	aioX/aoxX	Arsenic (As)
+BAC0489	ALU1-P	Aluminium (Al)
+BAC0709	arrA	Arsenic (As)
+BAC0710	arrB	Arsenic (As)
+BAC0030	arsA	Multi-metal
+BAC0571	arsA	Multi-metal
+BAC0572	arsA	Multi-metal
+BAC0031	arsB	Multi-metal
+BAC0573	arsB	Arsenic (As)
+BAC0574	arsB	Multi-metal
+BAC0575	arsB	Multi-metal
+BAC0576	arsB	Multi-metal
+BAC0577	arsB	Arsenic (As)
+BAC0578	arsB	Multi-metal
+BAC0579	arsB	Multi-metal
+BAC0032	arsC	Arsenic (As)
+BAC0580	arsC	Arsenic (As)
+BAC0581	arsC	Arsenic (As)
+BAC0582	arsC	Multi-metal
+BAC0583	arsC	Multi-metal
+BAC0584	arsC	Multi-metal
+BAC0585	arsC	Multi-metal
+BAC0586	arsC	Arsenic (As)
+BAC0033	arsD	Arsenic (As)
+BAC0587	arsD	Multi-metal
+BAC0034	arsH	Arsenic (As)
+BAC0595	arsH	Multi-metal
+BAC0035	arsM	Arsenic (As)
+BAC0036	arsP	Arsenic (As)
+BAC0588	arsR	Arsenic (As)
+BAC0589	arsR	Multi-metal
+BAC0590	arsR	Multi-metal
+BAC0591	arsR	Multi-metal
+BAC0592	arsR	Multi-metal
+BAC0593	arsR	Arsenic (As)
+BAC0594	arsR	Arsenic (As)
+BAC0714	arsT	Arsenic (As)
+BAC0039	baeR	Multi-metal
+BAC0596	baeR	Multi-metal
+BAC0040	baeS	Multi-metal
+BAC0597	baeS	Multi-metal
+BAC0048	bfrA	Iron (Fe)
+BAC0049	bhsA/ycfR/comC	Copper (Cu)
+BAC0055	cadA/yvgW	Multi-metal
+BAC0056	cadC	Multi-metal
+BAC0057	cadD	Multi-metal
+BAC0059	cadX	Multi-metal
+BAC0062	ceuE	Chromium (Cr)
+BAC0063	chrA	Chromium (Cr)
+BAC0026	chrA	Chromium (Cr)
+BAC0548	chrA1	Chromium (Cr)
+BAC0027	chrB	Multi-metal
+BAC0064	chrB1	Chromium (Cr)
+BAC0547	chrC	Chromium (Cr)
+BAC0028	chrC	Multi-metal
+BAC0065	chrE	Chromium (Cr)
+BAC0066	chrF	Chromium (Cr)
+BAC0029	chrF	Multi-metal
+BAC0361	chrI	Chromium (Cr)
+BAC0538	chrR	Multi-metal
+BAC0539	chrR	Chromium (Cr)
+BAC0067	cinA	Copper (Cu)
+BAC0068	cmeA	Multi-metal
+BAC0613	cmeB	Multi-metal
+BAC0614	cmeC	Multi-metal
+BAC0071	cmtR	Multi-metal
+BAC0203	cnrA	Multi-metal
+BAC0542	cnrA	Multi-metal
+BAC0543	cnrA	Multi-metal
+BAC0544	cnrA	Multi-metal
+BAC0545	cnrA	Multi-metal
+BAC0546	cnrA	Multi-metal
+BAC0204	cnrB	Multi-metal
+BAC0072	cnrC	Multi-metal
+BAC0073	cnrH	Multi-metal
+BAC0291	cnrR/cnrX	Multi-metal
+BAC0074	cnrT	Multi-metal
+BAC0075	cnrY	Multi-metal
+BAC0076	comR/ycfQ	Copper (Cu)
+BAC0077	copA	Multi-metal
+BAC0078	copA	Copper (Cu)
+BAC0619	copA	Copper (Cu)
+BAC0620	copA	Copper (Cu)
+BAC0621	copA	Copper (Cu)
+BAC0622	copA	Multi-metal
+BAC0623	copA	Copper (Cu)
+BAC0624	copA	Copper (Cu)
+BAC0625	copA	Copper (Cu)
+BAC0716	copA	Copper (Cu)
+BAC0723	copA	Copper (Cu)
+BAC0725	copA	Copper (Cu)
+BAC0626	copB	Copper (Cu)
+BAC0627	copB	Copper (Cu)
+BAC0628	copB	Copper (Cu)
+BAC0629	copB	Copper (Cu)
+BAC0079	copB	Multi-metal
+BAC0718	copB	Copper (Cu)
+BAC0722	copB	Copper (Cu)
+BAC0730	copB	Copper (Cu)
+BAC0630	copC	Copper (Cu)
+BAC0631	copC	Copper (Cu)
+BAC0639	copC	Copper (Cu)
+BAC0721	copC	Copper (Cu)
+BAC0729	copC	Copper (Cu)
+BAC0738	copC	Copper (Cu)
+BAC0749	copC	Copper (Cu)
+BAC0632	copD	Copper (Cu)
+BAC0633	copD	Copper (Cu)
+BAC0640	copD	Copper (Cu)
+BAC0739	copD	Copper (Cu)
+BAC0748	copD	Copper (Cu)
+BAC0747	copF	Copper (Cu)
+BAC0717	copG	Copper (Cu)
+BAC0746	copG	Copper (Cu)
+BAC0080	copJ	Copper (Cu)
+BAC0081	copK	Copper (Cu)
+BAC0082	copL	Copper (Cu)
+BAC0743	copL	Copper (Cu)
+BAC0713	copM	Copper (Cu)
+BAC0745	copM	Copper (Cu)
+BAC0634	copP	Copper (Cu)
+BAC0635	copP	Copper (Cu)
+BAC0083	copR	Copper (Cu)
+BAC0638	copR	Copper (Cu)
+BAC0719	copR	Copper (Cu)
+BAC0753	copR	Copper (Cu)
+BAC0757	copR	Copper (Cu)
+BAC0637	copS	Copper (Cu)
+BAC0537	copS	Copper (Cu)
+BAC0720	copS	Copper (Cu)
+BAC0752	copS	Copper (Cu)
+BAC0744	cop-unnamed	Copper (Cu)
+BAC0750	cop-unnamed	Copper (Cu)
+BAC0756	copV	Copper (Cu)
+BAC0084	copY/tcrY	Copper (Cu)
+BAC0085	copZ	Copper (Cu)
+BAC0724	copZ	Copper (Cu)
+BAC0731	copZ	Copper (Cu)
+BAC0086	corA	Multi-metal
+BAC0641	corA	Multi-metal
+BAC0643	corB	Multi-metal
+BAC0088	corC	Multi-metal
+BAC0644	corD	Multi-metal
+BAC0089	corR	Copper (Cu)
+BAC0090	corR/coaR	Multi-metal
+BAC0091	corS	Copper (Cu)
+BAC0092	corT/coaT	Cobalt (Co)
+BAC0093	crdA	Copper (Cu)
+BAC0094	crdB	Copper (Cu)
+BAC0095	crdR	Copper (Cu)
+BAC0096	crdS	Copper (Cu)
+BAC0558	csoR	Copper (Cu)
+BAC0098	ctpC	Multi-metal
+BAC0099	ctpD	Multi-metal
+BAC0100	ctpG	Copper (Cu)
+BAC0101	ctpV	Copper (Cu)
+BAC0102	cueA	Multi-metal
+BAC0103	cueO	Copper (Cu)
+BAC0104	cueP	Copper (Cu)
+BAC0736	cueR	Copper (Cu)
+BAC0105	cueR/ybbI	Copper (Cu)
+BAC0106	cuiD	Multi-metal
+BAC0107	cusA/ybdE	Multi-metal
+BAC0108	cusB	Multi-metal
+BAC0109	cusC/ylcB	Multi-metal
+BAC0110	cusF/cusX	Multi-metal
+BAC0111	cusR/ylcA	Multi-metal
+BAC0112	cusS	Multi-metal
+BAC0113	cutA	Copper (Cu)
+BAC0114	cutC	Copper (Cu)
+BAC0115	cutE/lnt	Copper (Cu)
+BAC0116	cutF/nlpE	Copper (Cu)
+BAC0117	cutO	Copper (Cu)
+BAC0118	cutR	Copper (Cu)
+BAC0119	czcA	Multi-metal
+BAC0120	czcB	Multi-metal
+BAC0121	czcC	Multi-metal
+BAC0751	czcC	Copper (Cu)
+BAC0122	czcD	Multi-metal
+BAC0123	czcE	Multi-metal
+BAC0124	czcP	Multi-metal
+BAC0125	czcR	Multi-metal
+BAC0126	czcS	Multi-metal
+BAC0127	cznA	Multi-metal
+BAC0128	cznB	Multi-metal
+BAC0129	cznC	Multi-metal
+BAC0130	czrA	Multi-metal
+BAC0131	czrB	Multi-metal
+BAC0132	dmeF	Multi-metal
+BAC0482	dmeF	Multi-metal
+BAC0475	dmeR	Multi-metal
+BAC0134	dpr/dps	Multi-metal
+BAC0135	dpsA	Multi-metal
+BAC0136	dsbA	Multi-metal
+BAC0137	dsbB	Multi-metal
+BAC0138	dsbC	Copper (Cu)
+BAC0160	fbpA	Multi-metal
+BAC0161	fbpB	Multi-metal
+BAC0162	fbpC	Multi-metal
+BAC0163	fecD	Multi-metal
+BAC0164	fecE	Multi-metal
+BAC0165	fetA/ybbL	Multi-metal
+BAC0166	fetB/ybbM	Multi-metal
+BAC0167	fieF/yiip	Multi-metal
+BAC0168	fptA	Multi-metal
+BAC0169	fpvA	Multi-metal
+BAC0171	furA	Iron (Fe)
+BAC0490	G2alt	Aluminium (Al)
+BAC0178	gesA	Multi-metal
+BAC0179	gesB	Multi-metal
+BAC0180	gesC	Multi-metal
+BAC0181	glpF	Multi-metal
+BAC0182	golS	Gold (Au)
+BAC0183	golT	Multi-metal
+BAC0569	hmrR	Multi-metal
+BAC0190	hmrR	Multi-metal
+BAC0617	hpcopA	Copper (Cu)
+BAC0618	hpcopP	Copper (Cu)
+BAC0498	ideR	Multi-metal
+BAC0197	irlR	Multi-metal
+BAC0198	irlS	Multi-metal
+BAC0199	klaB/telA/kilB	Tellurium (Te)
+BAC0200	klaC/telB	Tellurium (Te)
+BAC0201	kmtR	Multi-metal
+BAC0205	mco	Multi-metal
+BAC0206	mctB	Copper (Cu)
+BAC0209	mdrL/yfmO	Multi-metal
+BAC0645	mdtA	Zinc (Zn)
+BAC0646	mdtB	Zinc (Zn)
+BAC0647	mdtC	Zinc (Zn)
+BAC0224	merA	Multi-metal
+BAC0648	merA	Multi-metal
+BAC0649	merA	Mercury (Hg)
+BAC0650	merA	Multi-metal
+BAC0651	merA	Mercury (Hg)
+BAC0652	merA	Mercury (Hg)
+BAC0653	merA	Mercury (Hg)
+BAC0657	merB	Multi-metal
+BAC0658	merB	Multi-metal
+BAC0659	merB	Multi-metal
+BAC0660	merB	Mercury (Hg)
+BAC0654	merB1	Multi-metal
+BAC0663	merB1	Multi-metal
+BAC0655	merB2	Multi-metal
+BAC0661	merB2	Multi-metal
+BAC0656	merB3	Multi-metal
+BAC0662	merB3	Multi-metal
+BAC0664	merC	Mercury (Hg)
+BAC0226	merC	Mercury (Hg)
+BAC0665	merD	Mercury (Hg)
+BAC0666	merD	Mercury (Hg)
+BAC0227	merD	Mercury (Hg)
+BAC0667	merD	Mercury (Hg)
+BAC0668	merD	Mercury (Hg)
+BAC0669	merD	Mercury (Hg)
+BAC0670	merE	Mercury (Hg)
+BAC0671	merE	Mercury (Hg)
+BAC0672	merE	Mercury (Hg)
+BAC0673	merE	Mercury (Hg)
+BAC0228	merF	Mercury (Hg)
+BAC0229	merG	Multi-metal
+BAC0230	merH	Mercury (Hg)
+BAC0674	merP	Mercury (Hg)
+BAC0231	merP	Mercury (Hg)
+BAC0675	merP	Mercury (Hg)
+BAC0676	merP	Mercury (Hg)
+BAC0677	merP	Mercury (Hg)
+BAC0678	merP	Mercury (Hg)
+BAC0679	merP	Mercury (Hg)
+BAC0680	merR	Mercury (Hg)
+BAC0232	merR	Mercury (Hg)
+BAC0685	merR	Mercury (Hg)
+BAC0686	merR	Mercury (Hg)
+BAC0687	merR	Mercury (Hg)
+BAC0689	merR	Mercury (Hg)
+BAC0682	merR1	Mercury (Hg)
+BAC0683	merR1	Mercury (Hg)
+BAC0681	merR2	Multi-metal
+BAC0684	merR2	Mercury (Hg)
+BAC0688	merR2	Multi-metal
+BAC0690	merT	Mercury (Hg)
+BAC0691	merT	Mercury (Hg)
+BAC0692	merT	Mercury (Hg)
+BAC0693	merT	Mercury (Hg)
+BAC0233	merT	Mercury (Hg)
+BAC0695	merT	Mercury (Hg)
+BAC0696	merT	Mercury (Hg)
+BAC0697	merT	Mercury (Hg)
+BAC0694	merT-P	Mercury (Hg)
+BAC0642	mgtA	Multi-metal
+BAC0087	mgtA	Multi-metal
+BAC0480	mmco	Copper (Cu)
+BAC0250	mntA/ytgA	Multi-metal
+BAC0251	mntH/yfeP	Multi-metal
+BAC0252	mntP/yebN	Multi-metal
+BAC0253	mntR	Multi-metal
+BAC0598	modA	Multi-metal
+BAC0609	modA	Multi-metal
+BAC0599	modB	Multi-metal
+BAC0610	modB	Multi-metal
+BAC0600	modC	Multi-metal
+BAC0611	modC	Multi-metal
+BAC0608	modE	Multi-metal
+BAC0254	mrdH	Multi-metal
+BAC0255	mreA	Multi-metal
+BAC0262	mymT	Multi-metal
+BAC0549	nccA	Multi-metal
+BAC0550	nccB	Multi-metal
+BAC0551	nccC	Multi-metal
+BAC0555	nccH	Multi-metal
+BAC0554	nccN	Multi-metal
+BAC0553	nccX	Multi-metal
+BAC0552	nccY	Multi-metal
+BAC0698	ncrA	Multi-metal
+BAC0702	ncrA	Multi-metal
+BAC0699	ncrB	Multi-metal
+BAC0703	ncrB	Multi-metal
+BAC0700	ncrC	Multi-metal
+BAC0133	ncrC	Multi-metal
+BAC0701	ncrY	Multi-metal
+BAC0267	nczA	Multi-metal
+BAC0540	nfsA	Chromium (Cr)
+BAC0268	nhlF	Cobalt (Co)
+BAC0269	nia	Multi-metal
+BAC0281	nmtR	Multi-metal
+BAC0285	nreB	Multi-metal
+BAC0287	nrsD/nreB	Multi-metal
+BAC0358	oscA	Multi-metal
+BAC0297	PA0320	Multi-metal
+BAC0298	pbrA	Lead (Pb)
+BAC0299	pbrB/pbrC	Lead (Pb)
+BAC0300	pbrD	Lead (Pb)
+BAC0301	pbrR	Lead (Pb)
+BAC0302	pbrT	Lead (Pb)
+BAC0303	pcoA	Copper (Cu)
+BAC0732	pcoA	Copper (Cu)
+BAC0304	pcoB	Copper (Cu)
+BAC0734	pcoB	Copper (Cu)
+BAC0305	pcoC	Copper (Cu)
+BAC0735	pcoC	Copper (Cu)
+BAC0306	pcoD	Copper (Cu)
+BAC0733	pcoD	Copper (Cu)
+BAC0307	pcoE	Multi-metal
+BAC0308	pcoR	Copper (Cu)
+BAC0309	pcoS	Copper (Cu)
+BAC0612	perO	Multi-metal
+BAC0497	pfr	Multi-metal
+BAC0311	pgpA/ltpgpA	Multi-metal
+BAC0312	pitA	Multi-metal
+BAC0487	pmrA	Iron (Fe)
+BAC0488	pmrB	Iron (Fe)
+BAC0485	pmrC	Iron (Fe)
+BAC0486	pmrG	Iron (Fe)
+BAC0315	pstA	Arsenic (As)
+BAC0316	pstB	Arsenic (As)
+BAC0317	pstC	Arsenic (As)
+BAC0318	pstS	Arsenic (As)
+BAC0330	rcnA/yohM	Multi-metal
+BAC0331	rcnB/yohN	Multi-metal
+BAC0332	rcnR/yohL	Multi-metal
+BAC0356	recG	Multi-metal
+BAC0357	recG	Chromium (Cr)
+BAC0333	ricR	Copper (Cu)
+BAC0334	robA	Multi-metal
+BAC0355	ruvB	Multi-metal
+BAC0293	ruvB	Multi-metal
+BAC0341	silA	Silver (Ag)
+BAC0342	silB	Silver (Ag)
+BAC0343	silC	Silver (Ag)
+BAC0344	silE	Silver (Ag)
+BAC0345	silF	Silver (Ag)
+BAC0346	silP	Silver (Ag)
+BAC0347	silR	Silver (Ag)
+BAC0348	silS	Silver (Ag)
+BAC0349	sitA	Multi-metal
+BAC0350	sitB	Multi-metal
+BAC0351	sitC	Multi-metal
+BAC0352	sitD	Multi-metal
+BAC0365	smtA	Multi-metal
+BAC0366	smtB/ziaR	Zinc (Zn)
+BAC0368	sodA	Multi-metal
+BAC0707	sodB	Multi-metal
+BAC0371	soxS	Multi-metal
+BAC0152	srpC	Chromium (Cr)
+BAC0741	tcrA	Copper (Cu)
+BAC0383	tcrB	Copper (Cu)
+BAC0740	tcrY	Copper (Cu)
+BAC0742	tcrZ	Copper (Cu)
+BAC0384	tehA	Multi-metal
+BAC0385	tehB	Multi-metal
+BAC0386	terA	Tellurium (Te)
+BAC0387	terB	Tellurium (Te)
+BAC0388	terC	Tellurium (Te)
+BAC0389	terD	Tellurium (Te)
+BAC0390	terE	Tellurium (Te)
+BAC0391	terW	Tellurium (Te)
+BAC0392	terZ	Tellurium (Te)
+BAC0394	trgA	Tellurium (Te)
+BAC0395	trgB	Multi-metal
+BAC0399	troA	Multi-metal
+BAC0400	troB	Multi-metal
+BAC0401	troC	Multi-metal
+BAC0402	troD	Multi-metal
+BAC0403	troR	Multi-metal
+BAC0601	tunR	Multi-metal
+BAC0602	wtpA	Multi-metal
+BAC0603	wtpB	Multi-metal
+BAC0604	wtpC	Multi-metal
+BAC0432	ybtP	Iron (Fe)
+BAC0433	ybtQ	Iron (Fe)
+BAC0556	ycnJ	Copper (Cu)
+BAC0557	ycnK	Copper (Cu)
+BAC0439	yfeA	Multi-metal
+BAC0440	yfeB	Multi-metal
+BAC0441	yfeC	Multi-metal
+BAC0442	yfeD	Multi-metal
+BAC0443	yfmO	Copper (Cu)
+BAC0444	yfmP	Copper (Cu)
+BAC0541	yieF	Multi-metal
+BAC0452	yqjH	Multi-metal
+BAC0453	zevA	Zinc (Zn)
+BAC0454	zevB	Zinc (Zn)
+BAC0455	ziaA	Zinc (Zn)
+BAC0456	ziaR	Zinc (Zn)
+BAC0457	zinT/yodA	Multi-metal
+BAC0458	zipB	Multi-metal
+BAC0459	zitB/ybgR	Zinc (Zn)
+BAC0460	zneB/hmxB	Zinc (Zn)
+BAC0461	zntA/yhhO	Multi-metal
+BAC0462	zntR/yhdM	Zinc (Zn)
+BAC0463	znuA/yebL	Zinc (Zn)
+BAC0464	znuB/yebI	Zinc (Zn)
+BAC0465	znuC/yebM	Zinc (Zn)
+BAC0466	zraP	Zinc (Zn)
+BAC0467	zraR/hydH	Zinc (Zn)
+BAC0468	zraS/hydG	Multi-metal
+BAC0469	zupT/ygiE	Multi-metal
+BAC0470	zur/yjbK	Zinc (Zn)

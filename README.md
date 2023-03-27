@@ -208,5 +208,5 @@ $ humann_config --update database_folders utility_mapping ~/db/humann3_db/utilit
 ```
 #### Usage
 ```
-~/shell_script/humann.sh
+~/shell_script/humann3.sh
 ```

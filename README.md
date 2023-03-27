@@ -199,5 +199,14 @@ $ humann_test
 $ humann_databases --download chocophlan full ~/db/humann3_db --update-config yes # ChocoPhlAn database
 $ humann_databases --download uniref uniref90_diamond ~/db/humann3_db --update-config yes # Translated search databases
 $ humann_databases --download utility_mapping full  ~/db/humann3_db --update-config yes # HUMAnN 3.0 utility mapping files
-
+```
+#### Update path
+```
+$ humann_config --update database_folders nucleotide ~/db/humann3_db/chocophlan
+$ humann_config --update database_folders protein ~/db/humann3_db/uniref
+$ humann_config --update database_folders utility_mapping ~/db/humann3_db/utility_mapping
+```
+#### Usage
+```
+~/shell_script/humann.sh
 ```

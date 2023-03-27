@@ -2,6 +2,7 @@
 
 library(tidyverse)
 library(vegan)
+library(openxlsx)
 
 # Merge bracken file
 ## Import ARP
@@ -67,6 +68,14 @@ merge_species <- merge_species[,-1]
 ### Romove all 0 row
 merge_species <-  merge_species[rowSums(merge_species[])>0,]
 
+## Transform to percentage
+for (i in 1:ncol(merge_species)) {
+  sum_read<- sum(merge_species[,i])
+  for (j in 1:nrow(merge_species))
+  merge_species[j,i]<- merge_species[j,i]/sum_read
+  }
+
+
 
 # # Plot Rarefaction_curve
 # merge_species_t=as.data.frame(t(merge_species))
@@ -89,14 +98,65 @@ arg_subtype <- read.xlsx("D:/ARG_project/Shell/args_oap/ARG/stage_two_output/nor
                          sheet = 1)
 row.names(arg_subtype) <- arg_subtype[,1]
 arg_subtype <- arg_subtype[,-1]
+## Transform dataframe
+merge_species <-as.data.frame(t(merge_species))
+arg_subtype <-as.data.frame(t(arg_subtype))
+
+merge_species <- decostand(merge_species, method = 'hellinger')
+taxa_bray<-vegdist(merge_species, method="bray")
+arg_bray<-vegdist(arg_subtype, method="bray")
+## Choose pcoa,pca,and nmds....
+pcoa1 = cmdscale(taxa_bray, eig=TRUE)
+pcoa2 = cmdscale(arg_bray, eig=TRUE)
+#mds.taxa<-monoMDS(taxa_bray)
+#mds.arg<-monoMDS(arg_bray)
+pro.g.s<-procrustes(pcoa1,pcoa2,symmetric = T)
+## Ckeck statistic result
+summary(pro.g.s)
+protest(pcoa1,pcoa2)
+plot(pro.g.s, kind = 1,type="text")
+
+Y<-cbind(data.frame(pro.g.s$Yrot),data.frame(pro.g.s$X))
+X<-data.frame(pro.g.s$rotation)
+Y$sample_type<-rownames(Y)
+Y$sample_type <- gsub("1|2|3|4|5","",Y$sample_type)
+#color
+library(RColorBrewer)
+RColorBrewer::display.brewer.all()
+display.brewer.pal(n=12,name="Set3")
+brewer.pal(n=12,name="Set3")
+color<-c("#FB8072","#80B1D3","#FDB462")
 
 
-merge_species.dist<-vegdist(merge_species,method = "bray")
-arg_subtype.dist<-vegdist(arg_subtype,method = "bray")
+p <- ggplot(Y) +
+  geom_segment(aes(x = X1, y = X2,
+                   xend = Dim1, yend = Dim2, color=sample_type),
+               # geom_segment 绘制两点间的直线
+               size = 0.75,linetype="dashed",alpha=0.7) +
+  geom_point(aes(X1, X2, color =sample_type),shape=16,size = 3,alpha=0.5) +
+  geom_point(aes(Dim1,Dim2,color = sample_type),shape=17,size = 3,alpha=0.5) +
+  scale_color_manual("Sample type", values = color, 
+                     labels = c(c(expression(Aeration~tank), 
+                                  expression(Aeration~tank~PM[2.5]), 
+                                  expression(Outdoor~PM[2.5])))) +
+  guides(color = guide_legend(label.hjust = 0)) + 
+  theme_bw() + labs(title="Procrustes analysis") +
+  labs(x = 'Dimension 1', y = 'Dimension 2', color = '') +
+  geom_vline(xintercept = 0, color = 'gray', linetype = 2, size = 0.3) +
+  geom_hline(yintercept = 0, color = 'gray', linetype = 2, size = 0.3) +
+  annotate('text', label = sprintf('M^2 == 0.0282 '),
+           x = 0.2, y = 0.29, size = 5, parse = TRUE) +
+  annotate('text', label = 'P==0.001',
+           x = 0.2, y = 0.26, size = 5, parse = TRUE) +
+  theme(title = element_text(size=14),
+        axis.title = element_text(size=15),
+        legend.title= element_text(size=13),
+        legend.text = element_text(size=13),
+        panel.background = element_rect(fill='transparent'), #transparent panel bg
+        plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
+        legend.background = element_rect(fill='transparent')) #transparent legend bg)
+print(p)
 
-mds.species<-monoMDS(merge_species.dist)
-mds.subtype<-monoMDS(arg_subtype.dist)
-
-pro.species.subtype<-procrustes(mds.species,mds.subtype)
-pro.species.subtype
-protest(mds.species,mds.subtype)
+# # Save
+# ggsave("ARG_species_procrustes.png", p, path = "D:/ARG_project/Figure/procrustes",
+#        width = 7, height = 5, units = "in", bg='transparent') # save to png format

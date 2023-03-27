@@ -39,5 +39,7 @@ fasta <- readDNAStringSet("./BacMet_structure/BacMet_experimentally_confirmed.fa
 names(fasta)
 # Modify the header using regular expressions
 names(fasta) <- str_extract_all(names(fasta),"^BAC....")
+# Filter metal resistance gene
+fasta<- fasta[names(fasta) %in% metal_only_structure$gene]
 # write out the modified fasta file
-writeXStringSet(fasta, "./BacMet_structure/BacMet_exp_modified.fasta", format="fasta")
+#writeXStringSet(fasta, "./BacMet_structure/BacMet_exp_metal.fasta", format="fasta")

@@ -127,15 +127,16 @@ $ args_oap stage_one -i ~/clean_read -o ~/args_oap/ARG/stage_one_output -f fastq
 # Stage two (e_value: 1e-7, identity: 80, aa_length,25)
 $ args_oap stage_two -i ~/args_oap/ARG/stage_one_output -o ~/args_oap/ARG/stage_two_output -t 16
 ```
-#### MGEs analysis
+#### MGEs (Mobile Genetic Elements) analysis
 Database: https://github.com/KatariinaParnanen/MobileGeneticElementDatabase
 1. Covert nucleotide acid to amino acid under fasta format
 2. Create MGE_structure.txt manually or use curated structure already made
+Curated MGE database can be found here<https://github.com/yenjh3910/airborne_arg_uwtp/blob/master/MGE/MGE_structure/MGE_curated_structure.txt>
 ```
 $ mkdir ~/args_oap/MGE
 $ cd ~/args_oap/MGE
 
-### Amino acid (blastn)
+### Amino acid
 # (Optional)
 $ echo '>level1' | cat - MGEs_database_aa.fasta | grep '^>' | cut -d ' ' -f 1 | cut -c2- > MGE_AA_structure.txt
 
@@ -148,7 +149,7 @@ $ args_oap stage_one -i ~/clean_read -o ~/args_oap/MGE/AA_stage_one_output -f fa
 # Stage two
 $ args_oap stage_two -i ~/args_oap/MGE/AA_stage_one_output -o ~/args_oap/MGE/AA_stage_two_output -t 16 --database ~/args_oap/MGE/MGEs_database_aa.fasta --structure1 ~/args_oap/MGE/MGE_curated_structure.txt
 
-### DNA blast (blastx)
+### DNA blast
 # The database should be indexed manually (protein or nucleotide, in fasta)
 $ args_oap make_db -i MGEs_database_dna.fasta
 
@@ -158,16 +159,18 @@ $ args_oap stage_one -i ~/clean_read -o ~/args_oap/MGE/DNA_stage_one_output -f f
 # Stage two
 $ args_oap stage_two -i ~/args_oap/MGE/DNA_stage_one_output -o ~/args_oap/MGE/DNA_stage_two_output -t 16 --database ~/args_oap/MGE/MGEs_database_dna.fasta --structure1 ~/args_oap/MGE/MGE_curated_structure.txt
 ```
-### MRG (Metal Resistance Gene) analysis
+### MRGs (Metal Resistance Genes) analysis
+Database: http://bacmet.biomedicine.gu.se/
+Curated metal structure file can be found here<https://github.com/yenjh3910/airborne_arg_uwtp/blob/master/BacMet/BacMet_structure/metal_only_structure.txt>
 ```
 # The database should be indexed manually (protein or nucleotide, in fasta)
-$ args_oap make_db -i BacMet_exp_modified.fasta
+$ args_oap make_db -i BacMet_exp_metal.fasta
 
 # Stage one
-$ args_oap stage_one -i ~/clean_read -o ~/args_oap/BacMet/stage_one_output -f fastq -t 16 --database ~/args_oap/BacMet/BacMet_exp_modified.fasta
+$ args_oap stage_one -i ~/clean_read -o ~/args_oap/BacMet/stage_one_output -f fastq -t 16 --database ~/args_oap/BacMet/BacMet_exp_metal.fasta
 
 # Stage two
-$ args_oap stage_two -i ~/args_oap/BacMet/stage_one_output -o ~/args_oap/BacMet/stage_two_output -t 16 --database ~/args_oap/BacMet/BacMet_exp_modified.fasta --structure1 ~/args_oap/BacMet/metal_only_structure.txt
+$ args_oap stage_two -i ~/args_oap/BacMet/stage_one_output -o ~/args_oap/BacMet/stage_two_output -t 16 --database ~/args_oap/BacMet/BacMet_exp_metal.fasta --structure1 ~/args_oap/BacMet/metal_only_structure.txt
 
 ```
 ## Functional Profile

@@ -160,7 +160,7 @@ $ args_oap stage_one -i ~/clean_read -o ~/args_oap/MGE/DNA_stage_one_output -f f
 $ args_oap stage_two -i ~/args_oap/MGE/DNA_stage_one_output -o ~/args_oap/MGE/DNA_stage_two_output -t 16 --database ~/args_oap/MGE/MGEs_database_dna.fasta --structure1 ~/args_oap/MGE/MGE_curated_structure.txt
 ```
 ### MRGs (Metal Resistance Genes) analysis
-Database: http://bacmet.biomedicine.gu.se/
+Database: http://bacmet.biomedicine.gu.se/  
 Curated metal structure file can be found [here](https://github.com/yenjh3910/airborne_arg_uwtp/blob/master/BacMet/BacMet_structure/metal_only_structure.txt)
 ```
 # The database should be indexed manually (protein or nucleotide, in fasta)

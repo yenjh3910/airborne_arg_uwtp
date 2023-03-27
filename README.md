@@ -131,7 +131,7 @@ $ args_oap stage_two -i ~/args_oap/ARG/stage_one_output -o ~/args_oap/ARG/stage_
 Database: https://github.com/KatariinaParnanen/MobileGeneticElementDatabase
 1. Covert nucleotide acid to amino acid under fasta format
 2. Create MGE_structure.txt manually or use curated structure already made
-Curated MGE database can be found here<https://github.com/yenjh3910/airborne_arg_uwtp/blob/master/MGE/MGE_structure/MGE_curated_structure.txt>
+Curated MGE database can be found [here](https://github.com/yenjh3910/airborne_arg_uwtp/blob/master/MGE/MGE_structure/MGE_curated_structure.txt)
 ```
 $ mkdir ~/args_oap/MGE
 $ cd ~/args_oap/MGE
@@ -161,7 +161,7 @@ $ args_oap stage_two -i ~/args_oap/MGE/DNA_stage_one_output -o ~/args_oap/MGE/DN
 ```
 ### MRGs (Metal Resistance Genes) analysis
 Database: http://bacmet.biomedicine.gu.se/
-Curated metal structure file can be found here<https://github.com/yenjh3910/airborne_arg_uwtp/blob/master/BacMet/BacMet_structure/metal_only_structure.txt>
+Curated metal structure file can be found [here](https://github.com/yenjh3910/airborne_arg_uwtp/blob/master/BacMet/BacMet_structure/metal_only_structure.txt)
 ```
 # The database should be indexed manually (protein or nucleotide, in fasta)
 $ args_oap make_db -i BacMet_exp_metal.fasta

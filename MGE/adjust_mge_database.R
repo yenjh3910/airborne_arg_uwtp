@@ -37,10 +37,25 @@ MGE_AA_structure$type <- ifelse(is.na(MGE_AA_structure$type),
 # Show NA row
 MGE_AA_structure[!complete.cases(MGE_AA_structure), ]
 MGE_currated_structure <- MGE_AA_structure
+
+# Check whether curated structure is same with fasta
+library(Biostrings)
+fasta <- readDNAStringSet("./MGE_structure/MGEs_database_aa.fasta")
+names(fasta)
+## Find different sequence id
+setdiff(names(fasta),MGE_currated_structure$gene)
+setdiff(MGE_currated_structure$gene, names(fasta))
+## Modify MGE_cureated_structure
+MGE_currated_structure$gene[MGE_currated_structure$gene == "345_[tnpA[_Tn3_like]KR822247.1"] <- "345_[\"tnpA[_Tn3_like\"]KR822247.1"
+MGE_currated_structure$gene[MGE_currated_structure$gene == "2218_[tnpA[]KR822246.1"] <- "2218_[\"tnpA[\"]KR822246.1"
+## Check again
+setdiff(names(fasta),MGE_currated_structure$gene)
+setdiff(MGE_currated_structure$gene, names(fasta))
+
 # # Save
 # write.table(MGE_currated_structure, file = "D:/ARG_project/airborne_arg_uwtp/MGE/MGE_structure/MGE_curated_structure.txt",
 #              sep = "\t", quote = FALSE, append = FALSE, row.names=  FALSE)
-
+# 
 
 
 ################ Wrong version !!!!!!!!!!!!!!!!! ################

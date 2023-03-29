@@ -151,7 +151,7 @@ gene	subtype	type
 1883_tnpA_JN127372.1	tnpA	transposase
 1128_tnpA_JNFD01000045.1	tnpA	transposase
 1267_tnpA_FO082821.1	tnpA	transposase
-345_[tnpA[_Tn3_like]KR822247.1	tnpA	transposase
+345_["tnpA[_Tn3_like"]KR822247.1	tnpA	transposase
 1523_tnpA1_JFHO01000231.1	tnpA1	transposase
 744_tnpA_AF110140.1	tnpA	transposase
 549_tnpA_AP010803.1	tnpA	transposase
@@ -847,7 +847,7 @@ gene	subtype	type
 120_rep23_2_rep(pV030-8)_EU366902.1	rep23	plasmid
 1400_tnpA_AY148032.1	tnpA	transposase
 1900_tnpA_AY148030.1	tnpA	transposase
-2218_[tnpA[]KR822246.1	tnpA	transposase
+2218_["tnpA["]KR822246.1	tnpA	transposase
 479_tnpA_AP013357.1	tnpA	transposase
 664_tnpA_KC609323.1	tnpA	transposase
 968_tnpA_Z17279.1	tnpA	transposase

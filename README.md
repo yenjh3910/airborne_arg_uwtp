@@ -189,10 +189,23 @@ $ conda config --add channels conda-forge
 $ conda config --add channels biobakery
 
 # Install
+$ conda install -c conda-forge -c bioconda -c biobakery metaphlan=4.0.3
 $ conda install -c biobakery humann
 
 # Test
+$ cd ~/clean_read
+$ metaphlan <sample_1.fastq.gz,sample_2.fastq.gz> --bowtie2out sample_metaphlan.bowtie2.bz2 --input_type fastq --nproc 16 > sample_metaphlan.txt
 $ humann_test
+```
+#### [Bug when running humann3](https://forum.biobakery.org/t/metaphlan-v4-0-2-and-huma-3-6-metaphlan-taxonomic-profile-provided-was-not-generated-with-the-expected-database/4296/22): 
+```
+config.metaphlan_v3_db_version+" or "+metaphlan_v4_db_version+" . Please update your version of MetaPhlAn to at least v3.0."
+NameError: name 'metaphlan_v4_db_version' is not defined
+
+# Solve:
+$ metaphlan --install --bowtie2db ~/db/humann3_db/bowtie2db  # Install the database in a folder outside the Conda environment.
+$ metaphlan --install --index mpa_vJan21_CHOCOPhlAnSGB_202103 --bowtie2db ~/db/humann3_db/bowtie2db  # Download a specific version with the --indexparameter
+
 ```
 #### Download database
 ```
@@ -208,5 +221,5 @@ $ humann_config --update database_folders utility_mapping ~/db/humann3_db/utilit
 ```
 #### Usage
 ```
-~/shell_script/humann3.sh
+$ ~/shell_script/humann3.sh
 ```

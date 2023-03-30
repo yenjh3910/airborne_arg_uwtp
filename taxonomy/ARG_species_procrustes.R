@@ -68,12 +68,12 @@ merge_species <- merge_species[,-1]
 ### Romove all 0 row
 merge_species <-  merge_species[rowSums(merge_species[])>0,]
 
-## Transform to percentage
-for (i in 1:ncol(merge_species)) {
-  sum_read<- sum(merge_species[,i])
-  for (j in 1:nrow(merge_species))
-  merge_species[j,i]<- merge_species[j,i]/sum_read
-  }
+# ## Transform to percentage
+# for (i in 1:ncol(merge_species)) {
+#   sum_read<- sum(merge_species[,i])
+#   for (j in 1:nrow(merge_species))
+#   merge_species[j,i]<- merge_species[j,i]/sum_read
+#   }
 
 
 
@@ -101,20 +101,25 @@ arg_subtype <- arg_subtype[,-1]
 ## Transform dataframe
 merge_species <-as.data.frame(t(merge_species))
 arg_subtype <-as.data.frame(t(arg_subtype))
-
+## Normalization
+arg_subtype <- decostand(arg_subtype, method = 'hellinger')
 merge_species <- decostand(merge_species, method = 'hellinger')
 taxa_bray<-vegdist(merge_species, method="bray")
 arg_bray<-vegdist(arg_subtype, method="bray")
 ## Choose pcoa,pca,and nmds....
 pcoa1 = cmdscale(taxa_bray, eig=TRUE)
 pcoa2 = cmdscale(arg_bray, eig=TRUE)
-#mds.taxa<-monoMDS(taxa_bray)
-#mds.arg<-monoMDS(arg_bray)
-pro.g.s<-procrustes(pcoa1,pcoa2,symmetric = T)
-## Ckeck statistic result
+pro.g.s<-procrustes(pcoa1,pcoa2,symmetric = F)
+## Check statistic result
 summary(pro.g.s)
-protest(pcoa1,pcoa2)
 plot(pro.g.s, kind = 1,type="text")
+plot(pro.g.s, kind = 2)
+## Check statistic result by protest
+prot <- protest(X = pcoa1, Y = pcoa2, permutations = 999)
+prot
+names(prot)
+prot$signif  # p value
+prot$ss  # M2
 
 Y<-cbind(data.frame(pro.g.s$Yrot),data.frame(pro.g.s$X))
 X<-data.frame(pro.g.s$rotation)
@@ -144,10 +149,12 @@ p <- ggplot(Y) +
   labs(x = 'Dimension 1', y = 'Dimension 2', color = '') +
   geom_vline(xintercept = 0, color = 'gray', linetype = 2, size = 0.3) +
   geom_hline(yintercept = 0, color = 'gray', linetype = 2, size = 0.3) +
-  annotate('text', label = sprintf('M^2 == 0.0282 '),
-           x = 0.2, y = 0.29, size = 5, parse = TRUE) +
+  geom_abline(intercept = 0, slope = X[1,2]/X[1,1], size = 0.3) +
+  geom_abline(intercept = 0, slope = X[2,2]/X[2,1], size = 0.3) +
+  annotate('text', label = sprintf('M^2 == 0.2799 '),
+           x = 0.20, y = 0.29, size = 5, parse = TRUE) +
   annotate('text', label = 'P==0.001',
-           x = 0.2, y = 0.26, size = 5, parse = TRUE) +
+           x = 0.20, y = 0.26, size = 5, parse = TRUE) +
   theme(title = element_text(size=14),
         axis.title = element_text(size=15),
         legend.title= element_text(size=13),
@@ -158,5 +165,5 @@ p <- ggplot(Y) +
 print(p)
 
 # # Save
-# ggsave("ARG_species_procrustes.png", p, path = "D:/ARG_project/Figure/procrustes",
-#        width = 7, height = 5, units = "in", bg='transparent') # save to png format
+ggsave("ARG_species_procrustes.png", p, path = "D:/ARG_project/Figure/procrustes",
+       width = 7, height = 5, units = "in", bg='transparent') # save to png format

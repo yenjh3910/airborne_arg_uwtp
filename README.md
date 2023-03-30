@@ -172,6 +172,9 @@ $ args_oap stage_one -i ~/clean_read -o ~/args_oap/BacMet/stage_one_output -f fa
 # Stage two
 $ args_oap stage_two -i ~/args_oap/BacMet/stage_one_output -o ~/args_oap/BacMet/stage_two_output -t 16 --database ~/args_oap/BacMet/BacMet_exp_metal.fasta --structure1 ~/args_oap/BacMet/metal_only_structure.txt
 
+# Since default parameter in stage two is too strict for MGE, following parameters (--e 1e-5 --id 70) were used: 
+args_oap stage_two -i ~/args_oap/BacMet/stage_one_output -o ~/args_oap/BacMet/stage_two_output_evalue-5_id70 --e 1e-5 --id 70 -t 16 --database ~/args_oap/BacMet/BacMet_exp_metal.fasta --structure1 ~/ar
+gs_oap/BacMet/metal_only_structure.txt
 ```
 ## Functional Profile
 ### HUMAnN 3.0
@@ -203,9 +206,8 @@ config.metaphlan_v3_db_version+" or "+metaphlan_v4_db_version+" . Please update 
 NameError: name 'metaphlan_v4_db_version' is not defined
 
 # Solve:
-$ metaphlan --install --bowtie2db ~/db/humann3_db/bowtie2db  # Install the database in a folder outside the Conda environment.
-$ metaphlan --install --index mpa_vJan21_CHOCOPhlAnSGB_202103 --bowtie2db ~/db/humann3_db/bowtie2db  # Download a specific version with the --indexparameter
-
+## Install the database in a folder outside the Conda environment with a specific version.
+$ metaphlan --install --index mpa_vJan21_CHOCOPhlAnSGB_202103 --bowtie2db ~/db/humann3_db/chocophlan
 ```
 #### Download database
 ```

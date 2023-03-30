@@ -200,15 +200,6 @@ $ cd ~/clean_read
 $ metaphlan <sample_1.fastq.gz,sample_2.fastq.gz> --bowtie2out sample_metaphlan.bowtie2.bz2 --input_type fastq --nproc 16 > sample_metaphlan.txt
 $ humann_test
 ```
-#### [Bug when running humann3](https://forum.biobakery.org/t/metaphlan-v4-0-2-and-huma-3-6-metaphlan-taxonomic-profile-provided-was-not-generated-with-the-expected-database/4296/22): 
-```
-config.metaphlan_v3_db_version+" or "+metaphlan_v4_db_version+" . Please update your version of MetaPhlAn to at least v3.0."
-NameError: name 'metaphlan_v4_db_version' is not defined
-
-# Solve:
-## Install the database in a folder outside the Conda environment with a specific version.
-$ metaphlan --install --index mpa_vJan21_CHOCOPhlAnSGB_202103 --bowtie2db ~/db/humann3_db/chocophlan
-```
 #### Download database
 ```
 $ humann_databases --download chocophlan full ~/db/humann3_db --update-config yes # ChocoPhlAn database
@@ -220,6 +211,15 @@ $ humann_databases --download utility_mapping full  ~/db/humann3_db --update-con
 $ humann_config --update database_folders nucleotide ~/db/humann3_db/chocophlan
 $ humann_config --update database_folders protein ~/db/humann3_db/uniref
 $ humann_config --update database_folders utility_mapping ~/db/humann3_db/utility_mapping
+```
+#### [Bug when running humann3](https://forum.biobakery.org/t/metaphlan-v4-0-2-and-huma-3-6-metaphlan-taxonomic-profile-provided-was-not-generated-with-the-expected-database/4296/22): 
+```
+config.metaphlan_v3_db_version+" or "+metaphlan_v4_db_version+" . Please update your version of MetaPhlAn to at least v3.0."
+NameError: name 'metaphlan_v4_db_version' is not defined
+
+# Solve:
+## Install the database in a folder outside the Conda environment with a specific version.
+$ metaphlan --install --index mpa_vJan21_CHOCOPhlAnSGB_202103 --bowtie2db ~/anaconda3/envs/humann3/lib/python3.10/site-packages/metaphlan/metaphlan_databases
 ```
 #### Usage
 ```

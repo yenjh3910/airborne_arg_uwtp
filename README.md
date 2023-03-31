@@ -219,7 +219,7 @@ NameError: name 'metaphlan_v4_db_version' is not defined
 
 # Solve:
 ## Install the database in a folder outside the Conda environment with a specific version.
-$ metaphlan --install --index mpa_vJan21_CHOCOPhlAnSGB_202103 --bowtie2db ~/anaconda3/envs/humann3/lib/python3.10/site-packages/metaphlan/metaphlan_databases
+$ metaphlan --install --index mpa_vJan21_CHOCOPhlAnSGB_202103 --bowtie2db db/humann3_db/metaphlan_database_humann_compatible
 ```
 #### Usage
 ```

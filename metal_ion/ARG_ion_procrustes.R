@@ -3,11 +3,11 @@ library(tidyverse)
 library(openxlsx)
 library(vegan)
 # Import & prepare input dataframe
-ion <- read.xlsx("D:/ARG_project/metal_ion/UWTP_ion.xlsx", sheet = 1)
+ion <- read.xlsx("../../airborne_arg_uwtp_result/metal_ion/UWTP_ion.xlsx", sheet = 1)
 row.names(ion) <- ion[,1]
 ion <- ion[,-1]
 #ion <- as.data.frame(t(ion)) 
-arg_subtype <- read.xlsx("D:/ARG_project/Shell/args_oap/ARG/stage_two_output/normalized_cell.subtype.xlsx", sheet = 1)
+arg_subtype <- read.xlsx("../../airborne_arg_uwtp_result//args_oap/ARG/stage_two_output/normalized_cell.subtype.xlsx", sheet = 1)
 row.names(arg_subtype) <- arg_subtype[,1]
 arg_subtype <- arg_subtype[,-1]
 arg_subtype <- as.data.frame(t(arg_subtype)) 

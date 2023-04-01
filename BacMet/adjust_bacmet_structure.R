@@ -27,10 +27,7 @@ metal_only_structure$type <- gsub(".*,.*" , "Multi-metal" ,
 # write.table(metal_only_structure, "./BacMet_structure/metal_only_structure.txt",
 #             sep = "\t", quote = FALSE, append = FALSE, row.names=  FALSE)
 
-
-
-
-
+######################################################################################
 
 # Modify fasta
 library(Biostrings)

@@ -50,15 +50,15 @@ library(openxlsx)
 
 
 # Read ARG_subtype file (Something wrong with read.table, so read by )
-arg_subtype <- read.table("D:/ARG_project/Shell/args_oap/ARG/stage_two_output/normalized_cell.subtype.txt",
+arg_subtype <- read.table("../../airborne_arg_uwtp_result/args_oap/ARG/stage_two_output/normalized_cell.subtype.txt",
                           sep = "\t", header = TRUE, quote = '')
 gather_arg_subtype <- gather(arg_subtype, key = "sample", value = "copy_per_cell", 
                              ARP1:ODP5) # Transform to gather format
-single <- read.xlsx("D:/ARG_project/airborne_arg_uwtp/ARG/ARGs_OAP_beta_structure/single-component_structure.xlsx", 
+single <- read.xlsx("./ARGs_OAP_beta_structure/single-component_structure.xlsx", 
                     sheet = 1)
-two <- read.xlsx("D:/ARG_project/airborne_arg_uwtp/ARG/ARGs_OAP_beta_structure/two-component_structure.xlsx", 
+two <- read.xlsx("./ARGs_OAP_beta_structure/two-component_structure.xlsx", 
                  sheet = 1)
-multi <- read.xlsx("D:/ARG_project/airborne_arg_uwtp/ARG/ARGs_OAP_beta_structure/multi-component_structure.xlsx", 
+multi <- read.xlsx("./ARGs_OAP_beta_structure/multi-component_structure.xlsx", 
                    sheet = 1)
 # Bind structure file
 all <- rbind(single, two, multi)
@@ -83,7 +83,7 @@ na_gene <- spread(na_gene, key = "sample", value = "copy_per_cell")
 
 
 # Input back curated arg_mechanism file and adjust mechanism name
-arg_mechanism <- read.csv("D:/ARG_project/Shell/args_oap/ARG/stage_two_output/arg_mechanism.csv")
+arg_mechanism <- read.csv("../../airborne_arg_uwtp_result/args_oap/ARG/stage_two_output/arg_mechanism.csv")
 unique(arg_mechanism$mechanism)
 arg_mechanism$mechanism <- str_to_sentence(arg_mechanism$mechanism) 
 arg_mechanism$mechanism[arg_mechanism$mechanism == 'Enzymatic inactivation'] <- 'Antibiotic inactivation'

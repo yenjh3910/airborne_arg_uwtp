@@ -7,7 +7,7 @@ library(stringr)
 library(tibble)
 
 # Read MGE_type file
-mge_type <- read.table("D:/ARG_project/Shell/args_oap/MGE/AA_stage_two_output/normalized_cell.type.txt",
+mge_type <- read.table("../../airborne_arg_uwtp_result/args_oap/MGE/AA_stage_two_output/normalized_cell.type.txt",
                        header = TRUE, sep = "")
 
 # Preview raw data

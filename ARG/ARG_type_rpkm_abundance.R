@@ -7,7 +7,7 @@ library(stringr)
 library(tibble)
 
 # Read ARG_type file
-arg_type <- read.table("D:/ARG_project/Shell/args_oap/ARG/stage_two_output/rpkm.type.txt",
+arg_type <- read.table("../../airborne_arg_uwtp_result/args_oap/ARG/stage_two_output/rpkm.type.txt",
                    header = TRUE, sep = "")
 
 

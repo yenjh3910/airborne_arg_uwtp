@@ -6,12 +6,12 @@ library(openxlsx)
 
 # Merge bracken file
 ## Import ARP
-tmp <- read.table("D:/ARG_project/Shell/kraken2/ARP/ARP1.S.bracken", 
+tmp <- read.table("../../airborne_arg_uwtp_result/kraken2/ARP/ARP1.S.bracken", 
                                  header = TRUE ,sep = "\t")
 tmp <- tmp %>% select(name, new_est_reads)
 colnames(tmp)[2] <- "ARP1"
 for (i in 2:5) {
-  tmp2 <- read.table(paste("D:/ARG_project/Shell/kraken2/ARP/ARP",i,".S.bracken", sep = ""), 
+  tmp2 <- read.table(paste("../../airborne_arg_uwtp_result/kraken2/ARP/ARP",i,".S.bracken", sep = ""), 
   header = TRUE ,sep = "\t") # Import
   tmp2 <- tmp2 %>% select(name, new_est_reads) # Select name and reads column
   colnames(tmp2)[2] <- paste("ARP", i, sep = "") # Change column headers to sample name
@@ -21,12 +21,12 @@ for (i in 2:5) {
 colnames(tmp)[1] <- "Species"
 ARP_species<- tmp
 ## Import AT
-tmp <- read.table("D:/ARG_project/Shell/kraken2/AT/AT1.S.bracken", 
+tmp <- read.table("../../airborne_arg_uwtp_result/kraken2/AT/AT1.S.bracken", 
                   header = TRUE ,sep = "\t")
 tmp <- tmp %>% select(name, new_est_reads)
 colnames(tmp)[2] <- "AT1"
 for (i in 2:5) {
-  tmp2 <- read.table(paste("D:/ARG_project/Shell/kraken2/AT/AT",i,".S.bracken", sep = ""), 
+  tmp2 <- read.table(paste("../../airborne_arg_uwtp_result/kraken2/AT/AT",i,".S.bracken", sep = ""), 
                      header = TRUE ,sep = "\t") # Import
   tmp2 <- tmp2 %>% select(name, new_est_reads) # Select name and reads column
   colnames(tmp2)[2] <- paste("AT", i, sep = "") # Change column headers to sample name
@@ -36,12 +36,12 @@ for (i in 2:5) {
 colnames(tmp)[1] <- "Species"
 AT_species<- tmp
 ## Import ODP
-tmp <- read.table("D:/ARG_project/Shell/kraken2/ODP/ODP1.S.bracken", 
+tmp <- read.table("../../airborne_arg_uwtp_result/kraken2/ODP/ODP1.S.bracken", 
                   header = TRUE ,sep = "\t")
 tmp <- tmp %>% select(name, new_est_reads)
 colnames(tmp)[2] <- "ODP1"
 for (i in 2:5) {
-  tmp2 <- read.table(paste("D:/ARG_project/Shell/kraken2/ODP/ODP",i,".S.bracken", sep = ""), 
+  tmp2 <- read.table(paste("../../airborne_arg_uwtp_result/kraken2/ODP/ODP",i,".S.bracken", sep = ""), 
                      header = TRUE ,sep = "\t") # Import
   tmp2 <- tmp2 %>% select(name, new_est_reads) # Select name and reads column
   colnames(tmp2)[2] <- paste("ODP", i, sep = "") # Change column headers to sample name
@@ -94,7 +94,7 @@ merge_species <-  merge_species[rowSums(merge_species[])>0,]
 
 # Procrustes Analysis
 ## Import ARG subtype dataset
-arg_subtype <- read.xlsx("D:/ARG_project/Shell/args_oap/ARG/stage_two_output/normalized_cell.subtype.xlsx",
+arg_subtype <- read.xlsx("../../airborne_arg_uwtp_result/args_oap/ARG/stage_two_output/normalized_cell.subtype.xlsx",
                          sheet = 1)
 row.names(arg_subtype) <- arg_subtype[,1]
 arg_subtype <- arg_subtype[,-1]
@@ -164,6 +164,6 @@ p <- ggplot(Y) +
         legend.background = element_rect(fill='transparent')) #transparent legend bg)
 print(p)
 
-# # Save
-ggsave("ARG_species_procrustes.png", p, path = "D:/ARG_project/Figure/procrustes",
-       width = 7, height = 5, units = "in", bg='transparent') # save to png format
+# # # Save
+# ggsave("ARG_species_procrustes.png", p, path = "D:/ARG_project/Figure/procrustes",
+#        width = 7, height = 5, units = "in", bg='transparent') # save to png format

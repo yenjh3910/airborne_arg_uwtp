@@ -5,9 +5,9 @@ library(tidyverse)
 library(ggpubr)
 
 # Read type file
-mrg <- read.table("D:/ARG_project/Shell/args_oap/BacMet/stage_two_output_evalue-5_id70/normalized_cell.type.txt",
+mrg <- read.table("../../airborne_arg_uwtp_result/args_oap/BacMet/stage_two_output_evalue-5_id70/normalized_cell.type.txt",
                   header = TRUE, sep = "\t")
-mge <- read.table("D:/ARG_project/Shell/args_oap/MGE/AA_stage_two_output/normalized_cell.type.txt",
+mge <- read.table("../../airborne_arg_uwtp_result/args_oap/MGE/AA_stage_two_output/normalized_cell.type.txt",
                   header = TRUE, sep = "")
 
 # Calculate Sum of ARG and MGE

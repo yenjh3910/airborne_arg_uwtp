@@ -3,13 +3,13 @@ library(tidyverse)
 library(openxlsx)
 library(vegan)
 # Import & prepare input dataframe
-metal <- read.xlsx("D:/ARG_project/metal_ion/UWTP_metal.xlsx", sheet = 1)
+metal <- read.xlsx("../../airborne_arg_uwtp_result/metal_ion/UWTP_metal.xlsx", sheet = 1)
 row.names(metal) <- metal[,1]
 metal <- metal[,-1]
 metal <- as.data.frame(t(metal))
 metal =decostand(metal, method = "standardize") # Normalization between water and air
 metal <- as.data.frame(t(metal))
-arg_subtype <- read.xlsx("D:/ARG_project/Shell/args_oap/ARG/stage_two_output/normalized_cell.subtype.xlsx", sheet = 1)
+arg_subtype <- read.xlsx("../../airborne_arg_uwtp_result/args_oap/ARG/stage_two_output/normalized_cell.subtype.xlsx", sheet = 1)
 row.names(arg_subtype) <- arg_subtype[,1]
 arg_subtype <- arg_subtype[,-1]
 arg_subtype <- as.data.frame(t(arg_subtype)) 

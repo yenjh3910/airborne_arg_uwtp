@@ -140,5 +140,5 @@ p <- ggplot(gather_arg_mechanism, aes(x = sample_type, y = copy_per_cell, fill =
 
 print(p)
 
-# ggsave("ARG_mechanism.png", p, path = "D:/ARG_project/Figure/ARG",
-#        width = 14, height = 3.2, units = "in") # save to png format
+# ggsave("ARG_mechanism.png", p, path = "../../airborne_arg_uwtp_result/Figure/ARG",
+#         width = 14, height = 3.2, units = "in") # save to png format

@@ -78,6 +78,8 @@ p <- ggplot(Y) +
 
 print(p)
 
-# # Save
-# ggsave("ARG_ion_procrustes.png", p, path = "D:/ARG_project/Figure/procrustes",
-#        width = 7, height = 5, units = "in", bg='transparent') # save to png format
+# Save
+# ggsave("ARG_ion_procrustes.png", p, 
+#        path = "../../airborne_arg_uwtp_result/Figure/procrustes",
+#        width = 7, height = 5, 
+#        units = "in", bg='transparent') # save to png format

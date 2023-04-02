@@ -123,5 +123,7 @@ p <- ggplot(gather_arg_type, aes(x = sample, y = copy_per_16S, fill = type)) +
 
 print(p)
 
-# ggsave("ARG_type_16S.png", p, path = "D:/ARG_project/Figure/ARG",
-#        width = 7, height = 5, units = "in", bg='transparent') # save to png format
+# ggsave("ARG_type_16S.png", p, 
+#        path = "../../airborne_arg_uwtp_result/Figure/ARG",
+#        width = 7, height = 5, 
+#        units = "in", bg='transparent') # save to png format

@@ -72,5 +72,7 @@ print(p)
 
 ### Can't hide the original legend, so edit it on PPT afterward !!! ###
 
-# ggsave("ARG_MGE_correlation.png", p, path = "D:/ARG_project/Figure/correlation",
-#        width = 7, height = 5, units = "in", bg='transparent') # save to png format
+# ggsave("ARG_MGE_correlation.png", p, 
+#        path = "../../airborne_arg_uwtp_result/Figure/correlation",
+#        width = 7, height = 5, 
+#        units = "in", bg='transparent') # save to png format

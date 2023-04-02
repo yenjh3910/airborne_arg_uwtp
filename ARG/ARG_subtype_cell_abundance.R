@@ -99,5 +99,7 @@ p <- pheatmap(t(log_top_subtype),
          cellwidth = 12, cellheight = 17, bg = "transparent", 
          cluster_rows=as.hclust(row_dend))
 
-# ggsave("ARG_subtype_cell.png", p, path = "D:/ARG_project/Figure/ARG", 
-#         width = 17, height = 8, units = "in", bg='transparent') # save to png format
+# ggsave("ARG_subtype_cell.png", p, 
+#        path = "../../airborne_arg_uwtp_result/Figure/ARG",
+#        width = 17, height = 8, 
+#        units = "in", bg='transparent') # save to png format

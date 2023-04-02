@@ -76,5 +76,7 @@ p <- ggplot(gather_mrg_type, aes(x = sample, y = copy_per_cell, fill = type)) +
 
 print(p)
 
-# ggsave("MRG_type_cell.png", p, path = "D:/ARG_project/Figure/MRG",
-#        width = 7, height = 5, units = "in", bg='transparent') # save to png format
+# ggsave("MRG_type_cell.png", p, 
+#        path = "../../airborne_arg_uwtp_result/Figure/MRG",
+#        width = 7, height = 5, 
+#        units = "in", bg='transparent') # save to png format

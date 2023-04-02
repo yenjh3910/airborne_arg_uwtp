@@ -71,5 +71,7 @@ p <- ggplot(higher_arg_ARP, aes(x=subtype, y=ratio, fill=type)) +
 print(p)
 
 
-# ggsave("ARG_compare.png", p, path = "D:/ARG_project/Figure/ARG",
-#        width = 14, height = 8, units = "in", bg='transparent') # save to png format
+# ggsave("ARG_compare.png", p, 
+#        path = "../../airborne_arg_uwtp_result/Figure/ARG",
+#        width = 14, height = 8, 
+#        units = "in", bg='transparent') # save to png format

@@ -48,7 +48,7 @@ mrg_mge_type$sample_type <- factor(mrg_mge_type$sample_type, levels = c("AT","AR
 p <- ggscatter(mrg_mge_type, x = "MRG", y = "MGE",
                color = 'sample_type', shape = 'sample_type', 
                add = "reg.line", conf.int = TRUE) + 
-  stat_cor(aes(color= sample_type), show.legend = FALSE, , label.x = .0041) + 
+  stat_cor(aes(color= sample_type), show.legend = FALSE, label.x = .0041) + 
   labs(x = "MRGs / cells", y = "MGEs / cells") + 
   theme(aspect.ratio=1, 
         panel.background = element_rect(fill='transparent'), #transparent panel bg
@@ -72,5 +72,7 @@ print(p)
 
 ### Can't hide the original legend, so edit it on PPT afterward !!! ###
 #
-# ggsave("MRG_MGE_correlation.png", p, path = "D:/ARG_project/Figure/correlation",
-#        width = 7, height = 5, units = "in", bg='transparent') # save to png format
+# ggsave("MRG_MGE_correlation.png", p, 
+#        path = "../../airborne_arg_uwtp_result/Figure/correlation",
+#        width = 7, height = 5, 
+#        units = "in", bg='transparent') # save to png format

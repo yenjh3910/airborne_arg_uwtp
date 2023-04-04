@@ -111,24 +111,96 @@ gather_arg_mechanism$mechanism <- factor(gather_arg_mechanism$mechanism,
                                                       "Antibiotic target protection",
                                                       "Reduced permeability to antibiotic",
                                                       "Others"))
-
+# Calculate sum abundance of each sample
+tmp <- gather_arg_mechanism %>% group_by(mechanism, sample) %>% 
+  summarise(abundance = sum(copy_per_cell))
+# Add sample type column
+tmp$sample_type <- tmp$sample
+tmp$sample_type <- gsub("1|2|3|4|5","",tmp$sample)
+# Calculate mean and sd
+tmp <- tmp %>% group_by(mechanism, sample_type) %>% mutate(mean = mean(abundance))
+tmp <- tmp %>% group_by(mechanism, sample_type) %>% mutate(sd = sd(abundance))
+# Filter necesssary column for figure
+arg_mechanism <- tmp %>% select(mechanism,sample_type,mean,sd) %>% unique()
+# Add st_mean for figure
+arg_mechanism <- arg_mechanism %>% group_by(sample_type) %>% 
+  mutate(sd_mean = mean)
+arg_mechanism <- arg_mechanism %>% arrange(sample_type)
+## Fiter out other mechanism
+arg_mechanism <- arg_mechanism %>% filter(!(mechanism == "Others"))
+## sum ARP st_mean
+for (i in c(1:5)) {
+  arg_mechanism[{i},5] <-  arg_mechanism[{i},5] + 
+    sum(arg_mechanism[{i+1}:6,5])}
+## sum AT st_mean
+for (i in c(7:11)) {
+  arg_mechanism[{i},5] <-  arg_mechanism[{i},5] + 
+    sum(arg_mechanism[{i+1}:12,5])}
+## sum ODP st_mean
+for (i in c(13:17)) {
+  arg_mechanism[{i},5] <-  arg_mechanism[{i},5] + 
+    sum(arg_mechanism[{i+1}:18,5])}
+# Select color
 library(RColorBrewer)
 RColorBrewer::display.brewer.all()
 display.brewer.pal(n=12,name="Set3")
 brewer.pal(n=12,name="Set3")
-
-p <- ggplot(gather_arg_mechanism, aes(x = sample_type, y = copy_per_cell, fill = mechanism))+
+# Order
+arg_mechanism$sample_type <- factor(arg_mechanism$sample_type, 
+                                    levels = c("ODP",
+                                               "ARP",
+                                               "AT"))
+# Plot
+## Absoulte abundance
+p <- ggplot(arg_mechanism, aes(x = sample_type, y = mean, fill = mechanism))+
   geom_bar(stat="identity")+
+  geom_errorbar( aes(x=sample_type, ymin=sd_mean-sd, ymax=sd_mean+sd), 
+                 width=0.4, colour="black", alpha=0.9, size=0.5) + 
   coord_flip()+
   theme_bw()+
   scale_x_discrete(labels=c("AT" = expression(Aeration~tank), 
                             "ARP" = expression(Aeration~tank~PM[2.5]),
                             "ODP" = expression(Outdoor~PM[2.5]))) +
   xlab("")+ ylab("Relative abundance (ARGs/cell)") +
-  guides(fill=guide_legend(title="Mechanism")) +
+  guides(fill=guide_legend(title="Mechanism",nrow=3,byrow=TRUE)) +
   theme(axis.text.x = element_text(size = 20),
         axis.text.y = element_text(size = 18),
         axis.title = element_text(size = 20),
+        plot.margin=unit(c(5,1,1,1),"cm"),
+        legend.position = c(0.5,1.45),
+        legend.spacing.x = unit(0.5, 'cm'),
+        legend.spacing.y = unit(0.2, 'cm'),
+        legend.text = element_text(size = 16),
+        legend.title = element_text(size = 18),
+        legend.key.size = unit(0.8, 'cm'),
+        panel.background = element_rect(fill='transparent'), #transparent panel bg
+        plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
+        legend.background = element_rect(fill='transparent')) + #transparent legend bg)
+  scale_fill_manual(values=c("#FB8072", "#80B1D3", "#FDB462",
+                             "#B3DE69","#BEBADA","#FCCDE5"))
+
+print(p)
+# ggsave("ARG_mechanism_absoulte_abudnace.png", p, path = "../../airborne_arg_uwtp_result/Figure/ARG",
+#        width = 11, height = 5, units = "in") # save to png format
+
+
+## Relative abundance
+p <- ggplot(arg_mechanism, aes(x = sample_type, y = mean, fill = mechanism))+
+  geom_bar(stat="identity", position = "fill") +
+  coord_flip()+
+  theme_bw()+
+  scale_x_discrete(labels=c("AT" = expression(Aeration~tank), 
+                            "ARP" = expression(Aeration~tank~PM[2.5]),
+                            "ODP" = expression(Outdoor~PM[2.5]))) +
+  xlab("")+ ylab("Relative abundance (ARGs/cell)") +
+  guides(fill=guide_legend(title="Mechanism",nrow=3,byrow=TRUE)) +
+  theme(axis.text.x = element_text(size = 20),
+        axis.text.y = element_text(size = 18),
+        axis.title = element_text(size = 20),
+        plot.margin=unit(c(5,1,1,1),"cm"),
+        legend.position = c(0.5,1.45),
+        legend.spacing.x = unit(0.5, 'cm'),
+        legend.spacing.y = unit(0.2, 'cm'),
         legend.text = element_text(size = 16),
         legend.title = element_text(size = 18),
         legend.key.size = unit(0.8, 'cm'),
@@ -139,6 +211,5 @@ p <- ggplot(gather_arg_mechanism, aes(x = sample_type, y = copy_per_cell, fill =
                              "#B3DE69","#BEBADA","#FCCDE5","#D9D9D9"))
 
 print(p)
-
-# ggsave("ARG_mechanism.png", p, path = "../../airborne_arg_uwtp_result/Figure/ARG",
-#         width = 14, height = 3.2, units = "in") # save to png format
+# ggsave("ARG_mechanism_relative_abundance.png", p, path = "../../airborne_arg_uwtp_result/Figure/ARG",
+#         width = 11, height = 5, units = "in") # save to png format

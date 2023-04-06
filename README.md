@@ -52,7 +52,7 @@ $ conda update kraken2 -c bioconda
 ```
 #### Download NCBI taxonomic information
 ```
-cd ~/db
+$ cd ~/db
 $ kraken2-build --download-taxonomy --threads 16 --db kraken_db
 ```
 #### Debug  
@@ -173,7 +173,7 @@ $ args_oap stage_one -i ~/clean_read -o ~/args_oap/BacMet/stage_one_output -f fa
 $ args_oap stage_two -i ~/args_oap/BacMet/stage_one_output -o ~/args_oap/BacMet/stage_two_output -t 16 --database ~/args_oap/BacMet/BacMet_exp_metal.fasta --structure1 ~/args_oap/BacMet/metal_only_structure.txt
 
 # Since default parameter in stage two is too strict for MGE, following parameters (--e 1e-5 --id 70) were used: 
-args_oap stage_two -i ~/args_oap/BacMet/stage_one_output -o ~/args_oap/BacMet/stage_two_output_evalue-5_id70 --e 1e-5 --id 70 -t 16 --database ~/args_oap/BacMet/BacMet_exp_metal.fasta --structure1 ~/ar
+$ args_oap stage_two -i ~/args_oap/BacMet/stage_one_output -o ~/args_oap/BacMet/stage_two_output_evalue-5_id70 --e 1e-5 --id 70 -t 16 --database ~/args_oap/BacMet/BacMet_exp_metal.fasta --structure1 ~/ar
 gs_oap/BacMet/metal_only_structure.txt
 ```
 ## Functional Profile

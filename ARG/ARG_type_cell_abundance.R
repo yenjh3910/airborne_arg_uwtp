@@ -27,6 +27,11 @@ for (i in 1:nrow(gather_arg_type)) {
       gather_arg_type$sample_type[i] <- "ODP"
   }
 }
+# Statastic
+arg_sum <- gather_arg_type %>% group_by(sample) %>% mutate(sum = sum(copy_per_cell))
+arg_sum <- arg_sum %>% group_by(sample_type) %>% mutate(mean = mean(sum))
+arg_sum <- arg_sum %>% group_by(sample_type)%>% mutate(sd = sd(sum)) %>% 
+  select(sample_type, mean, sd) %>% unique()
 ## Visualization
 gather_arg_type$sample_type <- factor(gather_arg_type$sample_type, levels = c("AT", "ARP", "ODP"), 
                   labels = c(expression(Aeration~tank), 

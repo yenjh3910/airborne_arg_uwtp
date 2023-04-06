@@ -16,6 +16,9 @@ arg_subtype <- arg_subtype %>% mutate(AT = AT1 + AT2 + AT3 + AT4 + AT5)
 arg_subtype <- arg_subtype %>% mutate(ARP = ARP1 + ARP2 + ARP3 + ARP4 + ARP5)
 arg_subtype <- arg_subtype %>% mutate(ODP = ODP1 + ODP2 + ODP3 + ODP4 + ODP5)
 arg_subtype <- arg_subtype %>% select(AT, ARP, ODP)
+# Statistic
+ARG_NotIn_AT_ButIn_ARP  <- arg_subtype %>% filter(AT == 0) %>% summarise(sum(ARP))
+ARG_NotIn_AT_ButIn_ARP/sum(arg_subtype$ARP) # ratio of ARG in ARP but not in AT 
 # Replace value to arg
 arg_subtype <- arg_subtype %>% arrange(desc(AT))
 arg_subtype$AT[!(arg_subtype$AT == 0)] <- row.names(arg_subtype)

@@ -102,6 +102,9 @@ gather_arg_mechanism <- gather_arg_mechanism %>% select(subtype,mechanism)
 gather_arg_mechanism <-unique(gather_arg_mechanism )
 # Join "higher_arg_ARP" and "gather_arg_mechanism"
 higher_arg_ARP <- left_join(higher_arg_ARP,gather_arg_mechanism, by = "subtype")
+## Change specific ARG subtype
+higher_arg_ARP$subtype[higher_arg_ARP$subtype == "Bifidobacteria intrinsic ileS conferring resistance to mupirocin"] <- "ileS"
+higher_arg_ARP$subtype[higher_arg_ARP$subtype == "Other_major_facilitator_superfamily_transporter"] <- "Other major facilitator superfamily transporter"
 # Change the ARG subtype order on the figure
 higher_arg_ARP$subtype <- factor(higher_arg_ARP$subtype,
                                  levels = higher_arg_ARP$subtype[order(higher_arg_ARP$ratio, 
@@ -118,11 +121,12 @@ p <- ggplot(higher_arg_ARP, aes(x=subtype, y=ratio, fill=mechanism)) +
   scale_fill_manual(values=c("#FB8072", "#80B1D3", "#FDB462",
                              "#B3DE69","#BEBADA","#FCCDE5","#D9D9D9")) +
   guides(fill=guide_legend(title="Mechanism",ncol=2,byrow=TRUE)) + 
-  theme(axis.text.x = element_text(size = 12, angle = 90, hjust=1),
-        axis.text.y = element_text(size = 12),
-        axis.title = element_text(size = 14),
-        legend.title = element_text(size = 14),
-        legend.text = element_text(size = 14),
+  theme(axis.text.x = element_text(size = 30, angle = 70, hjust=1),
+        axis.text.y = element_text(size = 30),
+        axis.title = element_text(size = 27),
+        legend.key.size = unit(1.1, 'cm'),
+        legend.title = element_text(size = 35),
+        legend.text = element_text(size = 35),
         legend.position = c(0.7, 0.7),
         panel.background = element_rect(fill='transparent'), #transparent panel bg
         plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
@@ -132,7 +136,7 @@ p <- ggplot(higher_arg_ARP, aes(x=subtype, y=ratio, fill=mechanism)) +
 
 print(p)
 
-# ggsave("ARG_mechanism_compare.png", p,
+# ggsave("ARG_mechanism_relative_abundance.png", p,
 #        path = "../../airborne_arg_uwtp_result/Figure/ARG",
-#        width = 14, height = 9,
+#        width = 30, height = 16,
 #        units = "in", bg='transparent') # save to png format

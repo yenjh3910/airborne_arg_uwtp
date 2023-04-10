@@ -7,7 +7,7 @@ A comprehensive metagenomic pipeline for airborne ARGs (Antibiotic Resistance Ge
 3. [ARGs Profile](https://github.com/yenjh3910/airborne_arg_uwtp#args-profile)
 4. [Functional Profile](https://github.com/yenjh3910/airborne_arg_uwtp#functional-profile)
 5. [Taxanomic Assignment of Assembly Contigs](https://github.com/yenjh3910/airborne_arg_uwtp#taxanomic-assignment-of-assembly-contigs)
-6. [Gene Alignment to Contigs](https://github.com/yenjh3910/airborne_arg_uwtp#gene-alignment-to-contigs)
+6. [Gene Alignment to Assembly Contigs](https://github.com/yenjh3910/airborne_arg_uwtp#gene-alignment-to-assembly-contigs)
 
 ## Anaconda Installation
 https://www.anaconda.com/products/distribution
@@ -238,7 +238,7 @@ Use kraken2 to assign the toxanomy to individual assmebly contigs
 $ conda activate kraken2
 $ ~/shell_script/kraken2_contigs.sh
 ```
-## Gene Alignment to Contigs
+## Gene Alignment to Assembly Contigs
 ### Prodigal & CD-HIT
 Gene prediction and reductant sequence remove
 ```

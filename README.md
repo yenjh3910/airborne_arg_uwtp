@@ -2,10 +2,12 @@
 A comprehensive metagenomic pipeline for airborne ARGs (Antibiotic Resistance Genes) in UWTP (Urban wastewater Treatment Plant)
 
 ## Table of Contents
-1. [Anaconda Installation](https://github.com/yenjh3910/Metagenomic_pipeline/blob/main/README.md#anaconda-installation)
-2. [Taxanomic Profile](https://github.com/yenjh3910/Metagenomic_pipeline/blob/main/README.md#taxanomic-profile)
-3. [ARGs Profile](https://github.com/yenjh3910/Metagenomic_pipeline/blob/main/README.md#args-profile)
-4. [Functional Profile](https://github.com/yenjh3910/Metagenomic_pipeline/blob/main/README.md#functional-profile)
+1. [Anaconda Installation](https://github.com/yenjh3910/airborne_arg_uwtp#anaconda-installation)
+2. [Taxanomic Profile](https://github.com/yenjh3910/airborne_arg_uwtp#taxanomic-profile)
+3. [ARGs Profile](https://github.com/yenjh3910/airborne_arg_uwtp#args-profile)
+4. [Functional Profile](https://github.com/yenjh3910/airborne_arg_uwtp#functional-profile)
+5. [Taxanomic Assignment of Assembly Contigs](https://github.com/yenjh3910/airborne_arg_uwtp#taxanomic-assignment-of-assembly-contigs)
+6. [Gene Alignment to Contigs](https://github.com/yenjh3910/airborne_arg_uwtp#gene-alignment-to-contigs)
 
 ## Anaconda Installation
 https://www.anaconda.com/products/distribution
@@ -237,17 +239,38 @@ $ conda activate kraken2
 $ ~/shell_script/kraken2_contigs.sh
 ```
 ## Gene Alignment to Contigs
-### Prodigal
-Gene prediction in microbial organisms
+### Prodigal & CD-HIT
+Gene prediction and reductant sequence remove
 ```
 # Create environment
-$ conda create prodigal
+$ conda create -n prodigal
 $ conda activate prodigal
 
 # Installation
 $ conda install -c bioconda prodigal
+$ conda install -c bioconda cd-hit
 
-# Run
+# ORF perdiction
 $ ~/shell_script/prodigal_contigs.sh
 
+# Remove reductant sequence
+$ ~/shell_script/cdhit_orf.sh
+```
+### Diamond
+BLAST sequence
+```
+# Create environment
+$ conda create -n diamond
+$ conda activate diamond
+
+# Installation
+$ conda install -c bioconda diamond
+
+# Make database
+$ diamond makedb --in ~/db/args_oap_db/sarg.fasta --db ~/db/args_oap_db/SARG.dmnd
+$ diamond makedb --in ~/db/MGE_db/MGEs_database_aa.fasta --db ~/db/MGE_db/MGE.dmnd
+$ diamond makedb --in ~/db/BacMet_db/BacMet_exp_metal.fasta --db ~/db/BacMet_db/BacMet.dmnd
+
+# Run
+$ ~/shell_script/diamond_contigs.sh
 ```

@@ -223,5 +223,31 @@ $ metaphlan --install --index mpa_vJan21_CHOCOPhlAnSGB_202103 --bowtie2db db/hum
 ```
 #### Usage
 ```
+# Run
 $ ~/shell_script/humann3.sh
+
+# Post processing
+$ ~/shell_script/humann3_post_processing.sh
+```
+## Taxanomic Assignment of Assembly Contigs
+Use kraken2 to assign the toxanomy to individual assmebly contigs  
+#### Usage
+```
+$ conda activate kraken2
+$ ~/shell_script/kraken2_contigs.sh
+```
+## Gene Alignment to Contigs
+### Prodigal
+Gene prediction in microbial organisms
+```
+# Create environment
+$ conda create prodigal
+$ conda activate prodigal
+
+# Installation
+$ conda install -c bioconda prodigal
+
+# Run
+$ ~/shell_script/prodigal_contigs.sh
+
 ```

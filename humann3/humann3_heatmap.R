@@ -48,7 +48,8 @@ select_gene <- "GO:0034599|GO:0000302|
                |GO:0030420|GO:0006303|
                |GO:0000724|GO:0009405"
 
-tmp <- go_zscore %>% filter(grepl(pattern = select_gene, x = Gene))
+tmp_gene <- "GO:0010335|GO:0035900|GO:0097533|GO:0043149|GO:0036460"
+tmp <- go_zscore %>% filter(grepl(pattern = tmp_gene, x = Gene))
 
 
 # tmp <- go %>% filter((grepl(pattern = "GO:0009651|GO:1901002", x = Gene)))
@@ -57,7 +58,7 @@ tmp_mat <- as.matrix(tmp[,-1])
 row.names(tmp_mat) <- tmp$Gene
 
 pheatmap(tmp_mat, cluster_cols = FALSE)
-
+test
 
 
 

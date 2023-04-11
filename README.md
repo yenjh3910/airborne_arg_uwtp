@@ -240,7 +240,7 @@ $ ~/shell_script/kraken2_contigs.sh
 ```
 ## Gene Alignment to Assembly Contigs
 ### Prodigal & CD-HIT
-Gene prediction and reductant sequence remove
+Gene prediction & (reductant sequence remove)
 ```
 # Create environment
 $ conda create -n prodigal
@@ -253,7 +253,7 @@ $ conda install -c bioconda cd-hit
 # ORF perdiction
 $ ~/shell_script/prodigal_contigs.sh
 
-# Remove reductant sequence
+# Remove reductant sequence (Omit in the newest pipeline)
 $ ~/shell_script/cdhit_orf.sh
 ```
 ### Diamond

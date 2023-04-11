@@ -33,7 +33,23 @@ go_zscore <- go_zscore %>% group_by(Gene) %>% mutate(ARP_mean_z = (ARP1+ARP2+ARP
 go_zscore <- go_zscore %>% arrange(desc(ARP_mean_z))
 go_zscore <- go_zscore %>% ungroup() %>% select(!(ARP_mean_z))
 
-tmp <- go_zscore[1:500,]
+select_gene <- "GO:0034599|GO:0000302|
+               |GO:0019430|GO:0051409|
+               |GO:0047484|GO:0071470|
+               |GO:0009414|GO:0009269|
+               |GO:0009411|GO:0080183|
+               |GO:0030435|GO:0043937|
+               |GO:0030436|GO:0009847|
+               |GO:0042173|GO:0042174|
+               |GO:0043934|GO:0045881|
+               |GO:0042244|GO:0070590|
+               |GO:0000746|GO:0009291|
+               |GO:0046999|GO:0009294|
+               |GO:0030420|GO:0006303|
+               |GO:0000724|GO:0009405"
+
+tmp <- go_zscore %>% filter(grepl(pattern = select_gene, x = Gene))
+
 
 # tmp <- go %>% filter((grepl(pattern = "GO:0009651|GO:1901002", x = Gene)))
 

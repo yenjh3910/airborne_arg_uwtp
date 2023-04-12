@@ -272,10 +272,12 @@ $ ~/shell_script/diamond_contigs.sh
 ### [metaWRAP](https://github.com/bxlab/metaWRAP)
 ```
 # Installation & environment creation
+
 ## Install mamba
 $ conda install -y mamba
 ## Download or clone this ripository
 $ git clone https://github.com/bxlab/metaWRAP.git
+
 ## Configure
 $ mkdir ~db/checkm_db
 $ cd ~db/checkm_db
@@ -283,4 +285,20 @@ $ wget https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_2015_01_16
 $ tar -xvf *.tar.gz
 $ rm *.gz
 $ cd ../
+$ checkm data setRoot ~db/checkm_db # Tell CheckM where to find this data
+
+## Make metaWRAP executable
+$ vi ~/.bashrc
+$ export PATH="~/metaWRAP/bin/:$PATH" # Add to last row
+
+## Make a new conda environment
+$ mamba create -y -n metawrap-env python=2.7
+$ conda activate metawrap-env
+
+## Install all metaWRAP dependancies
+$ conda config --add channels defaults
+$ conda config --add channels conda-forge
+$ conda config --add channels bioconda
+$ conda config --add channels ursky
+$ mamba install --only-deps -c ursky metawrap-mg
 ```

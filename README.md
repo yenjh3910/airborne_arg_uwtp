@@ -10,7 +10,6 @@ A comprehensive metagenomic pipeline for airborne ARGs (Antibiotic Resistance Ge
 6. [Gene Alignment to Assembly Contigs](https://github.com/yenjh3910/airborne_arg_uwtp#gene-alignment-to-assembly-contigs)
 
 ## [Anaconda Installation](https://www.anaconda.com/products/distribution)
-https://www.anaconda.com/products/distribution
 ```
 $ sudo apt update && upgrade
 $ sudo apt install curl
@@ -26,8 +25,7 @@ $ conda info
 $ cd
 $ rm -r tmp
 ```
-### Bioconda Installation
-https://bioconda.github.io/
+### [Bioconda Installation](https://bioconda.github.io/)
 ```
 # Bioconda set up channels
 $ conda config --add channels defaults
@@ -38,8 +36,7 @@ $ conda config --set channel_priority strict
 $ conda config --show channels
 ```
 ## Taxanomic Profile
-### Kraken2
-https://github.com/DerrickWood/kraken2/wiki/Manual  
+### [Kraken2](https://github.com/DerrickWood/kraken2/wiki/Manual)
 #### Create environment and install
 ```
 $ conda create --name kraken2
@@ -76,8 +73,7 @@ $ kraken2-build --download-library bacteria --threads 16 --db kraken_db
 $ cd ~/db/kraken_db
 $ kraken2-build --build --threads 16 --db ./ --max-db-size 52000000000
 ```
-### Bracken
-https://github.com/jenniferlu717/Bracken
+### [Bracken](https://github.com/jenniferlu717/Bracken)
 #### Installation
 ```
 # Install prerequisite
@@ -112,8 +108,7 @@ https://benlangmead.github.io/aws-indexes/k2
 $ ~/shell_script/kraken2.sh
  ```
 ## ARGs Profile
-### ARGs-OAP
-https://github.com/xinehc/args_oap
+### [ARGs-OAP](https://github.com/xinehc/args_oap)
 #### Installation
 ```
 $ conda create -n args_oap
@@ -179,8 +174,7 @@ $ args_oap stage_two -i ~/args_oap/BacMet/stage_one_output -o ~/args_oap/BacMet/
 gs_oap/BacMet/metal_only_structure.txt
 ```
 ## Functional Profile
-### HUMAnN 3.0
-https://github.com/biobakery/humann/tree/8d69f3c84ca7bfd7519ced7fcf94b8356c915090
+### [HUMAnN 3.0](https://github.com/biobakery/humann/tree/8d69f3c84ca7bfd7519ced7fcf94b8356c915090)
 #### Installation
 ```
 # Create environment
@@ -239,7 +233,7 @@ $ conda activate kraken2
 $ ~/shell_script/kraken2_contigs.sh
 ```
 ## Gene Alignment to Assembly Contigs
-### Prodigal & CD-HIT
+### [Prodigal](https://github.com/hyattpd/Prodigal) & [CD-HIT](https://github.com/weizhongli/cdhit)
 Gene prediction & (reductant sequence remove)
 ```
 # Create environment
@@ -256,7 +250,7 @@ $ ~/shell_script/prodigal_contigs.sh
 # Remove reductant sequence (Omit in the newest pipeline)
 $ ~/shell_script/cdhit_orf.sh
 ```
-### Diamond
+### [Diamond](https://github.com/bbuchfink/diamond)
 BLAST sequence
 ```
 # Create environment
@@ -275,7 +269,7 @@ $ diamond makedb --in ~/db/BacMet_db/BacMet_exp_metal.fasta --db ~/db/BacMet_db/
 $ ~/shell_script/diamond_contigs.sh
 ```
 ## Binning
-### metaWRAP
+### [metaWRAP](https://github.com/bxlab/metaWRAP)
 ```
 # Installation & environment creation
 ## Install mamba

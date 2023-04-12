@@ -9,7 +9,7 @@ A comprehensive metagenomic pipeline for airborne ARGs (Antibiotic Resistance Ge
 5. [Taxanomic Assignment of Assembly Contigs](https://github.com/yenjh3910/airborne_arg_uwtp#taxanomic-assignment-of-assembly-contigs)
 6. [Gene Alignment to Assembly Contigs](https://github.com/yenjh3910/airborne_arg_uwtp#gene-alignment-to-assembly-contigs)
 
-## Anaconda Installation
+## [Anaconda Installation](https://www.anaconda.com/products/distribution)
 https://www.anaconda.com/products/distribution
 ```
 $ sudo apt update && upgrade
@@ -273,4 +273,20 @@ $ diamond makedb --in ~/db/BacMet_db/BacMet_exp_metal.fasta --db ~/db/BacMet_db/
 
 # Run
 $ ~/shell_script/diamond_contigs.sh
+```
+## Binning
+### metaWRAP
+```
+# Installation & environment creation
+## Install mamba
+$ conda install -y mamba
+## Download or clone this ripository
+$ git clone https://github.com/bxlab/metaWRAP.git
+## Configure
+$ mkdir ~db/checkm_db
+$ cd ~db/checkm_db
+$ wget https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_2015_01_16.tar.gz
+$ tar -xvf *.tar.gz
+$ rm *.gz
+$ cd ../
 ```

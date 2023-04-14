@@ -140,6 +140,10 @@ for (i in c(7:11)) {
 for (i in c(13:17)) {
   arg_mechanism[{i},5] <-  arg_mechanism[{i},5] + 
     sum(arg_mechanism[{i+1}:18,5])}
+# Calculate the increase ratio of mechanism between AT & ARP
+ARP_mech <- arg_mechanism %>% filter(sample_type == "ARP")
+AT_mech <- arg_mechanism %>% filter(sample_type == "AT")
+(ARP_mech$mean-AT_mech$mean)/AT_mech$mean
 # Select color
 library(RColorBrewer)
 RColorBrewer::display.brewer.all()

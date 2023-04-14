@@ -268,6 +268,10 @@ $ diamond makedb --in ~/db/BacMet_db/BacMet_exp_metal.fasta --db ~/db/BacMet_db/
 # Run
 $ ~/shell_script/diamond_contigs.sh
 ```
+## Calculate coverage of aligning contigf
+### [Bowtie2](https://github.com/BenLangmead/bowtie2) & [BBMap](https://github.com/BioInfoTools/BBMap)
+```
+```
 ## Binning
 ### [metaWRAP](https://github.com/bxlab/metaWRAP)
 ```

@@ -268,6 +268,23 @@ $ diamond makedb --in ~/db/vfdb/VFDB_setB_pro.fa --db ~/db/vfdb/VFDB.dmnd
 
 # Run
 $ ~/shell_script/diamond_contigs.sh
+
+
+# R script
+$ cd ./contigs
+
+## Merge blast contigs with kraken2 taxonomy
+$ Rscript contigs_kraken2.R
+
+## QC & merge blast contigs with database
+$ Rscript contigs_ARG_diamond.R
+$ Rscript contigs_MGE_diamond.R
+$ Rscript contigs_VF_diamond.R
+
+## Extract contigs as mapping reference for coverage calculation
+$ Rscript extract_SARG_contigs.R
+$ Rscript extract_MGE_contigs.R
+$ Rscript extract_VF_contigs.R
 ```
 ## Calculate coverage of aligning contigs
 ### [Bowtie2](https://github.com/BenLangmead/bowtie2) & [BBMap](https://github.com/BioInfoTools/BBMap)

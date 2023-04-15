@@ -10,7 +10,7 @@ for (i in 1:length(temp)){
                 seqtype = "DNA",as.string = TRUE, set.attributes = FALSE)
   fastafile <- fastafile[names(fastafile) %in% SARG$ORF]
   write.fasta(sequences = fastafile, names = names(fastafile), 
-              file.out = paste("D:/Mirror/ARG_project/Shell/extract_contigs/",
+              file.out = paste("D:/Mirror/ARG_project/Shell/extract_contigs/SARG/",
                                gsub("contigs.nucl", "SARG.fa", temp[i]),
                                sep = ""),
               open = "w")

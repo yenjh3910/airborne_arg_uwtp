@@ -264,13 +264,26 @@ $ conda install -c bioconda diamond
 $ diamond makedb --in ~/db/args_oap_db/sarg.fasta --db ~/db/args_oap_db/SARG.dmnd
 $ diamond makedb --in ~/db/MGE_db/MGEs_database_aa.fasta --db ~/db/MGE_db/MGE.dmnd
 $ diamond makedb --in ~/db/BacMet_db/BacMet_exp_metal.fasta --db ~/db/BacMet_db/BacMet.dmnd
+$ diamond makedb --in ~/db/vfdb/VFDB_setB_pro.fa --db ~/db/vfdb/VFDB.dmnd
 
 # Run
 $ ~/shell_script/diamond_contigs.sh
 ```
-## Calculate coverage of aligning contigf
+## Calculate coverage of aligning contigs
 ### [Bowtie2](https://github.com/BenLangmead/bowtie2) & [BBMap](https://github.com/BioInfoTools/BBMap)
 ```
+# Enter environment
+$ conda activate diamond
+
+# Installation
+$ conda install -c bioconda bowtie2
+$ conda install -c bioconda bbmap
+
+# Build bowtie2 index
+$ ~/shell_script/bowtie2_build_contigs.sh
+
+# Bowtie2 mapping & coverage calculation
+$  ~/shell_script/coverage_contigs.sh
 ```
 ## Binning
 ### [metaWRAP](https://github.com/bxlab/metaWRAP)

@@ -1,4 +1,4 @@
-# contigs_MGE_diamond
+# contigs_MGE_diamond.R
 
 library(tidyverse)
 # MGE

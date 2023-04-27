@@ -3,6 +3,7 @@
 # Import library and structure file
 library(tidyverse)
 library(openxlsx)
+library(stringr)
 
 ######### Structure do not contain mechanism column, so fail #################
 # # Bind structure file
@@ -111,6 +112,10 @@ gather_arg_mechanism$mechanism <- factor(gather_arg_mechanism$mechanism,
                                                       "Antibiotic target protection",
                                                       "Reduced permeability to antibiotic",
                                                       "Others"))
+## Merge minor mechanism to other mechanism
+gather_arg_mechanism$mechanism <- str_replace(gather_arg_mechanism$mechanism, 
+                                       "Reduced permeability to antibiotic", 
+                                       "Others")
 # Calculate sum abundance of each sample
 tmp <- gather_arg_mechanism %>% group_by(mechanism, sample) %>% 
   summarise(abundance = sum(copy_per_cell))
@@ -126,8 +131,6 @@ arg_mechanism <- tmp %>% select(mechanism,sample_type,mean,sd) %>% unique()
 arg_mechanism <- arg_mechanism %>% group_by(sample_type) %>% 
   mutate(sd_mean = mean)
 arg_mechanism <- arg_mechanism %>% arrange(sample_type)
-## Fiter out other mechanism
-arg_mechanism <- arg_mechanism %>% filter(!(mechanism == "Others"))
 ## sum ARP st_mean
 for (i in c(1:5)) {
   arg_mechanism[{i},5] <-  arg_mechanism[{i},5] + 

@@ -301,6 +301,13 @@ $ ~/shell_script/bowtie2_build_contigs.sh
 
 # Bowtie2 mapping & coverage calculation
 $  ~/shell_script/coverage_contigs.sh
+
+# Post processing (Coverage normalization & ORF annotation)
+$ ~/shell_script/base_count.sh
+## R script
+$ cd ./contigs
+$ Rscript ARG_coverage.R
+
 ```
 ## Binning
 ### [metaWRAP](https://github.com/bxlab/metaWRAP)

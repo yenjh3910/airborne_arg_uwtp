@@ -307,6 +307,9 @@ $ ~/shell_script/base_count.sh
 ## R script
 $ cd ./contigs
 $ Rscript ARG_coverage.R
+$ Rscript MGE_coverage.R
+$ Rscript VF_coverage.R
+$ Rscript bind_ARG_MGE_VF_coverage.R
 
 ```
 ## Binning

@@ -87,7 +87,7 @@ z_na4 <- z_na4[,-(3:7)]
 colnames(z_na4) <- c("Domain","Species")
 ## bind dataframe
 z <- z %>% anti_join(z_na)
-z <- rbind.fill(z,z_na2,z_na3,z_na4)
+z <- bind_rows(z,z_na2,z_na3,z_na4)
 ## Remove taxonomy header
 z$Domain <- gsub("d__", "", z$Domain)
 z$Phylum <- gsub("p__", "", z$Phylum)
@@ -142,7 +142,7 @@ z <- z %>% select(!(Phylum))
 z <- unique(z)
 dom <- left_join(dom, z, by='Domain')
 # Bind each taxonomy level
-ARG_bind_coverage <- rbind.fill(dom,phy,cl,ord,fam,gen,sp)
+ARG_bind_coverage <- bind_rows(dom,phy,cl,ord,fam,gen,sp)
 coverage_without_annotation <- SARG_coverage %>% anti_join(ARG_bind_coverage)
 unique(coverage_without_annotation$taxonomy)
 ########## Then annotate other tax in excel ############
@@ -155,7 +155,8 @@ manual_mpa <- manual_mpa %>%
 manual_mpa[manual_mpa == ''] <- NA
 manual_mpa <- manual_mpa %>% select(!(taxonomy))
 # Finish binding manual mpa with origin df
-final_ARG_coverage <- rbind.fill(ARG_bind_coverage,manual_mpa)
+ARG_bind_coverage$taxID <- as.numeric(ARG_bind_coverage$taxID)
+final_ARG_coverage <- bind_rows(ARG_bind_coverage,manual_mpa)
 final_ARG_coverage <- final_ARG_coverage %>% select(!(taxID))
 ## Finetune format
 ## Remove blank space
@@ -196,7 +197,6 @@ colnames(final_ARG_coverage)[2] <- "Sample"
 final_ARG_coverage$Sample_type <- gsub("1|2|3|4|5","",final_ARG_coverage$Sample)
 ############### Phylum ##############
 # Statistic
-detach(package:plyr)
 ARG_Phylum <- final_ARG_coverage  %>% ungroup() %>% group_by(Sample, Phylum) %>% 
   summarise(coverage = sum(coverage)) %>% filter(!(coverage == 0))
 ARG_Phylum$Sample_type <- gsub("1|2|3|4|5","",ARG_Phylum$Sample)
@@ -848,3 +848,4 @@ p <- ggplot(ARG_Species, aes(x = Sample_type, y = mean, fill = Species)) +
 #        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
 #        width = 4.905, height = 5,
 #        units = "in", bg='transparent') # save to png format
+

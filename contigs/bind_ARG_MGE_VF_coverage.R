@@ -1,5 +1,6 @@
 # bind_ARG_MGE_VF_coverage.R
 
+library(ggpubr)
 # Run coverage calculation script
 source("./ARG_coverage.R")
 source("./MGE_coverage.R")
@@ -53,18 +54,145 @@ final_coverage <- rbind(final_ARG_coverage,MGE_coverage_ARG)
 final_coverage <- rbind(final_coverage,VF_coverage_ARG)
 
 
+# Correlation between ARG & MGE
+## Prepare df
+mean_ARG <- final_ARG_coverage %>% select("Sample_type","coverage","Contigs_Sample") %>% 
+                              group_by(Contigs_Sample) %>% mutate(ARG=mean(coverage)) %>% 
+                              select(!("coverage")) %>% unique()
+mean_MGE <- MGE_coverage_ARG %>% select("coverage","Contigs_Sample")%>% 
+                             group_by(Contigs_Sample) %>% mutate(MGE=mean(coverage)) %>% 
+                             select(!("coverage")) %>% unique()
+ARG_MGE_cooccurence <- left_join(mean_ARG,mean_MGE,by="Contigs_Sample")
+ARG_MGE_cooccurence <- na.omit(ARG_MGE_cooccurence)
+ARG_MGE_cooccurence <- ARG_MGE_cooccurence %>%  filter(!(ARG == 0)) %>% filter(!(MGE == 0))
+ARG_MGE_cooccurence$Sample_type <- factor(ARG_MGE_cooccurence$Sample_type, levels = c("AT","ARP","ODP"))
+## Prepare df of each sample type
+noODP_cor <-ARG_MGE_cooccurence %>% filter(!(Sample_type == "ODP"))
+ODP_cor <-ARG_MGE_cooccurence %>% filter((Sample_type == "ODP"))
+AT_cor <-ARG_MGE_cooccurence %>% filter(Sample_type == "AT")
+ARP_cor <-ARG_MGE_cooccurence %>% filter(Sample_type == "ARP")
+## Transfer to log value
+ARP_cor$ARG <- log10(ARP_cor$ARG)
+ARP_cor$MGE <- log10(ARP_cor$MGE)
+AT_cor$ARG <- log10(AT_cor$ARG)
+AT_cor$MGE <- log10(AT_cor$MGE)
+ODP_cor$ARG <- log10(ODP_cor$ARG)
+ODP_cor$MGE <- log10(ODP_cor$MGE)
+noODP_cor$ARG <- log10(noODP_cor$ARG)
+noODP_cor$MGE <- log10(noODP_cor$MGE)
+# Regression
+AT_model <- lm(MGE ~ ARG, data = AT_cor)
+ARP_model <- lm(MGE ~ ARG, data = ARP_cor)
+summary(AT_model)
+summary(ARP_model)
+# Plot 
+###### Fine tune figure in powerpoint (add regression formula R^2 and move legend position)
+## AT & ARP together
+p <- ggscatter(noODP_cor, x = "ARG", y = "MGE",
+          color = 'Sample_type', shape = 'Sample_type', 
+          add = "reg.line", conf.int = TRUE, 
+          size = 2.5, alpha = 0.6, ellipse.alpha = 0.6) + 
+  # stat_cor(aes(color= Sample_type), show.legend = FALSE) +
+  labs(x = "ARGs coverage (×/Gb)", y = "MGEs coverage (×/Gb)") +
+  theme(axis.text.x = element_text(size = 14),
+        axis.text.y = element_text(size = 14),
+        axis.title = element_text(size = 16),
+        strip.text = element_text(size=10.5),
+        legend.title = element_text(size = 14),
+        legend.text = element_text(size = 14),
+        aspect.ratio=1, 
+        panel.background = element_rect(fill='transparent'), #transparent panel bg
+        plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
+        legend.background = element_rect(fill='transparent')) +  #transparent legend bg
+ scale_color_manual(name = "", 
+                     labels = c(expression(Aeration~tank),
+                                expression(Aeration~tank~PM[2.5])),
+                     values = c("AT" = "#F8766D",
+                                "ARP" = "#00BFC4")) + 
+  scale_fill_manual(name = "", 
+                    labels = c(expression(Aeration~tank),
+                               expression(Aeration~tank~PM[2.5])),
+                    values = c("AT" = "#F8766D",
+                               "ARP" = "#00BFC4"))
+# ggsave("Contigs_ARG_MGE_correlation.png", p,
+#        path = "../../airborne_arg_uwtp_result/Figure/correlation",
+#        width = 6, height = 5)
 
-# # Edit column name
-# colnames(final_ARG_coverage)[3] <- "ARG_coverage"
-# colnames(final_ARG_coverage)[4] <- "ARG_subtype"
-# colnames(final_ARG_coverage)[5] <- "ARG_type"
-# colnames(MGE_coverage)[6] <- "MGE_coverage"
-# colnames(MGE_coverage)[7] <- "MGE_subtype"
-# colnames(MGE_coverage)[8] <- "MGE_type"
-# colnames(VF_coverage)[6] <- "VF_coverage"
-# colnames(VF_coverage)[7] <- "VF_gene"
-# # Select necessary column
-# MGE_coverage <- MGE_coverage %>% select("MGE_coverage","MGE_subtype","MGE_type","Contigs_Sample")
-# VF_coverage <- VF_coverage %>% select("VF_coverage","VF_gene","Contigs_Sample")
-# # Join dataframe
-# test <- left_join(final_ARG_coverage,MGE_coverage,by="Contigs_Sample")
+## AT only
+p <- ggscatter(AT_cor, x = "ARG", y = "MGE",
+          color = 'Sample_type', shape = 'Sample_type', 
+          add = "reg.line", conf.int = TRUE, 
+          size = 2, alpha = 0.6, ellipse.alpha = 0.6) + 
+  #stat_cor(aes(color= Sample_type), show.legend = FALSE) +
+  labs(x = "ARGs coverage (×/Gb)", y = "MGEs coverage (×/Gb)") +
+  theme(axis.text.x = element_text(size = 14),
+        axis.text.y = element_text(size = 14),
+        axis.title = element_text(size = 16),
+        strip.text = element_text(size=10.5),
+        legend.title = element_text(size = 14),
+        legend.text = element_text(size = 14),
+        aspect.ratio=1, 
+        panel.background = element_rect(fill='transparent'), #transparent panel bg
+        plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
+        legend.background = element_rect(fill='transparent')) +  #transparent legend bg
+  scale_color_manual(name = "", 
+                     labels = c(expression(Aeration~tank)),
+                     values = c("AT" = "#F8766D")) + 
+  scale_fill_manual(name = "", 
+                    labels = c(expression(Aeration~tank)),
+                    values = c("AT" = "#F8766D"))
+# ggsave("AT_Contigs_ARG_MGE_correlation.png", p,
+#        path = "../../airborne_arg_uwtp_result/Figure/correlation",
+#        width = 6, height = 5)
+
+## ARP only
+p <- ggscatter(ARP_cor, x = "ARG", y = "MGE",
+          color = 'Sample_type', shape = 'Sample_type', 
+          add = "reg.line", conf.int = TRUE, 
+          size = 2, alpha = 0.6, ellipse.alpha = 0.6) + 
+  #stat_cor(aes(color= Sample_type), show.legend = FALSE) +
+  labs(x = "ARGs coverage (×/Gb)", y = "MGEs coverage (×/Gb)") +
+  theme(axis.text.x = element_text(size = 14),
+        axis.text.y = element_text(size = 14),
+        axis.title = element_text(size = 16),
+        strip.text = element_text(size=10.5),
+        legend.title = element_text(size = 14),
+        legend.text = element_text(size = 14),
+        aspect.ratio=1, 
+        panel.background = element_rect(fill='transparent'), #transparent panel bg
+        plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
+        legend.background = element_rect(fill='transparent')) +  #transparent legend bg
+  scale_color_manual(name = "", 
+                     labels = c(expression(Aeration~tank~PM[2.5])),
+                     values = c("ARP" = "#00BFC4")) + 
+  scale_fill_manual(name = "", 
+                    labels = c(expression(Aeration~tank~PM[2.5])),
+                    values = c("ARP" = "#00BFC4"))
+# ggsave("ARP_Contigs_ARG_MGE_correlation.png", p,
+#        path = "../../airborne_arg_uwtp_result/Figure/correlation",
+#        width = 6, height = 5)
+
+
+# Intersection between ARG,MGE,& VF
+## Get ARG occurance with MGE & VF
+MGE_contigs <- MGE_coverage$Contigs_Sample
+VF_contigs <- VF_coverage$Contigs_Sample
+ARG_cooccur_MGE <- final_coverage %>% filter(Contigs_Sample %in% MGE_contigs)
+ARG_cooccur_VF <- final_coverage %>% filter(Contigs_Sample %in% VF_contigs)
+cooccur_ARG_MGE_VF <- final_coverage %>% filter(Contigs_Sample %in% VF_contigs) %>% 
+                                         filter(Contigs_Sample %in% MGE_contigs)
+######## Intersection between ARG,MGE,& VF = 0 !!!! ############
+## ARG & MGE intersection more than three in ARP
+ARG_MGE_IntersectMore3 <- ARG_cooccur_MGE %>% filter(Sample_type == "ARP") %>% 
+  group_by(Contigs_Sample) %>%
+  summarise(count = n()) %>% 
+  as.data.frame() %>% 
+  filter(count >= 3)
+multi_ARG_MGE_cooccur <- ARG_cooccur_MGE %>% 
+                         filter(Contigs_Sample %in% ARG_MGE_IntersectMore3$Contigs_Sample)
+multi_ARG_MGE_cooccur <- multi_ARG_MGE_cooccur %>% 
+                         filter(!(Contigs_Sample=="k141_206301_ARP5")) %>% 
+                         filter(!(Contigs_Sample=="k141_444245_ARP1")) %>% 
+                         filter(!(Contigs_Sample=="k141_517589_ARP5")) %>% 
+                         filter(!(Contigs_Sample=="k141_706074_ARP4")) # Remove contigs manually
+

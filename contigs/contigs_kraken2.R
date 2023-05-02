@@ -1,7 +1,6 @@
 # contigs_kraken2.R
 
 library(tidyverse)
-library(plyr)
 # Import file and bind
 temp <- list.files(path = "../../airborne_arg_uwtp_result/contigs_kraken2/", pattern = "*_contigs_kraken2.output")
 z<-read.table(paste("../../airborne_arg_uwtp_result/contigs_kraken2/", temp[1], sep = ''),

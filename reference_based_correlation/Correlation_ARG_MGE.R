@@ -74,5 +74,5 @@ print(p)
 
 # ggsave("ARG_MGE_correlation.png", p, 
 #        path = "../../airborne_arg_uwtp_result/Figure/correlation",
-#        width = 7, height = 5, 
+#        width = 7, height = 5)
 #        units = "in", bg='transparent') # save to png format

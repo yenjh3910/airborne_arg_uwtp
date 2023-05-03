@@ -195,4 +195,12 @@ multi_ARG_MGE_cooccur <- multi_ARG_MGE_cooccur %>%
                          filter(!(Contigs_Sample=="k141_444245_ARP1")) %>% 
                          filter(!(Contigs_Sample=="k141_517589_ARP5")) %>% 
                          filter(!(Contigs_Sample=="k141_706074_ARP4")) # Remove contigs manually
+# Join with ORF position
+ORF_position <- read.csv("../../airborne_arg_uwtp_result/contigs_ORF_position/contigs_ORF_position.csv")
+multi_ARG_MGE_cooccur$ORF_SampleID <- paste(multi_ARG_MGE_cooccur$ORF,
+                                            multi_ARG_MGE_cooccur$Sample,
+                                            sep = "_")
+ORF_position %>% filter(ORF_SampleID %in% multi_ARG_MGE_cooccur$ORF_SampleID)
+ORF_position$ORF_SampleID
 
+t <- left_join(multi_ARG_MGE_cooccur, ORF_position, by = "ORF_SampleID")

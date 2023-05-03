@@ -309,6 +309,7 @@ $ cd ./contigs
 $ Rscript ARG_coverage.R
 $ Rscript MGE_coverage.R
 $ Rscript VF_coverage.R
+$ Rscript extract_ORF_position.R
 $ Rscript bind_ARG_MGE_VF_coverage.R
 
 ```

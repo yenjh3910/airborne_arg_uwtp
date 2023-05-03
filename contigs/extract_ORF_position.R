@@ -2,6 +2,7 @@
 
 ########## contigs.nucl is too big to save in airborne_arg_uwtp_result #########
 ########## so import from another place ###########
+library(tidyverse)
 library(seqinr)
 temp <- list.files(path = "D:/Mirror/ARG_project/Shell/contigs_prodigal/", pattern = "*_contigs.nucl")
 sample_list <- c("ARP1","ARP2","ARP3","ARP4","ARP5",
@@ -15,6 +16,7 @@ FastaHeader <- as.data.frame(names(fastafile))
 colnames(FastaHeader) <- "header"
 FastaHeader <- FastaHeader %>%
   separate(header, sep="\\#",into=c("ORF","start","end","direction","detail"))
+FastaHeader$ORF <- gsub(" ", "", FastaHeader$ORF)
 FastaHeader$ORF_SampleID <- paste(FastaHeader$ORF,
                                   sample_list[1],
                                   sep = "_")
@@ -29,6 +31,7 @@ for (i in 2:length(temp)){
   colnames(FastaHeader) <- "header"
   FastaHeader <- FastaHeader %>%
     separate(header, sep="\\#",into=c("ORF","start","end","direction","detail"))
+  FastaHeader$ORF <- gsub(" ", "", FastaHeader$ORF)
   FastaHeader$ORF_SampleID <- paste(FastaHeader$ORF,
                                     sample_list[i],
                                     sep = "_")
@@ -37,5 +40,5 @@ for (i in 2:length(temp)){
 }
 ORF_position <- z
 
-# write_csv(ORF_position, 
+# write_csv(ORF_position,
 #           "../../airborne_arg_uwtp_result/contigs_ORF_position/contigs_ORF_position.csv")

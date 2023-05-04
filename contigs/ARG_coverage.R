@@ -264,7 +264,7 @@ p <- ggplot(ARG_Phylum, aes(x = Sample_type, y = mean, fill = Phylum)) +
         panel.grid.major = element_blank(), #remove major gridlines
         panel.grid.minor = element_blank(), #remove minor gridlines
         legend.background = element_rect(fill='transparent')) #transparent legend bg)
-
+print(p)
 # ggsave("ARG_coverage_phylum.png", p,
 #        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
 #        width = 4, height = 5,
@@ -304,9 +304,13 @@ ARG_Class <-ARG_Class %>%
                                    "Chlorobiia","Bacteroidia","Epsilonproteobacteria","Cytophagia","Fusobacteriia",
                                    "Negativicutes","Tissierellia","Erysipelotrichia","Unclassified")))
 other_class <- ARG_Class[27:35,] %>% group_by(Sample_type) %>% summarise(mean = sum(mean))
-other_class$Class <- "Others"
+other_class$Class <- "Unclassified/Others"
 ARG_Class <- ARG_Class[1:26,]
 ARG_Class <- rbind(ARG_Class, other_class)
+ARG_Class$Class <- factor(ARG_Class$Class, 
+                          levels = c("Actinomycetes","Gammaproteobacteria","Betaproteobacteria","Flavobacteriia",  
+                                     "Bacilli","Alphaproteobacteria","Deltaproteobacteria","Clostridia","Desulfuromonadia",
+                                     "Chlorobiia","Bacteroidia","Unclassified/Others"))
 #### Order sample_type
 ARG_Class$Sample_type <- factor(ARG_Class$Sample_type, 
                                  levels = c("AT","ARP","ODP"))
@@ -327,10 +331,10 @@ p <- ggplot(ARG_Class, aes(x = Sample_type, y = mean, fill = Class)) +
         panel.grid.major = element_blank(), #remove major gridlines
         panel.grid.minor = element_blank(), #remove minor gridlines
         legend.background = element_rect(fill='transparent')) #transparent legend bg)
-
+print(p)
 # ggsave("ARG_coverage_class.png", p,
 #        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
-#        width = 6, height = 5,
+#        width = 3.835, height = 5,
 #        units = "in", bg='transparent') # save to png format
 
 
@@ -378,13 +382,13 @@ ARG_Order <-ARG_Order %>%
                                    "Vibrionales","Hyphomonadales","Veillonellales","Erysipelotrichales","Desulfuromonadales", 
                                    "Jiangellales","Unclassified")))
 other_order <- ARG_Order[26:83,] %>% group_by(Sample_type) %>% summarise(mean = sum(mean))
-other_order$Order <- "Others"
+other_order$Order <- "Unclassified/Others"
 ARG_Order <- ARG_Order[1:25,]
 ARG_Order <- rbind(ARG_Order, other_order)
 ## Plot
 ARG_Order$Order <- factor(ARG_Order$Order, levels = c("Mycobacteriales","Burkholderiales","Xanthomonadales","Flavobacteriales",  
                                                       "Pseudomonadales","Moraxellales","Rhodocyclales","Bacillales","Aeromonadales",
-                                                      "Enterobacterales","Lactobacillales","Others"))
+                                                      "Enterobacterales","Lactobacillales","Unclassified/Others"))
 #### Order sample_type
 ARG_Order$Sample_type <- factor(ARG_Order$Sample_type, 
                                  levels = c("AT","ARP","ODP"))
@@ -409,7 +413,7 @@ p <- ggplot(ARG_Order, aes(x = Sample_type, y = mean, fill = Order)) +
 
 # ggsave("ARG_coverage_order.png", p,
 #        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
-#        width = 3.757, height = 5,
+#        width = 3.65, height = 5,
 #        units = "in", bg='transparent') # save to png format
 
 
@@ -486,13 +490,13 @@ ARG_Family <-ARG_Family %>%
                                     "Beijerinckiaceae" ,      "Xanthobacteraceae"     , "Pseudoalteromonadaceae" ,"Jiangellaceae"    ,     
                                     "Sterolibacteriaceae",      "Unclassified")))
 other_family <- ARG_Family[24:141,] %>% group_by(Sample_type) %>% summarise(mean = sum(mean))
-other_family$Family <- "Others"
+other_family$Family <- "Unclassified/Others"
 ARG_Family <- ARG_Family[1:23,]
 ARG_Family <- rbind(ARG_Family, other_family)
 ## Plot
 ARG_Family$Family <- factor(ARG_Family$Family, levels = c("Mycobacteriaceae","Xanthomonadaceae","Comamonadaceae",        
                                                           "Weeksellaceae","Pseudomonadaceae","Moraxellaceae","Azonexaceae",       
-                                                          "Gordoniaceae","Aeromonadaceae","Bacillaceae","Alcaligenaceae","Others"))
+                                                          "Gordoniaceae","Aeromonadaceae","Bacillaceae","Alcaligenaceae","Unclassified/Others"))
 ARG_Family$Sample_type <- factor(ARG_Family$Sample_type, 
                                 levels = c("AT","ARP","ODP"))
 p <- ggplot(ARG_Family, aes(x = Sample_type, y = mean, fill = Family)) + 
@@ -511,10 +515,10 @@ p <- ggplot(ARG_Family, aes(x = Sample_type, y = mean, fill = Family)) +
         panel.grid.major = element_blank(), #remove major gridlines
         panel.grid.minor = element_blank(), #remove minor gridlines
         legend.background = element_rect(fill='transparent')) #transparent legend bg)
-
+print(p)
 # ggsave("ARG_coverage_family.png", p,
 #        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
-#        width = 3.88, height = 5,
+#        width = 3.72, height = 5,
 #        units = "in", bg='transparent') # save to png format
 
 
@@ -571,14 +575,14 @@ ARG_Genus <-ARG_Genus %>%
                                     "Pannonibacter"   ,  "Methylocella" ,     "Ancylobacter"    ,  "Frateuria"        , "Pseudoalteromonas", "Jiangella"      ,  
                                     "Sulfuritalea"    ,  "Rhodovulum"   ,     "Methylomicrobium",  "Aquimarina"       ,"Unclassified" )))
 other_genus <- ARG_Genus[23:237,] %>% group_by(Sample_type) %>% summarise(mean = sum(mean))
-other_genus$Genus <- "Others"
+other_genus$Genus <- "Unclassified/Others"
 ARG_Genus <- ARG_Genus[1:22,]
 ARG_Genus <- rbind(ARG_Genus, other_genus)
 # Plot
 ARG_Genus$Genus <- factor(ARG_Genus$Genus, levels = c("Mycolicibacterium","Pseudomonas","Acinetobacter",
                                                       "Xanthomonas","Gordonia","Mycobacterium",
                                                       "Lysobacter","Aeromonas","Chryseobacterium",
-                                                      "Acidovorax","Ferribacterium","Others"))
+                                                      "Acidovorax","Ferribacterium","Unclassified/Others"))
 ARG_Genus$Sample_type <- factor(ARG_Genus$Sample_type, 
                                  levels = c("AT","ARP","ODP"))
 p <- ggplot(ARG_Genus, aes(x = Sample_type, y = mean, fill = Genus)) + 
@@ -597,10 +601,10 @@ p <- ggplot(ARG_Genus, aes(x = Sample_type, y = mean, fill = Genus)) +
         panel.grid.major = element_blank(), #remove major gridlines
         panel.grid.minor = element_blank(), #remove minor gridlines
         legend.background = element_rect(fill='transparent')) #transparent legend bg)
-
+print(p)
 # ggsave("ARG_coverage_genus.png", p,
 #        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
-#        width = 3.72, height = 5,
+#        width = 3.64, height = 5,
 #        units = "in", bg='transparent') # save to png format
 
 
@@ -816,7 +820,7 @@ ARG_Species <-ARG_Species %>%
                                      "Methylomicrobium album BG8"               ,   "Aquimarina sp. BL5"                ,         
                                      "Rhodoferax koreense"                      ,   "Unclassified")))
 other_species <- ARG_Species[17:434,] %>% group_by(Sample_type) %>% summarise(mean = sum(mean))
-other_species$Species <- "Others"
+other_species$Species <- "Unclassified/Others"
 ARG_Species <- ARG_Species[1:16,]
 ARG_Species <- rbind(ARG_Species, other_species)
 # Plot
@@ -824,7 +828,7 @@ ARG_Species$Species <- factor(ARG_Species$Species, levels = c("Mycolicibacterium
                                                               "Xanthomonas euroxanthea" ,"Mycolicibacterium neoaurum",            
                                                               "Aeromonas sp. ASNIH1","Ferribacterium limneticum",            
                                                               "Mycolicibacterium chitae","Mycolicibacterium confluentis",            
-                                                              "Chryseobacterium sp. KACC 21268","Pigmentiphaga aceris","Others"))
+                                                              "Chryseobacterium sp. KACC 21268","Pigmentiphaga aceris","Unclassified/Others"))
 ARG_Species$Sample_type <- factor(ARG_Species$Sample_type, 
                                 levels = c("AT","ARP","ODP"))
 p <- ggplot(ARG_Species, aes(x = Sample_type, y = mean, fill = Species)) + 
@@ -843,9 +847,9 @@ p <- ggplot(ARG_Species, aes(x = Sample_type, y = mean, fill = Species)) +
         panel.grid.major = element_blank(), #remove major gridlines
         panel.grid.minor = element_blank(), #remove minor gridlines
         legend.background = element_rect(fill='transparent')) #transparent legend bg)
-
+print(p)
 # ggsave("ARG_coverage_species.png", p,
 #        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
-#        width = 4.905, height = 5,
+#        width = 4.73, height = 5,
 #        units = "in", bg='transparent') # save to png format
 

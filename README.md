@@ -8,6 +8,9 @@ A comprehensive metagenomic pipeline for airborne ARGs (Antibiotic Resistance Ge
 4. [Functional Profile](https://github.com/yenjh3910/airborne_arg_uwtp#functional-profile)
 5. [Taxanomic Assignment of Assembly Contigs](https://github.com/yenjh3910/airborne_arg_uwtp#taxanomic-assignment-of-assembly-contigs)
 6. [Gene Alignment to Assembly Contigs](https://github.com/yenjh3910/airborne_arg_uwtp#gene-alignment-to-assembly-contigs)
+7. [Calculate coverage of aligning contigs](https://github.com/yenjh3910/airborne_arg_uwtp#calculate-coverage-of-aligning-contigs)
+8. [Prediction of Plasmid Sequences](https://github.com/yenjh3910/airborne_arg_uwtp#prediction-of-plasmid-sequences)
+9. [Binning](https://github.com/yenjh3910/airborne_arg_uwtp#binning)
 
 ## [Anaconda Installation](https://www.anaconda.com/products/distribution)
 ```
@@ -173,6 +176,32 @@ $ args_oap stage_two -i ~/args_oap/BacMet/stage_one_output -o ~/args_oap/BacMet/
 $ args_oap stage_two -i ~/args_oap/BacMet/stage_one_output -o ~/args_oap/BacMet/stage_two_output_evalue-5_id70 --e 1e-5 --id 70 -t 16 --database ~/args_oap/BacMet/BacMet_exp_metal.fasta --structure1 ~/ar
 gs_oap/BacMet/metal_only_structure.txt
 ```
+### R script after Taxanomic Profile & ARGs Profile
+```
+$ cd ./ARG
+$ Rscript ARG_type_cell_abundance.R
+$ Rscript ARG_type_16S_abundance.R
+$ Rscript ARG_type_ppm_abundance.R
+$ Rscript ARG_type_rpkm_abundance.R
+$ Rscript ARG_type_tpm_abundance.R
+$ Rscript ARG_subtype_cell_abundance.R
+$ Rscript ARG_type_circos.R
+$ Rscript ARG_subtype_venn_diagram.R
+$ Rscript ARG_UpSet.R
+$ Rscript ARG_mechanism.R
+$ Rscript ARG_subtype_cell_abundance.R
+cd ../MGE
+$ Rscript MGE_type_cell_abundance.R
+cd ../BacMet
+$ Rscript MRG_type_cell_abundance.R
+cd ../taxonomy
+$ Rscript ARG_species_procrustes.R
+cd ../reference_based_correlation
+$ Rscript Correlation_ARG_MGE.R
+$ Rscript Correlation_MRG_MGE.R
+cd ../LEFSe
+$ Rscript LEfSe.R
+```
 ## Functional Profile
 ### [HUMAnN 3.0](https://github.com/biobakery/humann/tree/8d69f3c84ca7bfd7519ced7fcf94b8356c915090)
 #### Installation
@@ -225,6 +254,10 @@ $ ~/shell_script/humann3.sh
 # Post processing
 $ ~/shell_script/humann3_post_processing.sh
 ```
+### R script after Functional Profile
+```
+$ Rscript humann3_heatmap.R
+```
 ## Taxanomic Assignment of Assembly Contigs
 Use kraken2 to assign the toxanomy to individual assmebly contigs  
 #### Usage
@@ -268,20 +301,20 @@ $ diamond makedb --in ~/db/vfdb/VFDB_setB_pro.fa --db ~/db/vfdb/VFDB.dmnd
 
 # Run
 $ ~/shell_script/diamond_contigs.sh
-
-
-# R script
+```
+### R script after Gene Alignment to Assembly Contigs
+```
 $ cd ./contigs
 
-## Merge blast contigs with kraken2 taxonomy
+# Merge blast contigs with kraken2 taxonomy
 $ Rscript contigs_kraken2.R
 
-## QC & merge blast contigs with database
+# QC & merge blast contigs with database
 $ Rscript contigs_ARG_diamond.R
 $ Rscript contigs_MGE_diamond.R
 $ Rscript contigs_VF_diamond.R
 
-## Extract contigs as mapping reference for coverage calculation
+# Extract contigs as mapping reference for coverage calculation
 $ Rscript extract_SARG_contigs.R
 $ Rscript extract_MGE_contigs.R
 $ Rscript extract_VF_contigs.R
@@ -304,14 +337,27 @@ $  ~/shell_script/coverage_contigs.sh
 
 # Post processing (Coverage normalization & ORF annotation)
 $ ~/shell_script/base_count.sh
-## R script
+Then create /airborne_arg_uwtp_result/read_base_count.xlsx manually
+```
+### R script after Calculate coverage of aligning contigs
+```
 $ cd ./contigs
-$ Rscript ARG_coverage.R
+$ Rscript ARG_coverage.R    # Plot ARG coverage in each ARB taxonomic level
 $ Rscript MGE_coverage.R
 $ Rscript VF_coverage.R
 $ Rscript extract_ORF_position.R
-$ Rscript bind_ARG_MGE_VF_coverage.R
-
+$ Rscript bind_ARG_MGE_VF_coverage.R    # Plot coverage correlation of ARG-MGE & co-occurence of ARG-MGE in gggenes
+$ Rscript ARG_coverage_sankey.R
+```
+## Prediction of Plasmid Sequences
+### [PlasFlow](https://github.com/smaegol/PlasFlow)
+```
+# Installation & environment creation
+$ conda create --name plasflow python=3.5
+$ source activate plasflow
+$ conda config --set channel_priority flexible
+$ conda install plasflow -c smaegol
+$ conda install -c bioconda perl-bioperl perl-getopt-long
 ```
 ## Binning
 ### [metaWRAP](https://github.com/bxlab/metaWRAP)

@@ -1,6 +1,8 @@
 # bind_ARG_MGE_VF_coverage.R
 
 library(ggpubr)
+library(ggplot2)
+library(gggenes)
 # Run coverage calculation script
 source("./ARG_coverage.R")
 source("./MGE_coverage.R")
@@ -9,6 +11,15 @@ source("./VF_coverage.R")
 ### Three import data:
 ### final_ARG_coverage, MGE_coverage, VF_coverage
 
+# Change ARG type to uppercase
+final_ARG_coverage$type <- str_to_title(final_ARG_coverage$type) 
+final_ARG_coverage$type[final_ARG_coverage$type == "Macrolide-Lincosamide-Streptogramin"] <- "MLS"
+final_ARG_coverage$type[final_ARG_coverage$type == "Beta_lactam"] <- "Beta-lactam"
+## Change specific MGE type
+MGE_coverage$type[MGE_coverage$type == "insertion_element_IS91"] <- "IS91"
+MGE_coverage$type[MGE_coverage$type == "transposase"] <- "Transposase"
+MGE_coverage$type[MGE_coverage$type == "plasmid"] <- "Plasmid"
+MGE_coverage$type[MGE_coverage$type == "integrase"] <- "Integrase"
 # Create new column to index
 final_ARG_coverage$Contigs_Sample <- paste(final_ARG_coverage$contigs,
                                            final_ARG_coverage$Sample,
@@ -182,25 +193,114 @@ ARG_cooccur_VF <- final_coverage %>% filter(Contigs_Sample %in% VF_contigs)
 cooccur_ARG_MGE_VF <- final_coverage %>% filter(Contigs_Sample %in% VF_contigs) %>% 
                                          filter(Contigs_Sample %in% MGE_contigs)
 ######## Intersection between ARG,MGE,& VF = 0 !!!! ############
-## ARG & MGE intersection more than three in ARP
+
+
+# gggenes
+## Join with ORF position
+ORF_position <- read.csv("../../airborne_arg_uwtp_result/contigs_ORF_position/contigs_ORF_position.csv")
+ARG_cooccur_MGE$ORF_SampleID <- paste(ARG_cooccur_MGE$ORF,
+                                      ARG_cooccur_MGE$Sample,
+                                      sep = "_")
+ARG_cooccur_MGE <- left_join(ARG_cooccur_MGE, ORF_position, by = "ORF_SampleID")
+## Finetune format for figure
+ARG_cooccur_MGE["direction"][ARG_cooccur_MGE["direction"] == -1] <- 0
+colnames(ARG_cooccur_MGE)[5] <- "Type"
+colnames(ARG_cooccur_MGE)[6] <- "Contigs"
+
+
+### ARG & MGE intersection more than three in "ARP"
 ARG_MGE_IntersectMore3 <- ARG_cooccur_MGE %>% filter(Sample_type == "ARP") %>% 
   group_by(Contigs_Sample) %>%
   summarise(count = n()) %>% 
   as.data.frame() %>% 
   filter(count >= 3)
-multi_ARG_MGE_cooccur <- ARG_cooccur_MGE %>% 
-                         filter(Contigs_Sample %in% ARG_MGE_IntersectMore3$Contigs_Sample)
-multi_ARG_MGE_cooccur <- multi_ARG_MGE_cooccur %>% 
-                         filter(!(Contigs_Sample=="k141_206301_ARP5")) %>% 
-                         filter(!(Contigs_Sample=="k141_444245_ARP1")) %>% 
-                         filter(!(Contigs_Sample=="k141_517589_ARP5")) %>% 
-                         filter(!(Contigs_Sample=="k141_706074_ARP4")) # Remove contigs manually
-# Join with ORF position
-ORF_position <- read.csv("../../airborne_arg_uwtp_result/contigs_ORF_position/contigs_ORF_position.csv")
-multi_ARG_MGE_cooccur$ORF_SampleID <- paste(multi_ARG_MGE_cooccur$ORF,
-                                            multi_ARG_MGE_cooccur$Sample,
-                                            sep = "_")
-ORF_position %>% filter(ORF_SampleID %in% multi_ARG_MGE_cooccur$ORF_SampleID)
-ORF_position$ORF_SampleID
+ARG_MGE_cooccurARP <- ARG_cooccur_MGE %>% 
+                      filter(Contigs_Sample %in% ARG_MGE_IntersectMore3$Contigs_Sample)
+### Select gene manually
+select_contigs_sample <- c("k141_243726_ARP5","k141_480594_ARP2",
+                           "k141_489310_ARP4","k141_50739_ARP4")
+plot_contigs <- ARG_MGE_cooccurARP %>% filter(Contigs_Sample %in% select_contigs_sample)
+#plot_contigs <- plot_contigs %>% filter(!(Type == "qacEdelta"))
+### Plot
+ggplot(plot_contigs, aes(xmin = start, xmax = end, y = Contigs, fill = Type,
+                         forward = direction, label = subtype)) +
+  geom_gene_arrow() +
+  geom_gene_label(align = "left") +
+  facet_wrap(~ Contigs, scales = "free", ncol = 1) +
+  scale_fill_brewer(palette = "Set3") +
+  theme_genes()
 
-t <- left_join(multi_ARG_MGE_cooccur, ORF_position, by = "ORF_SampleID")
+### ARG & MGE intersection more than three in "AT"
+ARG_MGE_IntersectMore3 <- ARG_cooccur_MGE %>% filter(Sample_type == "AT") %>% 
+  group_by(Contigs_Sample) %>%
+  summarise(count = n()) %>% 
+  as.data.frame() %>% 
+  filter(count >= 3)
+ARG_MGE_cooccurAT <- ARG_cooccur_MGE %>% 
+  filter(Contigs_Sample %in% ARG_MGE_IntersectMore3$Contigs_Sample)
+### Select gene manually
+select_contigs_sample <- c("k141_313559_AT2","k141_34906_AT4",
+                           "k141_454684_AT1","k141_55118_AT5",
+                           "k141_712198_AT1","k141_77012_AT3")
+plot_contigs <- ARG_MGE_cooccurAT %>% filter(Contigs_Sample %in% select_contigs_sample)
+#plot_contigs <- plot_contigs %>% filter(!(Type == "qacEdelta"))
+### Plot
+ggplot(plot_contigs, aes(xmin = start, xmax = end, y = Contigs, fill = Type,
+                         forward = direction, label = subtype)) +
+  geom_gene_arrow() +
+  geom_gene_label(align = "left") +
+  facet_wrap(~ Contigs, scales = "free", ncol = 1) +
+  scale_fill_brewer(palette = "Set3") +
+  theme_genes()
+
+
+
+
+
+
+
+
+#### Plot gggene in aeration tank area (AT + ARP)
+ARG_MGE_IntersectMore3 <- ARG_cooccur_MGE %>% filter(!(Sample_type == "ODP")) %>% 
+  group_by(Contigs_Sample) %>%
+  summarise(count = n()) %>% 
+  as.data.frame() %>% 
+  filter(count >= 3)
+ARG_MGE_cooccurATARP <- ARG_cooccur_MGE %>% 
+                        filter(Contigs_Sample %in% ARG_MGE_IntersectMore3$Contigs_Sample)
+### Select gene manually
+select_contigs_sample <- c("k141_313559_AT2",
+                           "k141_712198_AT1",
+                           "k141_243726_ARP5")
+plot_contigs <- ARG_MGE_cooccurATARP %>% filter(Contigs_Sample %in% select_contigs_sample)
+plot_contigs <- plot_contigs[-12,] # Deal with qacEdelta
+plot_contigs["subtype"][plot_contigs["subtype"] == "qacEdelta"] <- "qacEdelta1" # Deal with qacEdelta
+plot_contigs["Type"][plot_contigs["Type"] == "qacEdelta"] <- "Multidrug" # Deal with qacEdelta
+## Order gene type
+plot_contigs$Type <- factor(plot_contigs$Type, 
+                            levels = c("Aminoglycoside","Florfenicol",
+                                       "Multidrug","Sulfonamide",
+                                       "Tetracycline",
+                                       "Integrase","IS91",
+                                       "Transposase","tniB"))
+### Plot
+#### View with gene label, but we need to add label afterward manually
+ggplot(plot_contigs, aes(xmin = start, xmax = end, y = Contigs, fill = Type,
+                         forward = direction, label = subtype)) +
+  geom_gene_arrow() +
+  geom_gene_label(align = "left") +
+  facet_wrap(~ Contigs, scales = "free", ncol = 1) +
+  scale_fill_brewer(palette = "Set3") +
+  theme_genes()
+#### Output without label
+p <- ggplot(plot_contigs, aes(xmin = start, xmax = end, y = Contigs, fill = Type,
+                         forward = direction)) +
+  geom_gene_arrow() +
+  facet_wrap(~ Contigs, scales = "free", ncol = 1) +
+  scale_fill_brewer(palette = "Set3") +
+  theme_genes()
+
+# ggsave("ARG_MGE_cooccurance.png", p,
+#        path = "../../airborne_arg_uwtp_result/Figure/gggene",
+#        width = 10, height = 5,
+#        units = "in", bg='transparent') # save to png format

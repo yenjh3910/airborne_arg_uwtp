@@ -13,9 +13,10 @@ for (i in 1:length(temp)){
                           seqtype = "DNA",as.string = TRUE, set.attributes = FALSE)
   VF_subset <- VF %>% filter(SampleID == sample_list[i])
   fastafile <- fastafile[names(fastafile) %in% VF_subset$ORF]
-  write.fasta(sequences = fastafile, names = names(fastafile), 
-              file.out = paste("D:/Mirror/ARG_project/Shell/extract_contigs/VF/",
-                               gsub("contigs.nucl", "VF.fa", temp[i]),
-                               sep = ""),
-              open = "w")
+  print(length(fastafile[names(fastafile)]))
+  # write.fasta(sequences = fastafile, names = names(fastafile),
+  #             file.out = paste("D:/Mirror/ARG_project/Shell/extract_contigs/VF/",
+  #                              gsub("contigs.nucl", "VF.fa", temp[i]),
+  #                              sep = ""),
+  #             open = "w")
 }

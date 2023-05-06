@@ -288,7 +288,7 @@ $ ~/shell_script/cdhit_orf.sh
 BLAST sequence
 ```
 # Create environment
-$ conda create -n diamond
+$ conda create -n diamond =3.10
 $ conda activate diamond
 
 # Installation

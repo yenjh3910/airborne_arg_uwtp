@@ -13,6 +13,7 @@ for (i in 1:length(temp)){
                           seqtype = "DNA",as.string = TRUE, set.attributes = FALSE)
   MGE_subset <- MGE %>% filter(SampleID == sample_list[i])
   fastafile <- fastafile[names(fastafile) %in% MGE_subset$ORF]
+  print(length(fastafile[names(fastafile)]))
   write.fasta(sequences = fastafile, names = names(fastafile), 
               file.out = paste("D:/Mirror/ARG_project/Shell/extract_contigs/MGE/",
                                gsub("contigs.nucl", "MGE.fa", temp[i]),

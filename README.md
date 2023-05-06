@@ -22,6 +22,7 @@ $ cd tmp
 # Install
 $ curl -O https://repo.anaconda.com/archive/Anaconda3-2022.10-Linux-x86_64.sh
 $ bash Anaconda3-2022.10-Linux-x86_64.sh
+$ vi ~/.bash_profile     # Add 'export PATH=$PATH:/home/yen/anaconda3/bin' in last row
 $ source ~/.bashrc
 $ conda info
 
@@ -280,7 +281,7 @@ $ conda install -c bioconda cd-hit
 # ORF perdiction
 $ ~/shell_script/prodigal_contigs.sh
 
-# Remove reductant sequence (Omit in the newest pipeline)
+# Remove reductant sequence
 $ ~/shell_script/cdhit_orf.sh
 ```
 ### [Diamond](https://github.com/bbuchfink/diamond)
@@ -377,8 +378,8 @@ $ tar -xvf *.tar.gz
 $ rm *.gz
 
 ## Make metaWRAP executable
-$ vi ~/.bashrc
-$ export PATH="~/metaWRAP/bin/:$PATH" # Add to last row
+$ vi ~/.bash_profile
+$ PATH=~/metaWRAP/bin/:$PATH # Add to last row
 
 ## Make a new conda environment
 $ conda create -y -n metawrap-env python=2.7
@@ -392,6 +393,7 @@ $ conda config --add channels ursky
 $ mamba install --only-deps -c ursky metawrap-mg
 
 ## Configure checkm
-$ conda install -c bioconda checkm-genome
-$ checkm data setRoot ~db/checkm_db # Tell CheckM where to find this data
+$ mamba install -c bioconda checkm-genome
+$ checkm data setRoot # Tell CheckM where to find this data before running anything
+$ checkm data setRoot db/checkm_db # Tell CheckM where to find this data
 ```

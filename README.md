@@ -362,9 +362,8 @@ $ conda install -c bioconda perl-bioperl perl-getopt-long
 ```
 ## Binning
 ### [metaWRAP](https://github.com/bxlab/metaWRAP)
+#### Installation & environment creation
 ```
-# Installation & environment creation
-
 ## Install mamba
 $ conda install -y mamba
 ## Download or clone this ripository
@@ -396,4 +395,15 @@ $ mamba install --only-deps -c ursky metawrap-mg
 $ mamba install -c bioconda checkm-genome
 $ checkm data setRoot # Tell CheckM where to find this data before running anything
 $ checkm data setRoot db/checkm_db # Tell CheckM where to find this data
+```
+#### Coassembly the same samplr type
+```
+conda create -n megahit
+conda activate megahit
+mamba install -c bioconda megahit
+
+cat ~/clean_read/AT*_1.fastq.gz > ~/clean_read/AT_reads_1.fastq.gz
+cat ~/clean_read/AT*_2.fastq.gz > ~/clean_read/AT_reads_2.fastq.gz
+gunzip ~/clean_read/AT_reads_1.fastq.gz ~/clean_read/AT_reads_2.fastq.gz
+megahit -t 16 -m 1 -1 ~/clean_read/AT_reads_1.fastq -2 ~/clean_read/AT_reads_2.fastq --min-contig-len 1000 -o ~/megahit/megahit_coassembly/AT --presets meta-large
 ```

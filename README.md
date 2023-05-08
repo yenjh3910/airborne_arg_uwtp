@@ -268,6 +268,7 @@ $ Rscript humann3_heatmap.R
 ```
 # Assembly-based Analysis
 ## Contigs Assembly
+### [MEGAHIT](https://github.com/voutcn/megahit) & [Quast](https://github.com/ablab/quast)
 ```
 # Create environment
 $ conda create -n megahit

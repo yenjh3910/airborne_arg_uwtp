@@ -2,19 +2,20 @@
 A comprehensive metagenomic pipeline for airborne ARGs (Antibiotic Resistance Genes) in UWTP (Urban wastewater Treatment Plant)
 
 # Table of Contents
-- Environment Setup
+- [Environment Setup](https://github.com/yenjh3910/airborne_arg_uwtp#environment-setup)
     - [Anaconda Installation](https://github.com/yenjh3910/airborne_arg_uwtp#anaconda-installation)
-- Reference-based Analysis
+- [Reference-based Analysis](https://github.com/yenjh3910/airborne_arg_uwtp#reference-based-analysis)
     - [Taxanomic Profile](https://github.com/yenjh3910/airborne_arg_uwtp#taxanomic-profile)
     - [ARGs Profile](https://github.com/yenjh3910/airborne_arg_uwtp#args-profile)
     - [Functional Profile](https://github.com/yenjh3910/airborne_arg_uwtp#functional-profile)
-- Assembly-based Analysis
+- [Assembly-based Analysis](https://github.com/yenjh3910/airborne_arg_uwtp#assembly-based-analysis)
     - [Contigs Assembly](https://github.com/yenjh3910/airborne_arg_uwtp#contigs-assembly)
     - [Taxanomic Assignment of Assembly Contigs](https://github.com/yenjh3910/airborne_arg_uwtp#taxanomic-assignment-of-assembly-contigs)
     - [Gene Alignment to Assembly Contigs](https://github.com/yenjh3910/airborne_arg_uwtp#gene-alignment-to-assembly-contigs)
     - [Calculate coverage of aligning contigs](https://github.com/yenjh3910/airborne_arg_uwtp#calculate-coverage-of-aligning-contigs)
     - [Prediction of Plasmid Sequences](https://github.com/yenjh3910/airborne_arg_uwtp#prediction-of-plasmid-sequences)
-- Binning-based Analysis
+- [Binning-based Analysis](https://github.com/yenjh3910/airborne_arg_uwtp#binning-based-analysis)
+    - [Contigs Co-assembly](https://github.com/yenjh3910/airborne_arg_uwtp/tree/master#contigs-co-assembly)
     - [Binning](https://github.com/yenjh3910/airborne_arg_uwtp#binning)
 # Environment Setup
 ## [Anaconda Installation](https://www.anaconda.com/products/distribution)
@@ -390,10 +391,15 @@ $ conda install -c bioconda perl-bioperl perl-getopt-long
 ```
 # Binning-based Analysis
 ## Contigs Co-assembly
-### Read normalization
+### Reads normalization
 ```
+# Enter environment
 $ conda activate diamond
+
+# Unzip fastq files
 $ gunzip ~/clean_read/*_1.fastq.gz ~/clean_read/*_2.fastq.gz
+
+# Run
 $ ~/shell_script/norm_read.sh
 ```
 ### Run co-assembly

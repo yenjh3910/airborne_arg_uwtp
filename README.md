@@ -1,17 +1,22 @@
 # Airborne ARGs in UWTP
 A comprehensive metagenomic pipeline for airborne ARGs (Antibiotic Resistance Genes) in UWTP (Urban wastewater Treatment Plant)
 
-## Table of Contents
-1. [Anaconda Installation](https://github.com/yenjh3910/airborne_arg_uwtp#anaconda-installation)
-2. [Taxanomic Profile](https://github.com/yenjh3910/airborne_arg_uwtp#taxanomic-profile)
-3. [ARGs Profile](https://github.com/yenjh3910/airborne_arg_uwtp#args-profile)
-4. [Functional Profile](https://github.com/yenjh3910/airborne_arg_uwtp#functional-profile)
-5. [Taxanomic Assignment of Assembly Contigs](https://github.com/yenjh3910/airborne_arg_uwtp#taxanomic-assignment-of-assembly-contigs)
-6. [Gene Alignment to Assembly Contigs](https://github.com/yenjh3910/airborne_arg_uwtp#gene-alignment-to-assembly-contigs)
-7. [Calculate coverage of aligning contigs](https://github.com/yenjh3910/airborne_arg_uwtp#calculate-coverage-of-aligning-contigs)
-8. [Prediction of Plasmid Sequences](https://github.com/yenjh3910/airborne_arg_uwtp#prediction-of-plasmid-sequences)
-9. [Binning](https://github.com/yenjh3910/airborne_arg_uwtp#binning)
-
+# Table of Contents
+- Environment Setup
+    - [Anaconda Installation](https://github.com/yenjh3910/airborne_arg_uwtp#anaconda-installation)
+- Reference-based Analysis
+    - [Taxanomic Profile](https://github.com/yenjh3910/airborne_arg_uwtp#taxanomic-profile)
+    - [ARGs Profile](https://github.com/yenjh3910/airborne_arg_uwtp#args-profile)
+    - [Functional Profile](https://github.com/yenjh3910/airborne_arg_uwtp#functional-profile)
+- Assembly-based Analysis
+    - [Contigs Assembly](https://github.com/yenjh3910/airborne_arg_uwtp#contigs-assembly)
+    - [Taxanomic Assignment of Assembly Contigs](https://github.com/yenjh3910/airborne_arg_uwtp#taxanomic-assignment-of-assembly-contigs)
+    - [Gene Alignment to Assembly Contigs](https://github.com/yenjh3910/airborne_arg_uwtp#gene-alignment-to-assembly-contigs)
+    - [Calculate coverage of aligning contigs](https://github.com/yenjh3910/airborne_arg_uwtp#calculate-coverage-of-aligning-contigs)
+    - [Prediction of Plasmid Sequences](https://github.com/yenjh3910/airborne_arg_uwtp#prediction-of-plasmid-sequences)
+- Binning-based Analysis
+    - [Binning](https://github.com/yenjh3910/airborne_arg_uwtp#binning)
+# Environment Setup
 ## [Anaconda Installation](https://www.anaconda.com/products/distribution)
 ```
 $ sudo apt update && upgrade
@@ -39,6 +44,7 @@ $ conda config --set channel_priority strict
 # View channel
 $ conda config --show channels
 ```
+# Reference-based Analysis
 ## Taxanomic Profile
 ### [Kraken2](https://github.com/DerrickWood/kraken2/wiki/Manual)
 #### Create environment and install
@@ -259,6 +265,28 @@ $ ~/shell_script/humann3_post_processing.sh
 ```
 $ Rscript humann3_heatmap.R
 ```
+# Assembly-based Analysis
+## Contigs Assembly
+```
+# Create environment
+$ conda create -n megahit
+$ conda activate megahit
+
+# Installation
+## Megahit
+$ mamba install -c bioconda megahit
+## Quast
+$ git clone https://github.com/ablab/quast.git
+$ cd ~/quast
+$ ./setup.py install_full
+$ sudo apt-get update && sudo apt-get install -y pkg-config libfreetype6-dev libpng-dev python3-matplotlib
+
+# Run
+## Contigs assembly
+$ ~/shell_script/assmebly_individual.sh
+## Quality check
+$ ~/shell_script/quast_individual_contigs.sh
+```
 ## Taxanomic Assignment of Assembly Contigs
 Use kraken2 to assign the toxanomy to individual assmebly contigs  
 #### Usage
@@ -360,6 +388,62 @@ $ conda config --set channel_priority flexible
 $ conda install plasflow -c smaegol
 $ conda install -c bioconda perl-bioperl perl-getopt-long
 ```
+# Binning-based Analysis
+## Contigs Co-assembly
+### Read normalization
+```
+$ conda activate diamond
+$ gunzip ~/clean_read/*_1.fastq.gz ~/clean_read/*_2.fastq.gz
+$ ~/shell_script/norm_read.sh
+```
+### Run co-assembly
+```
+# Enter environment
+$ conda activate megahit
+
+# Concatenate reads
+$ cat ~/clean_read/nAT*_1.fastq > ~/clean_read/nAT_reads_1.fastq
+$ cat ~/clean_read/nAT*_2.fastq > ~/clean_read/nAT_reads_2.fastq
+$ cat ~/clean_read/nARP*_1.fastq > ~/clean_read/nARP_reads_1.fastq
+$ cat ~/clean_read/nARP*_2.fastq > ~/clean_read/nARP_reads_2.fastq
+$ cat ~/clean_read/nODP*_1.fastq > ~/clean_read/nODP_reads_1.fastq
+$ cat ~/clean_read/nODP*_2.fastq > ~/clean_read/nODP_reads_2.fastq
+
+# Run co-assembly
+$ megahit -t 16 -m 0.99 -1 ~/clean_read/nAT_reads_1.fastq -2 ~/clean_read/nAT_reads_2.fastq \
+    --min-contig-len 1000 -o ~/megahit/megahit_coassembly/AT --presets meta-large
+$ megahit -t 16 -m 0.99 -1 ~/clean_read/nARP_reads_1.fastq -2 ~/clean_read/nARP_reads_2.fastq \
+    --min-contig-len 1000 -o ~/megahit/megahit_coassembly/ARP --presets meta-large
+$ megahit -t 16 -m 0.99 -1 ~/clean_read/nODP_reads_1.fastq -2 ~/clean_read/nODP_reads_2.fastq \
+    --min-contig-len 1000 -o ~/megahit/megahit_coassembly/ODP --presets meta-large
+
+# Quality check
+$ ~/quast/quast.py ~/megahit/megahit_coassembly/AT/final.contigs.fa -o ~/megahit/megahit_coassembly/AT/quast
+$ ~/quast/quast.py ~/megahit/megahit_coassembly/ARP/final.contigs.fa -o ~/megahit/megahit_coassembly/ARP/quast
+$ ~/quast/quast.py ~/megahit/megahit_coassembly/ODP/final.contigs.fa -o ~/megahit/megahit_coassembly/ODP/quast
+```
+### Get breadth of coverage
+```
+# Enter environment
+$ conda activate diamond
+
+# Installation
+$ mamba install -c bioconda samtools
+
+# Create bowtie2 index database
+$ mkdir ~/megahit/megahit_coassembly/AT/breadth_coverage
+$ bowtie2-build ~/megahit/megahit_coassembly/AT/final.contigs.fa \
+    ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.index
+
+# Map reads and sort bam file
+$ bowtie2 -x ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.index \
+    --no-unal -1 ~/clean_read/AT*_1.fastq.gz -2 ~/clean_read/AT*_2.fastq.gz \
+    -S ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.sam  -p 16
+$ samtools view -bS - | \
+  samtools sort -m 5G - ~/megahit/megahit_coassembly/AT/breadth_coverage/mapping_result_sorted.bam
+$ samtools index mapping_result_sorted.bam
+$ samtools mpileup mapping_result_sorted.bam | awk -v X="5" '$4>=X' | wc -l
+```
 ## Binning
 ### [metaWRAP](https://github.com/bxlab/metaWRAP)
 #### Installation & environment creation
@@ -395,15 +479,4 @@ $ mamba install --only-deps -c ursky metawrap-mg
 $ mamba install -c bioconda checkm-genome
 $ checkm data setRoot # Tell CheckM where to find this data before running anything
 $ checkm data setRoot db/checkm_db # Tell CheckM where to find this data
-```
-#### Coassembly the same samplr type
-```
-conda create -n megahit
-conda activate megahit
-mamba install -c bioconda megahit
-
-cat ~/clean_read/AT*_1.fastq.gz > ~/clean_read/AT_reads_1.fastq.gz
-cat ~/clean_read/AT*_2.fastq.gz > ~/clean_read/AT_reads_2.fastq.gz
-gunzip ~/clean_read/AT_reads_1.fastq.gz ~/clean_read/AT_reads_2.fastq.gz
-megahit -t 16 -m 1 -1 ~/clean_read/AT_reads_1.fastq -2 ~/clean_read/AT_reads_2.fastq --min-contig-len 1000 -o ~/megahit/megahit_coassembly/AT --presets meta-large
 ```

@@ -19,6 +19,8 @@ z$SampleID <- gsub("_SARG.sam.map.txt", "", z$SampleID)
 nbase <- read.xlsx("../../airborne_arg_uwtp_result/read_base_count.xlsx", sheet = 2)
 ## Join coverage file & base file
 SARG_coverage <- full_join(z, nbase, by = "SampleID")
+### OP1 sample do not match any ARG, so remove ODP1 row ###
+SARG_coverage <- SARG_coverage %>% filter(!(SampleID == "ODP1"))
 ## Calculate coverage
 SARG_coverage$coverage <- SARG_coverage$Avg_fold/(SARG_coverage$base/1000000000)
 # Import Diamond file
@@ -52,42 +54,84 @@ z <- unique(z)
 
 z <- z %>%
   separate(V1, sep="\\|",into=c("Domain","Phylum","Class","Order","Family","Genus","Species"))
+# Find out wrong order row
 z_na <- z[!complete.cases(z), ]
-z_na <- z_na %>% filter(!grepl("g__", Genus))
-z_na <- z_na %>% filter(!(grepl("f__", Family)&
-                           (grepl(NA, Genus))))
-z_na <- z_na %>% filter(!(grepl("o__", Order)&
-                           (grepl(NA, Family))&
-                           (grepl(NA, Genus))
+### Filter by wrong order in phylum
+phy_na <- z_na %>% filter(!grepl("p__", Phylum))
+phy_na <- phy_na %>% filter(!(is.na(Phylum)))
+### Filter by wrong order in class
+cla_na <- z_na %>% filter(!grepl("c__", Class))
+cla_na <- cla_na %>% filter(!(grepl("d__", Domain)&
+                           (grepl("p__", Phylum))&
+                           (is.na(Class))
                            ))
-z_na <- z_na %>% filter(!(grepl("c__", Class)&
-                           (grepl(NA, Order))&
-                           (grepl(NA, Family))&
-                           (grepl(NA, Genus))
+cla_na <- cla_na %>% filter(!(is.na(Phylum)))
+### Filter by wrong order in order
+ord_na <- z_na %>% filter(!grepl("o__", Order))
+ord_na <- ord_na %>% filter(!(grepl("d__", Domain)&
+                             (grepl("p__", Phylum))&
+                             (grepl("c__", Class))&
+                             (is.na(Order))
                            ))
-z_na <- z_na %>% filter(!(grepl("p__", Phylum)&
-                           (grepl(NA, Class))&
-                           (grepl(NA, Order))&
-                           (grepl(NA, Family))&
-                           (grepl(NA, Genus))
+ord_na <- ord_na %>% filter(!(grepl("d__", Domain)&
+                             (grepl("p__", Phylum))&
+                             (is.na(Class))
                            ))
-z_na <- z_na[-1,]
-
-z_na2 <- z_na[grep("c__",z_na$Phylum),]
-z_na2 <- z_na2[,-7]
-colnames(z_na2) <- c("Domain","Class","Order","Family","Genus","Species")
-
-
-z_na3 <- z_na[grep("f__",z_na$Phylum),]
-z_na3 <- z_na3[,-(5:7)]
-colnames(z_na3) <- c("Domain","Family","Genus","Species")
-
-z_na4 <- z_na[grep("s__",z_na$Phylum),]
-z_na4 <- z_na4[,-(3:7)]
-colnames(z_na4) <- c("Domain","Species")
-## bind dataframe
+ord_na <- ord_na %>% filter(!(is.na(Phylum)))
+### Filter by wrong order in family
+fam_na <- z_na %>% filter(!grepl("f__", Family))
+fam_na <- fam_na %>% filter(!(grepl("d__", Domain)&
+                             (grepl("p__", Phylum))&
+                             (grepl("c__", Class))&
+                             (grepl("o__", Order))&
+                             (is.na(Family))
+                           ))
+fam_na <- fam_na %>% filter(!(grepl("d__", Domain)&
+                             (grepl("p__", Phylum))&
+                             (grepl("c__", Class))&
+                             (is.na(Order))
+                           ))
+fam_na <- fam_na %>% filter(!(grepl("d__", Domain)&
+                             (grepl("p__", Phylum))&
+                             (is.na(Class))
+                           ))
+fam_na <- fam_na %>% filter(!(is.na(Phylum)))
+### Filter by wrong order in genus
+gen_na <- z_na %>% filter(!grepl("g__", Genus))
+gen_na <- gen_na %>% filter(!(grepl("d__", Domain)&
+                             (grepl("p__", Phylum))&
+                             (grepl("c__", Class))&
+                             (grepl("o__", Order))&
+                             (grepl("f__", Family))&
+                             (is.na(Genus))
+                           ))
+gen_na <- gen_na %>% filter(!(grepl("d__", Domain)&
+                             (grepl("p__", Phylum))&
+                             (grepl("c__", Class))&
+                             (grepl("o__", Order))&
+                             (is.na(Family))
+                          ))
+gen_na <- gen_na %>% filter(!(grepl("d__", Domain)&
+                             (grepl("p__", Phylum))&
+                             (grepl("c__", Class))&
+                             (is.na(Order))
+                           ))
+gen_na <- gen_na %>% filter(!(grepl("d__", Domain)&
+                             (grepl("p__", Phylum))&
+                             (is.na(Class))
+                           ))
+gen_na <- gen_na %>% filter(!(grepl("d__", Domain)&
+                             (is.na(Phylum))
+                           ))
+# Bind wrong order df
+z_na <- bind_rows(phy_na,cla_na,ord_na,fam_na,gen_na) %>% unique()
+# Correct order df
 z <- z %>% anti_join(z_na)
-z <- bind_rows(z,z_na2,z_na3,z_na4)
+# Edit manually in excel
+#### write.csv(z_na, "./contigs_taxa_WrongOrder.csv", quote = FALSE, row.names = FALSE) ####
+correct_z_na <- read_csv("./contigs_taxa_WrongOrder.csv")
+## bind dataframe
+z <- rbind(z,correct_z_na) %>% unique()
 ## Remove taxonomy header
 z$Domain <- gsub("d__", "", z$Domain)
 z$Phylum <- gsub("p__", "", z$Phylum)
@@ -144,7 +188,7 @@ dom <- left_join(dom, z, by='Domain')
 # Bind each taxonomy level
 ARG_bind_coverage <- bind_rows(dom,phy,cl,ord,fam,gen,sp)
 coverage_without_annotation <- SARG_coverage %>% anti_join(ARG_bind_coverage)
-unique(coverage_without_annotation$taxonomy)
+length(unique(coverage_without_annotation$taxonomy)) #### Stop here so far ###
 ########## Then annotate other tax in excel ############
 # write_csv(coverage_without_annotation,
 # "../../airborne_arg_uwtp_result/contigs_bowtie2/SARG/ARG_TaxonomyAnnotateManually.csv")
@@ -289,8 +333,8 @@ unique(ARG_Class$Class)
 ARG_Class$Class <- factor(ARG_Class$Class, 
                           levels = c("Actinomycetes","Gammaproteobacteria","Betaproteobacteria","Flavobacteriia",  
                                      "Bacilli","Alphaproteobacteria","Deltaproteobacteria","Clostridia","Desulfuromonadia",
-                                     "Chlorobiia","Bacteroidia","Epsilonproteobacteria","Cytophagia","Fusobacteriia",
-                                     "Negativicutes","Tissierellia","Erysipelotrichia","Unclassified"))
+                                     "Chlorobiia","Epsilonproteobacteria","Bacteroidia","Fusobacteriia",
+                                     "Cytophagia","Negativicutes","Tissierellia","Erysipelotrichia","Unclassified"))
 ## Plot
 ggplot(ARG_Class, aes(x = Sample_type, y = mean, fill = Class)) + 
   geom_bar(stat="identity") + 
@@ -301,16 +345,16 @@ ggplot(ARG_Class, aes(x = Sample_type, y = mean, fill = Class)) +
 ARG_Class <-ARG_Class %>% 
   arrange(factor(Class, levels = c("Actinomycetes","Gammaproteobacteria","Betaproteobacteria","Flavobacteriia",  
                                    "Bacilli","Alphaproteobacteria","Deltaproteobacteria","Clostridia","Desulfuromonadia",
-                                   "Chlorobiia","Bacteroidia","Epsilonproteobacteria","Cytophagia","Fusobacteriia",
-                                   "Negativicutes","Tissierellia","Erysipelotrichia","Unclassified")))
-other_class <- ARG_Class[27:35,] %>% group_by(Sample_type) %>% summarise(mean = sum(mean))
+                                   "Chlorobiia","Epsilonproteobacteria","Bacteroidia","Fusobacteriia",
+                                   "Cytophagia","Negativicutes","Tissierellia","Erysipelotrichia","Unclassified")))
+other_class <- ARG_Class[25:34,] %>% group_by(Sample_type) %>% summarise(mean = sum(mean))
 other_class$Class <- "Unclassified/Others"
-ARG_Class <- ARG_Class[1:26,]
+ARG_Class <- ARG_Class[1:24,]
 ARG_Class <- rbind(ARG_Class, other_class)
 ARG_Class$Class <- factor(ARG_Class$Class, 
                           levels = c("Actinomycetes","Gammaproteobacteria","Betaproteobacteria","Flavobacteriia",  
                                      "Bacilli","Alphaproteobacteria","Deltaproteobacteria","Clostridia","Desulfuromonadia",
-                                     "Chlorobiia","Bacteroidia","Unclassified/Others"))
+                                     "Chlorobiia","Epsilonproteobacteria","Unclassified/Others"))
 #### Order sample_type
 ARG_Class$Sample_type <- factor(ARG_Class$Sample_type, 
                                  levels = c("AT","ARP","ODP"))
@@ -352,16 +396,18 @@ mycolors <- colorRampPalette(brewer.pal(12, "Set3"))(nb.cols)
 # Order order tax
 ARG_Order <- ARG_Order %>% arrange(desc(mean))
 unique(ARG_Order$Order)
-ARG_Order$Order <- factor(ARG_Order$Order, levels = c("Mycobacteriales","Burkholderiales","Xanthomonadales","Flavobacteriales",  
-                                                      "Pseudomonadales","Moraxellales","Rhodocyclales","Bacillales","Aeromonadales",
-                                                      "Enterobacterales","Lactobacillales","Micrococcales","Hyphomicrobiales","Kitasatosporales",   
-                                                      "Chromatiales","Rhodospirillales","Nitrosomonadales","Desulfovibrionales","Rhodobacterales",    
-                                                      "Propionibacteriales","Neisseriales","Thiotrichales","Eubacteriales","Geobacterales",
-                                                      "Methylococcales","Chlorobiales","Sphingomonadales","Pseudonocardiales","Actinomycetales",    
-                                                      "Bacteroidales","Campylobacterales","Marinilabiliales","Myxococcales","Cytophagales", 
-                                                      "Fusobacteriales","Alteromonadales","Pasteurellales","Tissierellales","Selenomonadales",    
-                                                      "Vibrionales","Hyphomonadales","Veillonellales","Erysipelotrichales","Desulfuromonadales", 
-                                                      "Jiangellales","Unclassified"))
+ARG_Order$Order <- factor(ARG_Order$Order, levels = c(  "Mycobacteriales" ,    "Burkholderiales"  ,   "Xanthomonadales"   , 
+                                                        "Flavobacteriales",    "Pseudomonadales"  ,   "Moraxellales"      ,  "Bacillales"         ,
+                                                        "Rhodocyclales"   ,    "Aeromonadales"    ,   "Enterobacterales"  ,  "Lactobacillales"    ,
+                                                        "Micrococcales"   ,    "Kitasatosporales" ,   "Hyphomicrobiales"  ,  "Chromatiales"       ,
+                                                        "Rhodospirillales",    "Nitrosomonadales" ,   "Rhodobacterales"   ,  "Propionibacteriales",
+                                                        "Neisseriales"    ,    "Thiotrichales"    ,   "Eubacteriales"     ,  "Desulfovibrionales" ,
+                                                        "Geobacterales"   ,    "Chlorobiales"     ,   "Sphingomonadales"  ,  "Pseudonocardiales"  ,
+                                                        "Actinomycetales" ,    "Campylobacterales",   "Bacteroidales"     ,  "Marinilabiliales"   ,
+                                                        "Fusobacteriales" ,    "Cytophagales"     ,   "Alteromonadales"   ,  "Pasteurellales"     ,
+                                                        "Myxococcales"    ,    "Tissierellales"   ,   "Methylococcales"   ,  "Selenomonadales"    ,
+                                                        "Vibrionales"     ,    "Hyphomonadales"   ,   "Veillonellales"    ,  "Erysipelotrichales" ,
+                                                        "Unclassified"))
 ## Plot
 ggplot(ARG_Order, aes(x = Sample_type, y = mean, fill = Order)) + 
   geom_bar(stat="identity") + 
@@ -371,29 +417,30 @@ ggplot(ARG_Order, aes(x = Sample_type, y = mean, fill = Order)) +
 ## Calculate others by summing  minimum arg
 unique(ARG_Order$Order)
 ARG_Order <-ARG_Order %>% 
-  arrange(factor(Order, levels = c("Mycobacteriales","Burkholderiales","Xanthomonadales","Flavobacteriales",  
-                                   "Pseudomonadales","Moraxellales","Rhodocyclales","Bacillales","Aeromonadales",
-                                   "Enterobacterales","Lactobacillales","Micrococcales","Hyphomicrobiales","Kitasatosporales",   
-                                   "Chromatiales","Rhodospirillales","Nitrosomonadales","Desulfovibrionales","Rhodobacterales",    
-                                   "Propionibacteriales","Neisseriales","Thiotrichales","Eubacteriales","Geobacterales",
-                                   "Methylococcales","Chlorobiales","Sphingomonadales","Pseudonocardiales","Actinomycetales",    
-                                   "Bacteroidales","Campylobacterales","Marinilabiliales","Myxococcales","Cytophagales", 
-                                   "Fusobacteriales","Alteromonadales","Pasteurellales","Tissierellales","Selenomonadales",    
-                                   "Vibrionales","Hyphomonadales","Veillonellales","Erysipelotrichales","Desulfuromonadales", 
-                                   "Jiangellales","Unclassified")))
-other_order <- ARG_Order[26:83,] %>% group_by(Sample_type) %>% summarise(mean = sum(mean))
+  arrange(factor(Order, levels = c("Mycobacteriales" ,    "Burkholderiales"  ,   "Xanthomonadales"   , 
+                                   "Flavobacteriales",    "Pseudomonadales"  ,   "Moraxellales"      ,  "Bacillales"         ,
+                                   "Rhodocyclales"   ,    "Aeromonadales"    ,   "Enterobacterales"  ,  "Lactobacillales"    ,
+                                   "Micrococcales"   ,    "Kitasatosporales" ,   "Hyphomicrobiales"  ,  "Chromatiales"       ,
+                                   "Rhodospirillales",    "Nitrosomonadales" ,   "Rhodobacterales"   ,  "Propionibacteriales",
+                                   "Neisseriales"    ,    "Thiotrichales"    ,   "Eubacteriales"     ,  "Desulfovibrionales" ,
+                                   "Geobacterales"   ,    "Chlorobiales"     ,   "Sphingomonadales"  ,  "Pseudonocardiales"  ,
+                                   "Actinomycetales" ,    "Campylobacterales",   "Bacteroidales"     ,  "Marinilabiliales"   ,
+                                   "Fusobacteriales" ,    "Cytophagales"     ,   "Alteromonadales"   ,  "Pasteurellales"     ,
+                                   "Myxococcales"    ,    "Tissierellales"   ,   "Methylococcales"   ,  "Selenomonadales"    ,
+                                   "Vibrionales"     ,    "Hyphomonadales"   ,   "Veillonellales"    ,  "Erysipelotrichales" ,
+                                   "Unclassified")))
+other_order <- ARG_Order[26:77,] %>% group_by(Sample_type) %>% summarise(mean = sum(mean))
 other_order$Order <- "Unclassified/Others"
 ARG_Order <- ARG_Order[1:25,]
 ARG_Order <- rbind(ARG_Order, other_order)
 ## Plot
-ARG_Order$Order <- factor(ARG_Order$Order, levels = c("Mycobacteriales","Burkholderiales","Xanthomonadales","Flavobacteriales",  
-                                                      "Pseudomonadales","Moraxellales","Rhodocyclales","Bacillales","Aeromonadales",
-                                                      "Enterobacterales","Lactobacillales","Unclassified/Others"))
+ARG_Order$Order <- factor(ARG_Order$Order, levels = c("Mycobacteriales" ,    "Burkholderiales"  ,   "Xanthomonadales"   , 
+                                                      "Flavobacteriales",    "Pseudomonadales"  ,   "Moraxellales"      ,  "Bacillales"         ,
+                                                      "Rhodocyclales"   ,    "Aeromonadales"    ,   "Enterobacterales"  ,  "Lactobacillales"    ,
+                                                      "Unclassified/Others"))
 #### Order sample_type
 ARG_Order$Sample_type <- factor(ARG_Order$Sample_type, 
                                  levels = c("AT","ARP","ODP"))
-#nb.cols <- 19
-#mycolors <- colorRampPalette(brewer.pal(12, "Set3"))(nb.cols)
 p <- ggplot(ARG_Order, aes(x = Sample_type, y = mean, fill = Order)) + 
   geom_bar(stat="identity") + 
   theme_bw() + 
@@ -410,7 +457,7 @@ p <- ggplot(ARG_Order, aes(x = Sample_type, y = mean, fill = Order)) +
         panel.grid.major = element_blank(), #remove major gridlines
         panel.grid.minor = element_blank(), #remove minor gridlines
         legend.background = element_rect(fill='transparent')) #transparent legend bg)
-
+print(p)
 # ggsave("ARG_coverage_order.png", p,
 #        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
 #        width = 3.65, height = 5,
@@ -432,30 +479,28 @@ mycolors <- colorRampPalette(brewer.pal(12, "Set3"))(nb.cols)
 # Order family tax
 ARG_Family <- ARG_Family %>% arrange(desc(mean))
 unique(ARG_Family$Family)
-ARG_Family$Family <- factor(ARG_Family$Family, levels = c("Mycobacteriaceae",       "Xanthomonadaceae",       "Comamonadaceae",        
-                                    "Weeksellaceae"    ,      "Pseudomonadaceae",       "Moraxellaceae"    ,      "Azonexaceae"    ,       
-                                    "Gordoniaceae"      ,     "Aeromonadaceae"   ,      "Bacillaceae"       ,     "Alcaligenaceae"  ,      
-                                    "Enterobacteriaceae" ,    "Microbacteriaceae" ,     "Streptomycetaceae"  ,    "Chromatiaceae"    ,     
-                                    "Staphylococcaceae"   ,   "Desulfovibrionaceae",    "Nitrosomonadaceae"   ,   "Micrococcaceae"    ,    
-                                    "Burkholderiaceae"     ,  "Nocardioidaceae",        "Enterococcaceae"      ,  "Chromobacteriaceae" ,   
-                                    "Azospirillaceae"       , "Oxalobacteraceae" ,      "Streptococcaceae"      , "Thiotrichaceae"  ,      
-                                    "Casimicrobiaceae",       "Paracoccaceae"   ,       "Brucellaceae",           "Flavobacteriaceae",     
-                                    "Sphaerotilaceae"  ,      "Rhizobiaceae"    ,       "Corynebacteriaceae",     "Rhodospirillaceae" ,    
-                                    "Geobacteraceae"    ,     "Methylococcaceae" ,      "Roseobacteraceae"   ,    "Chlorobiaceae"      ,   
-                                    "Aerococcaceae"      ,    "Morganellaceae"    ,     "Sphingomonadaceae"   ,   "Acetobacteraceae"    ,  
-                                    "Rhodocyclaceae"      ,   "Nocardiaceae"       ,    "Nitrobacteraceae"     ,  "Fluviibacteraceae"    , 
-                                    "Clostridiaceae"       ,  "Pseudonocardiaceae"  ,   "Hyphomicrobiaceae"     , "Phyllobacteriaceae"    ,
-                                    "Intrasporangiaceae",     "Actinomycetaceae"     ,  "Arcobacteraceae",        "Erwiniaceae"       ,    
-                                    "Pectobacteriaceae"  ,    "Rhodanobacteraceae",     "Sulfuricellaceae",       "Marinilabiliaceae"  ,   
-                                    "Paenibacillaceae"    ,   "Anaeromyxobacteraceae",  "Lactobacillaceae" ,      "Fusobacteriaceae"    ,  
-                                    "Hymenobacteraceae"     , "Devosiaceae"     ,       "Lachnospiraceae"   ,     "Peptostreptococcaceae", 
-                                    "Dermatophilaceae"     ,  "Methylocystaceae" ,      "Idiomarinaceae"     ,    "Carnobacteriaceae"     ,
-                                    "Pasteurellaceae"   ,     "Oscillospiraceae"  ,     "Acidilutibacteraceae",   "Planococcaceae"  ,      
-                                    "Selenomonadaceae"   ,    "Vibrionaceae"       ,    "Peptococcaceae"       ,  "Methylobacteriaceae",   
-                                    "Hyphomonadaceae",        "Spirosomaceae"       ,   "Zoogloeaceae"          , "Veillonellaceae",       
-                                    "Bacteroidaceae"  ,       "Erysipelotrichaceae"  ,  "Labilitrichaceae"       ,"Stappiaceae"     ,      
-                                    "Beijerinckiaceae" ,      "Xanthobacteraceae"     , "Pseudoalteromonadaceae" ,"Jiangellaceae"    ,     
-                                    "Sterolibacteriaceae",      "Unclassified"))
+ARG_Family$Family <- factor(ARG_Family$Family, levels = c( "Mycobacteriaceae"     ,    "Xanthomonadaceae" ,    "Weeksellaceae"      ,   
+                                                           "Comamonadaceae"       ,  "Pseudomonadaceae"   ,    "Moraxellaceae"      ,    "Azonexaceae"        ,   
+                                                           "Gordoniaceae"         ,  "Aeromonadaceae"     ,    "Bacillaceae"        ,    "Enterobacteriaceae" ,   
+                                                           "Microbacteriaceae"    ,  "Alcaligenaceae"     ,    "Streptomycetaceae"  ,    "Chromatiaceae"      ,   
+                                                           "Staphylococcaceae"    ,  "Nitrosomonadaceae"  ,    "Micrococcaceae"     ,    "Nocardioidaceae"    ,   
+                                                           "Enterococcaceae"      ,  "Chromobacteriaceae" ,    "Azospirillaceae"    ,    "Streptococcaceae"   ,   
+                                                           "Thiotrichaceae"       ,  "Burkholderiaceae"   ,    "Sphaerotilaceae"    ,    "Brucellaceae"       ,   
+                                                           "Flavobacteriaceae"    ,  "Paracoccaceae"      ,    "Desulfovibrionaceae",    "Casimicrobiaceae"   ,   
+                                                           "Corynebacteriaceae"   ,  "Rhodospirillaceae"  ,    "Geobacteraceae"     ,    "Roseobacteraceae"   ,   
+                                                           "Oxalobacteraceae"     ,  "Rhizobiaceae"       ,    "Chlorobiaceae"      ,    "Aerococcaceae"      ,   
+                                                           "Morganellaceae"       ,  "Sphingomonadaceae"  ,    "Nocardiaceae"       ,    "Fluviibacteraceae"  ,   
+                                                           "Clostridiaceae"       ,  "Pseudonocardiaceae" ,    "Hyphomicrobiaceae"  ,    "Intrasporangiaceae" ,   
+                                                           "Actinomycetaceae"     ,  "Rhodocyclaceae"     ,    "Arcobacteraceae"    ,    "Acetobacteraceae"   ,   
+                                                           "Erwiniaceae"          ,  "Pectobacteriaceae"  ,    "Marinilabiliaceae"  ,    "Rhodanobacteraceae" ,   
+                                                           "Nitrobacteraceae"     ,  "Paenibacillaceae"   ,    "Sulfuricellaceae"   ,    "Lactobacillaceae"   ,   
+                                                           "Fusobacteriaceae"     ,  "Hymenobacteraceae"  ,    "Devosiaceae"        ,    "Lachnospiraceae"    ,   
+                                                           "Peptostreptococcaceae",  "Methylocystaceae"   ,    "Idiomarinaceae"     ,    "Carnobacteriaceae"  ,   
+                                                           "Pasteurellaceae"      ,  "Oscillospiraceae"   ,    "Acidilutibacteraceae",   "Planococcaceae"     ,   
+                                                           "Methylococcaceae"     ,  "Phyllobacteriaceae" ,    "Selenomonadaceae"   ,    "Vibrionaceae"       ,   
+                                                           "Anaeromyxobacteraceae",  "Peptococcaceae"     ,    "Hyphomonadaceae"    ,    "Veillonellaceae"    ,   
+                                                           "Bacteroidaceae"       ,  "Erysipelotrichaceae",    "Labilitrichaceae"   ,    "Pseudoalteromonadaceae",
+                                                           "Unclassified"))
 ## Plot
 ggplot(ARG_Family, aes(x = Sample_type, y = mean, fill = Family)) + 
   geom_bar(stat="identity") + 
@@ -465,38 +510,37 @@ ggplot(ARG_Family, aes(x = Sample_type, y = mean, fill = Family)) +
 ## Calculate others by summing  minimum arg
 unique(ARG_Family$Family)
 ARG_Family <-ARG_Family %>% 
-  arrange(factor(Family, levels = c("Mycobacteriaceae",       "Xanthomonadaceae",       "Comamonadaceae",        
-                                    "Weeksellaceae"    ,      "Pseudomonadaceae",       "Moraxellaceae"    ,      "Azonexaceae"    ,       
-                                    "Gordoniaceae"      ,     "Aeromonadaceae"   ,      "Bacillaceae"       ,     "Alcaligenaceae"  ,      
-                                    "Enterobacteriaceae" ,    "Microbacteriaceae" ,     "Streptomycetaceae"  ,    "Chromatiaceae"    ,     
-                                    "Staphylococcaceae"   ,   "Desulfovibrionaceae",    "Nitrosomonadaceae"   ,   "Micrococcaceae"    ,    
-                                    "Burkholderiaceae"     ,  "Nocardioidaceae",        "Enterococcaceae"      ,  "Chromobacteriaceae" ,   
-                                    "Azospirillaceae"       , "Oxalobacteraceae" ,      "Streptococcaceae"      , "Thiotrichaceae"  ,      
-                                    "Casimicrobiaceae",       "Paracoccaceae"   ,       "Brucellaceae",           "Flavobacteriaceae",     
-                                    "Sphaerotilaceae"  ,      "Rhizobiaceae"    ,       "Corynebacteriaceae",     "Rhodospirillaceae" ,    
-                                    "Geobacteraceae"    ,     "Methylococcaceae" ,      "Roseobacteraceae"   ,    "Chlorobiaceae"      ,   
-                                    "Aerococcaceae"      ,    "Morganellaceae"    ,     "Sphingomonadaceae"   ,   "Acetobacteraceae"    ,  
-                                    "Rhodocyclaceae"      ,   "Nocardiaceae"       ,    "Nitrobacteraceae"     ,  "Fluviibacteraceae"    , 
-                                    "Clostridiaceae"       ,  "Pseudonocardiaceae"  ,   "Hyphomicrobiaceae"     , "Phyllobacteriaceae"    ,
-                                    "Intrasporangiaceae",     "Actinomycetaceae"     ,  "Arcobacteraceae",        "Erwiniaceae"       ,    
-                                    "Pectobacteriaceae"  ,    "Rhodanobacteraceae",     "Sulfuricellaceae",       "Marinilabiliaceae"  ,   
-                                    "Paenibacillaceae"    ,   "Anaeromyxobacteraceae",  "Lactobacillaceae" ,      "Fusobacteriaceae"    ,  
-                                    "Hymenobacteraceae"     , "Devosiaceae"     ,       "Lachnospiraceae"   ,     "Peptostreptococcaceae", 
-                                    "Dermatophilaceae"     ,  "Methylocystaceae" ,      "Idiomarinaceae"     ,    "Carnobacteriaceae"     ,
-                                    "Pasteurellaceae"   ,     "Oscillospiraceae"  ,     "Acidilutibacteraceae",   "Planococcaceae"  ,      
-                                    "Selenomonadaceae"   ,    "Vibrionaceae"       ,    "Peptococcaceae"       ,  "Methylobacteriaceae",   
-                                    "Hyphomonadaceae",        "Spirosomaceae"       ,   "Zoogloeaceae"          , "Veillonellaceae",       
-                                    "Bacteroidaceae"  ,       "Erysipelotrichaceae"  ,  "Labilitrichaceae"       ,"Stappiaceae"     ,      
-                                    "Beijerinckiaceae" ,      "Xanthobacteraceae"     , "Pseudoalteromonadaceae" ,"Jiangellaceae"    ,     
-                                    "Sterolibacteriaceae",      "Unclassified")))
-other_family <- ARG_Family[24:141,] %>% group_by(Sample_type) %>% summarise(mean = sum(mean))
+  arrange(factor(Family, levels = c("Mycobacteriaceae"     ,    "Xanthomonadaceae" ,    "Weeksellaceae"      ,   
+                                    "Comamonadaceae"       ,  "Pseudomonadaceae"   ,    "Moraxellaceae"      ,    "Azonexaceae"        ,   
+                                    "Gordoniaceae"         ,  "Aeromonadaceae"     ,    "Bacillaceae"        ,    "Enterobacteriaceae" ,   
+                                    "Microbacteriaceae"    ,  "Alcaligenaceae"     ,    "Streptomycetaceae"  ,    "Chromatiaceae"      ,   
+                                    "Staphylococcaceae"    ,  "Nitrosomonadaceae"  ,    "Micrococcaceae"     ,    "Nocardioidaceae"    ,   
+                                    "Enterococcaceae"      ,  "Chromobacteriaceae" ,    "Azospirillaceae"    ,    "Streptococcaceae"   ,   
+                                    "Thiotrichaceae"       ,  "Burkholderiaceae"   ,    "Sphaerotilaceae"    ,    "Brucellaceae"       ,   
+                                    "Flavobacteriaceae"    ,  "Paracoccaceae"      ,    "Desulfovibrionaceae",    "Casimicrobiaceae"   ,   
+                                    "Corynebacteriaceae"   ,  "Rhodospirillaceae"  ,    "Geobacteraceae"     ,    "Roseobacteraceae"   ,   
+                                    "Oxalobacteraceae"     ,  "Rhizobiaceae"       ,    "Chlorobiaceae"      ,    "Aerococcaceae"      ,   
+                                    "Morganellaceae"       ,  "Sphingomonadaceae"  ,    "Nocardiaceae"       ,    "Fluviibacteraceae"  ,   
+                                    "Clostridiaceae"       ,  "Pseudonocardiaceae" ,    "Hyphomicrobiaceae"  ,    "Intrasporangiaceae" ,   
+                                    "Actinomycetaceae"     ,  "Rhodocyclaceae"     ,    "Arcobacteraceae"    ,    "Acetobacteraceae"   ,   
+                                    "Erwiniaceae"          ,  "Pectobacteriaceae"  ,    "Marinilabiliaceae"  ,    "Rhodanobacteraceae" ,   
+                                    "Nitrobacteraceae"     ,  "Paenibacillaceae"   ,    "Sulfuricellaceae"   ,    "Lactobacillaceae"   ,   
+                                    "Fusobacteriaceae"     ,  "Hymenobacteraceae"  ,    "Devosiaceae"        ,    "Lachnospiraceae"    ,   
+                                    "Peptostreptococcaceae",  "Methylocystaceae"   ,    "Idiomarinaceae"     ,    "Carnobacteriaceae"  ,   
+                                    "Pasteurellaceae"      ,  "Oscillospiraceae"   ,    "Acidilutibacteraceae",   "Planococcaceae"     ,   
+                                    "Methylococcaceae"     ,  "Phyllobacteriaceae" ,    "Selenomonadaceae"   ,    "Vibrionaceae"       ,   
+                                    "Anaeromyxobacteraceae",  "Peptococcaceae"     ,    "Hyphomonadaceae"    ,    "Veillonellaceae"    ,   
+                                    "Bacteroidaceae"       ,  "Erysipelotrichaceae",    "Labilitrichaceae"   ,    "Pseudoalteromonadaceae",
+                                    "Unclassified")))
+other_family <- ARG_Family[23:126,] %>% group_by(Sample_type) %>% summarise(mean = sum(mean))
 other_family$Family <- "Unclassified/Others"
-ARG_Family <- ARG_Family[1:23,]
+ARG_Family <- ARG_Family[1:22,]
 ARG_Family <- rbind(ARG_Family, other_family)
 ## Plot
-ARG_Family$Family <- factor(ARG_Family$Family, levels = c("Mycobacteriaceae","Xanthomonadaceae","Comamonadaceae",        
-                                                          "Weeksellaceae","Pseudomonadaceae","Moraxellaceae","Azonexaceae",       
-                                                          "Gordoniaceae","Aeromonadaceae","Bacillaceae","Alcaligenaceae","Unclassified/Others"))
+ARG_Family$Family <- factor(ARG_Family$Family, levels = c("Mycobacteriaceae"     ,    "Xanthomonadaceae" ,    "Weeksellaceae"      ,   
+                                                          "Comamonadaceae"       ,  "Pseudomonadaceae"   ,    "Moraxellaceae"      ,    "Azonexaceae"        ,   
+                                                          "Gordoniaceae"         ,  "Aeromonadaceae"     ,    "Bacillaceae"        ,    "Enterobacteriaceae" ,
+                                                          "Unclassified/Others"))
 ARG_Family$Sample_type <- factor(ARG_Family$Sample_type, 
                                 levels = c("AT","ARP","ODP"))
 p <- ggplot(ARG_Family, aes(x = Sample_type, y = mean, fill = Family)) + 
@@ -544,45 +588,46 @@ ggplot(ARG_Genus, aes(x = Sample_type, y = mean, fill = Genus)) +
 ARG_Genus <- ARG_Genus %>% arrange(desc(mean))
 unique(ARG_Genus$Genus)
 ARG_Genus <-ARG_Genus %>% 
-  arrange(factor(Genus,  levels = c("Mycolicibacterium",                      "Pseudomonas"     ,  "Acinetobacter"    , "Xanthomonas"     ,  "Gordonia"       ,  
-                                    "Mycobacterium"    ,  "Lysobacter"  ,      "Aeromonas"      ,   "Chryseobacterium",  "Acidovorax"     ,   "Ferribacterium",   
-                                    "Dechloromonas"    , "Lysinibacillus",    "Ottowia"         ,  "Pigmentiphaga"    , "Nitrosococcus"   ,  "Variovorax"     ,  
-                                    "Empedobacter"    ,  "Riemerella"   ,     "Stenotrophomonas",  "Klebsiella"       , "Streptomyces"    ,  "Desulfovibrio"  ,  
-                                    "Nitrosomonas"     , "Nocardioides" ,     "Hydrogenophaga"  ,  "Macrococcus"      , "Cloacibacterium" ,  "Niveispirillum" ,  
-                                    "Actinacidiphila" ,  "Streptococcus",     "Chromobacterium" ,  "Massilia"         , "Thiothrix"       ,  "Casimicrobium"  ,  
-                                    "Staphylococcus"   , "Burkholderia" ,     "Comamonas"       ,  "Enterococcus"     , "Paenarthrobacter",  "Gemmobacter"    ,  
-                                    "Corynebacterium" ,  "Brucella"     ,     "Achromobacter"   ,  "Kaistella"        , "Pulveribacter"   ,  "Trichlorobacter",  
-                                    "Methylococcus"    , "Bacillus"     ,     "Defluviicoccus"  ,  "Microbacterium"   , "Shinella"        ,  "Chlorobaculum"  ,  
-                                    "Aerococcus"      ,  "Flavobacterium",    "Sulfitobacter"   ,  "Vagococcus"       , "Morganella"      ,  "Roseomonas"     ,  
-                                    "Denitrificimonas" , "Schlegelella" ,     "Rubrivivax"      ,  "Enterobacter"     , "Glutamicibacter" ,  "Rhodococcus"    ,  
-                                    "Escherichia"     ,  "Elizabethkingia",   "Fluviibacter"    ,  "Pseudonocardia"   , "Hyphomicrobium"  ,  "Stutzerimonas"  ,  
-                                    "Bordetella"       , "Mesorhizobium",     "Janibacter"      ,  "Paraclostridium"  , "Trueperella"     ,  "Aliarcobacter"  ,  
-                                    "Rhodoferax"      ,  "Thermomonas"  ,     "Raoultella"      ,  "Aromatoleum"      , "Myroides"        ,  "Citricoccus"    ,  
-                                    "Rhizobium"       ,  "Salmonella"   ,     "Pectobacterium"  ,  "Melaminivora"     , "Protaetiibacter" ,  "Sulfurimicrobium", 
-                                    "Bradyrhizobium"  ,  "Arenimonas"   ,     "Cupriavidus"     ,  "Alkalitalea"      , "Massilia group"  ,  "Paenibacillus"  ,  
-                                    "Anaeromyxobacter",  "Diaphorobacter",    "Rhizorhabdus"    ,  "Castellaniella"   , "Paludibacterium" ,  "Azospira"       ,  
-                                    "Sphingomonas"    ,  "Moraxella"    ,     "Fusobacterium"   ,  "Erwinia"          , "Pontibacter"     ,  "Cedecea"        ,  
-                                    "Paradevosia"     ,  "Microcella"   ,     "Lacrimispora"    ,  "Tahibacter"       , "Romboutsia"      ,  "Metabacillus"   ,  
-                                    "Gephyromycinifex",  "Mesobacillus" ,     "Magnetospirillum",  "Methylosinus"     , "Paraburkholderia",  "Roseburia"      ,  
-                                    "Idiomarina"      ,  "Jeotgalibaca" ,     "Actinobacillus"  ,  "Sphingopyxis"     , "Janthinobacterium", "Pasteurella"    ,  
-                                    "Citrobacter"     ,  "Paracoccus"   ,     "Pseudoduganella" ,  "Novosphingobium"  , "Acidilutibacter" ,  "Pandoraea"      ,  
-                                    "Rathayibacter"   ,  "Ralstonia"    ,     "Amniculibacterium", "Planococcus"      , "Collimonas"      ,  "Methylomonas"   ,  
-                                    "Celeribacter"    ,  "Peribacillus" ,     "Nordella"        ,  "Megamonas"        , "Vibrio"          ,  "Pseudoxanthomonas",
-                                    "Maribacter"      ,  "Pantoea"      ,     "Clostridium"     ,  "Quatrionicoccus"  , "Azospirillum"    ,  "Acetivibrio"    ,  
-                                    "Thioflavicoccus" ,  "Phycicoccus"  ,     "Luteibacter"     ,  "Desulfofarcimen"  , "Methylobacterium",  "Haematobacter"  ,  
-                                    "Hyphomonas"      ,  "Dyadobacter"  ,     "Thauera"         ,  "Megasphaera"      , "Xylophilus"      ,  "Bacteroides"    ,  
-                                    "Erysipelothrix"  ,  "Geobacter"    ,     "Kitasatospora"   ,  "Nitrobacter"      , "Flavonifractor"  ,  "Labilithrix"    ,  
-                                    "Pannonibacter"   ,  "Methylocella" ,     "Ancylobacter"    ,  "Frateuria"        , "Pseudoalteromonas", "Jiangella"      ,  
-                                    "Sulfuritalea"    ,  "Rhodovulum"   ,     "Methylomicrobium",  "Aquimarina"       ,"Unclassified" )))
-other_genus <- ARG_Genus[23:237,] %>% group_by(Sample_type) %>% summarise(mean = sum(mean))
+  arrange(factor(Genus,  levels = c( "Mycolicibacterium", "Pseudomonas"     ,  "Xanthomonas"      , "Acinetobacter"   ,
+                                     "Mycobacterium"    , "Gordonia"        ,  "Aeromonas"        , "Chryseobacterium",  "Dechloromonas"    ,
+                                     "Acidovorax"       , "Lysobacter"      ,  "Lysinibacillus"   , "Nitrosococcus"   ,  "Ferribacterium"   ,
+                                     "Empedobacter"     , "Riemerella"      ,  "Ottowia"          , "Stenotrophomonas",  "Klebsiella"       ,
+                                     "Pigmentiphaga"    , "Nitrosomonas"    ,  "Variovorax"       , "Nocardioides"    ,  "Streptomyces"     ,
+                                     "Macrococcus"      , "Cloacibacterium" ,  "Niveispirillum"   , "Hydrogenophaga"  ,  "Actinacidiphila"  ,
+                                     "Streptococcus"    , "Chromobacterium" ,  "Thiothrix"        , "Staphylococcus"  ,  "Desulfovibrio"    ,
+                                     "Casimicrobium"    , "Enterococcus"    ,  "Paenarthrobacter" , "Gemmobacter"     ,  "Corynebacterium"  ,
+                                     "Brucella"         , "Burkholderia"    ,  "Comamonas"        , "Trichlorobacter" ,  "Bacillus"         ,
+                                     "Defluviicoccus"   , "Achromobacter"   ,  "Shinella"         , "Chlorobaculum"   ,  "Aerococcus"       ,
+                                     "Flavobacterium"   , "Massilia"        ,  "Sulfitobacter"    , "Vagococcus"      ,  "Morganella"       ,
+                                     "Rubrivivax"       , "Pulveribacter"   ,  "Kaistella"        , "Denitrificimonas",  "Schlegelella"     ,
+                                     "Enterobacter"     , "Glutamicibacter" ,  "Rhodococcus"      , "Escherichia"     ,  "Fluviibacter"     ,
+                                     "Pseudonocardia"   , "Microbacterium"  ,  "Stutzerimonas"    , "Bordetella"      ,  "Hyphomicrobium"   ,
+                                     "Janibacter"       , "Paraclostridium" ,  "Trueperella"      , "Aliarcobacter"   ,  "Rhodoferax"       ,
+                                     "Raoultella"       , "Elizabethkingia" ,  "Aromatoleum"      , "Myroides"        ,  "Roseomonas"       ,
+                                     "Citricoccus"      , "Salmonella"      ,  "Pectobacterium"   , "Melaminivora"    ,  "Protaetiibacter"  ,
+                                     "Alkalitalea"      , "Arenimonas"      ,  "Thermomonas"      , "Bradyrhizobium"  ,  "Massilia group"   ,
+                                     "Paenibacillus"    , "Diaphorobacter"  ,  "Rhizorhabdus"     , "Sulfurimicrobium",  "Paludibacterium"  ,
+                                     "Sphingomonas"     , "Moraxella"       ,  "Fusobacterium"    , "Erwinia"         ,  "Pontibacter"      ,
+                                     "Cupriavidus"      , "Cedecea"         ,  "Paradevosia"      , "Microcella"      ,  "Lacrimispora"     ,
+                                     "Tahibacter"       , "Romboutsia"      ,  "Metabacillus"     , "Mesobacillus"    ,  "Magnetospirillum" ,
+                                     "Methylosinus"     , "Paraburkholderia",  "Roseburia"        , "Idiomarina"      ,  "Jeotgalibaca"     ,
+                                     "Actinobacillus"   , "Sphingopyxis"    ,  "Pasteurella"      , "Acidilutibacter" ,  "Rathayibacter"    ,
+                                     "Ralstonia"        , "Amniculibacterium", "Planococcus"      , "Collimonas"      ,  "Methylomonas"     ,
+                                     "Celeribacter"     , "Peribacillus"    ,  "Mesorhizobium"    , "Nordella"        ,  "Megamonas"        ,
+                                     "Vibrio"           , "Pseudoxanthomonas", "Maribacter"       , "Anaeromyxobacter",  "Pantoea"          ,
+                                     "Clostridium"      , "Quatrionicoccus" ,  "Luteibacter"      , "Acetivibrio"     ,  "Pseudoduganella"  ,
+                                     "Thioflavicoccus"  , "Phycicoccus"     ,  "Desulfofarcimen"  , "Haematobacter"   ,  "Hyphomonas"       ,
+                                     "Megasphaera"      , "Xylophilus"      ,  "Bacteroides"      , "Erysipelothrix"  ,  "Kitasatospora"    ,
+                                     "Novosphingobium"  , "Nitrobacter"     ,  "Flavonifractor"   , "Paracoccus"      ,  "Azospira"         ,
+                                     "Labilithrix"      , "Pseudoalteromonas", "Unclassified"   )))
+other_genus <- ARG_Genus[23:204,] %>% group_by(Sample_type) %>% summarise(mean = sum(mean))
 other_genus$Genus <- "Unclassified/Others"
 ARG_Genus <- ARG_Genus[1:22,]
 ARG_Genus <- rbind(ARG_Genus, other_genus)
 # Plot
-ARG_Genus$Genus <- factor(ARG_Genus$Genus, levels = c("Mycolicibacterium","Pseudomonas","Acinetobacter",
-                                                      "Xanthomonas","Gordonia","Mycobacterium",
-                                                      "Lysobacter","Aeromonas","Chryseobacterium",
-                                                      "Acidovorax","Ferribacterium","Unclassified/Others"))
+ARG_Genus$Genus <- factor(ARG_Genus$Genus, levels = c("Mycolicibacterium", "Pseudomonas"     ,  "Xanthomonas"      , "Acinetobacter"   ,
+                                                      "Mycobacterium"    , "Gordonia"        ,  "Aeromonas"        , "Chryseobacterium",  "Dechloromonas"    ,
+                                                      "Acidovorax"       , "Lysobacter"      ,  "Unclassified/Others"))
 ARG_Genus$Sample_type <- factor(ARG_Genus$Sample_type, 
                                  levels = c("AT","ARP","ODP"))
 p <- ggplot(ARG_Genus, aes(x = Sample_type, y = mean, fill = Genus)) + 
@@ -629,206 +674,179 @@ ggplot(ARG_Species, aes(x = Sample_type, y = mean, fill = Species)) +
 ARG_Species <- ARG_Species %>% arrange(desc(mean))
 unique(ARG_Species$Species)
 ARG_Species <-ARG_Species %>% 
-  arrange(factor(Species, levels = c("Mycolicibacterium insubricum"   ,             
-                                     "Pseudomonas aeruginosa"                   ,    "Gordonia amarae"                ,            
-                                     "Xanthomonas euroxanthea"                  ,    "Mycolicibacterium neoaurum"     ,            
-                                     "Aeromonas sp. ASNIH1"                     ,    "Ferribacterium limneticum"      ,            
-                                     "Mycolicibacterium chitae"                 ,    "Mycolicibacterium confluentis"  ,            
-                                     "Chryseobacterium sp. KACC 21268"          ,    "Pigmentiphaga aceris"           ,            
-                                     "Nitrosococcus wardiae"                    ,    "Acinetobacter sp. C32I"         ,            
-                                     "Xanthomonas translucens pv. Phleipratensis",   "Riemerella anatipestifer"       ,            
-                                     "Ottowia testudinis"                       ,    "Mycobacterium sp. DL592"        ,            
-                                     "Desulfovibrio vulgaris"                   ,    "Mycolicibacterium anyangense"   ,            
-                                     "Lysinibacillus capsici"                   ,    "Dechloromonas denitrificans"    ,            
-                                     "Gordonia insulae"                         ,    "Acinetobacter schindleri"       ,            
-                                     "Mycolicibacterium vaccae 95051"           ,    "Mycolicibacterium litorale"     ,            
-                                     "Acidovorax sp. YS12"                      ,    "Mycolicibacterium sediminis"    ,            
-                                     "Stenotrophomonas maltophilia"             ,    "Nitrosomonas eutropha C91"      ,            
-                                     "Dechloromonas sp. HYN0024"                ,    "Klebsiella quasipneumoniae"     ,            
-                                     "Mycolicibacterium phocaicum"              ,    "Chryseobacterium sp. POL2"      ,            
-                                     "Niveispirillum cyanobacteriorum"          ,    "Empedobacter brevis"            ,            
-                                     "Actinacidiphila bryophytorum"             ,    "Casimicrobium huifangae"        ,            
-                                     "Acinetobacter variabilis"                 ,    "Thiothrix litoralis"            ,            
-                                     "Mycolicibacterium fallax"                 ,    "Paenarthrobacter ureafaciens"   ,            
-                                     "Gemmobacter aquarius"                     ,    "Lysinibacillus sp. 2017"        ,            
-                                     "Chromobacterium rhizoryzae"               ,    "Cloacibacterium normanense"     ,            
-                                     "Ottowia oryzae"                           ,    "Acinetobacter sp. TR3"          ,            
-                                     "Brucella anthropi"                        ,    "Acinetobacter baumannii"        ,            
-                                     "Comamonas sp. NLF-7-7"                    ,    "Kaistella sp. BT6-1-3"          ,            
-                                     "Chryseobacterium sp. Y16C"                ,    "Burkholderia cepacia complex"   ,            
-                                     "Hydrogenophaga sp. RAC07"                 ,    "Lysobacter sp. S4-A87"          ,            
-                                     "Pulveribacter suum"                       ,    "Trichlorobacter lovleyi SZ"     ,            
-                                     "Methylococcus sp. Mc7"                    ,    "Mycobacterium sp. MS1601"       ,            
-                                     "Chryseobacterium manosquense"             ,    "Defluviicoccus vanus"           ,            
-                                     "Empedobacter stercoris"                   ,    "Mycolicibacterium helvum"       ,            
-                                     "Chryseobacterium sp."                     ,   "Mycobacterium sp. IDR2000157661" ,           
-                                     "Shinella zoogloeoides"                    ,   "Chlorobaculum parvum NCIB 8327"  ,           
-                                     "Aerococcus urinaeequi"                    ,   "Nocardioides daphniae"           ,           
-                                     "Mycobacterium grossiae"                   ,   "Mycolicibacterium rhodesiae NBB3",           
-                                     "Flavobacterium branchiophilum FL-15"      ,   "Mycolicibacterium sarraceniae"   ,           
-                                     "Sulfitobacter sp. BSw21498"               ,   "Xanthomonas arboricola"          ,           
-                                     "Klebsiella pneumoniae"                    ,   "Acinetobacter towneri"           ,           
-                                     "Acidovorax sp. HDW3"                      ,   "Mycolicibacterium sp. YH-1"      ,           
-                                     "Morganella morganii"                      ,   "Variovorax sp. PAMC26660"        ,           
-                                     "Pseudomonas chlororaphis subsp. Aureofaciens", "Dechloromonas sp. TW-R-39-2"    ,            
-                                     "Acidovorax radicis"                       ,    "Chryseobacterium taklimakanense",            
-                                     "Denitrificimonas caeni"                   ,    "Staphylococcus aureus"          ,            
-                                     "Schlegelella aquatica"                    ,    "Acidovorax sp. JMULE5"          ,            
-                                     "Rubrivivax gelatinosus IL144"             ,    "Bacillus anthracis"             ,            
-                                     "Enterobacter hormaechei"                  ,    "Aeromonas veronii"              ,            
-                                     "Rhodococcus coprophilus"                  ,    "Escherichia coli"               ,            
-                                     "Elizabethkingia anophelis"                ,    "Cloacibacterium caeni"          ,            
-                                     "Lysobacter sp. CW239"                     ,    "Pseudomonas sp. GCEP-101"       ,            
-                                     "Fluviibacter phosphoraccumulans"          ,    "Pseudonocardia sp. HH130630-07" ,            
-                                     "Hydrogenophaga sp. PBC"                   ,    "Hyphomicrobium denitrificans ATC 51888",     
-                                     "Massilia sp. H6"                          ,   "Riemerella anatipestifer Yb2"    ,           
-                                     "Stenotrophomonas acidaminiphila"          ,   "Hydrogenophaga taeniospiralis"   ,           
-                                     "Massilia sp. LPB0304"                     ,   "Mycolicibacterium rutilum"       ,           
-                                     "Mycolicibacterium brumae"                 ,   "Staphylococcus pseudoxylosus"    ,           
-                                     "Lysinibacillus sp. CD3-6"                 ,   "Lysinibacillus sp. G01H"         ,           
-                                     "Paraclostridium bifermentans"             ,   "Stenotrophomonas sp. 169"        ,           
-                                     "Variovorax sp. HW608"                     ,   "Trueperella pyogenes"            ,           
-                                     "Achromobacter xylosoxidans"               ,   "Variovorax sp. PAMC28562"        ,           
-                                     "Corynebacterium diphtheriae"              ,   "Bordetella trematum"             ,           
-                                     "Nocardioides sp. JS614"                   ,   "Hydrogenophaga sp. NH-16"        ,           
-                                     "Rhodoferax sp. BAB1"                      ,   "Enterococcus faecalis"           ,           
-                                     "Variovorax paradoxus"                     ,   "Nitrosomonas ureae"              ,           
-                                     "Raoultella ornithinolytica"               ,   "Glutamicibacter nicotianae"      ,           
-                                     "Mycobacterium heraklionense"              ,   "Aromatoleum petrolei"            ,           
-                                     "Nocardioides sp. LMS-CY"                  ,   "Acidovorax sp. RAC01"            ,           
-                                     "Myroides odoratimimus"                    ,   "Acinetobacter sp. NEB 394"       ,           
-                                     "Citricoccus sp. NR2"                      ,   "Chromobacterium vaccinii"        ,           
-                                     "Nocardioides ungokensis"                  ,   "Macrococcus armenti"             ,           
-                                     "Stutzerimonas stutzeri group"             ,   "Thiothrix winogradskyi"          ,           
-                                     "Melaminivora suipulveris"                 ,   "Mycolicibacterium poriferae"     ,           
-                                     "Hydrogenophaga sp. PBL-H3"                ,   "Protaetiibacter intestinalis"    ,           
-                                     "Sulfurimicrobium lacus"                   ,   "Mycolicibacterium tokaiense"     ,           
-                                     "Corynebacterium freneyi"                  ,   "Microbacterium esteraromaticum"  ,           
-                                     "Arenimonas daejeonensis"                  ,   "Burkholderia territorii"         ,           
-                                     "Alkalitalea saponilacus"                  ,   "Mycolicibacterium chubuense NBB4",           
-                                     "Vagococcus lutrae"                        ,   "Enterococcus faecium"            ,           
-                                     "Mycolicibacterium moriokaense"            ,   "Roseomonas sp. OT10"             ,           
-                                     "Streptomyces genisteinicus"               ,   "Lysobacter enzymogenes"          ,           
-                                     "Variovorax sp. RKNM96"                    ,   "Paenibacillus urinalis"          ,           
-                                     "Massilia sp. YMA4"                        ,   "Acidovorax sp. 1608163"          ,           
-                                     "Rhizorhabdus wittichii"                   ,   "Mycolicibacterium fluoranthenivorns",        
-                                     "Castellaniella defragrans 65Phen"         ,   "Thermomonas brevis"              ,           
-                                     "Mesorhizobium amorphae CCNWGS0123"        ,   "Paludibacterium sp. B53371"      ,            
-                                     "Mycolicibacterium gilvum Spyr1"           ,   "Mycolicibacterium psychrotolerans",           
-                                     "Moraxella osloensis"                      ,   "Fusobacterium polymorphum"        ,          
-                                     "Burkholderia sp. FERM BP-3421"            ,   "Streptomyces actuosus"            ,           
-                                     "Streptococcus pneumoniae"                 ,   "Erwinia sp. J780"                 ,          
-                                     "Aliarcobacter cryaerophilus"              ,   "Mycobacterium heckeshornense"     ,          
-                                     "Diaphorobacter sp. JS3050"                ,   "Mycolicibacterium madagascariense",           
-                                     "Acidovorax avenae"                        ,   "Pontibacter pudoricolor"         ,          
-                                     "Cupriavidus pauculus"                     ,   "Pseudomonas sp. L5B5"            ,           
-                                     "Cedecea neteri"                           ,   "Paradevosia shaoguanensis"       ,           
-                                     "Diaphorobacter sp. ED-3"                  ,   "Acinetobacter gyllenbergii"      ,           
-                                     "Chryseobacterium suipulveris"             ,   "Gordonia pseudamarae"            ,           
-                                     "Bradyrhizobium diazoefficiens"            ,   "Acinetobacter indicus"           ,           
-                                     "Tahibacter sp. W38"                       ,   "Pseudomonas sp. B21-015"         ,           
-                                     "Romboutsia sp. CE17"                      ,   "Vagococcus carniphilus"          ,           
-                                     "Microbacterium foliorum"                  ,   "Metabacillus sp. B2-18"          ,           
-                                     "Corynebacterium jeikeium"                 ,   "Sphingomonas sp. CL5.1"          ,           
-                                     "Vagococcus fluvialis"                     ,  "Pseudomonas pohangensis"          ,          
-                                     "Gephyromycinifex aptenodytis"             ,    "Thermomonas aquatica"           ,            
-                                     "Mesobacillus jeotgali"                    ,   "Rhodococcus sp. PBTS 1"          ,           
-                                     "Magnetospirillum magneticum AMB-1"        ,   "Gordonia sp. PP30"               ,           
-                                     "Lysobacter soli"                          ,   "Methylosinus trichosporium OB3b" ,           
-                                     "Mycolicibacterium fortuitum"              ,   "Paraburkholderia xenovorans LB400",           
-                                     "Glutamicibacter creatinolyticus"          ,   "Klebsiella pneumoniae MGH 39"      ,          
-                                     "Roseburia intestinalis XB6B4"             ,   "Pseudomonas fluorescens R124"       ,         
-                                     "Lysobacter sp. TY2-98"                    ,   "Klebsiella variicola subsp. Variicola",       
-                                     "Jeotgalibaca porci"                       ,   "Achromobacter xylosoxidans A8"       ,        
-                                     "Actinobacillus pleuropneumoniae"          ,   "Pseudomonas sp. WJP1"                ,       
-                                     "Streptomyces albus"                       ,   "Pseudomonas sp. OIL-1"               ,       
-                                     "Azospira inquinata"                       ,   "Acidovorax temperans"                ,       
-                                     "Achromobacter sp. ES-001"                 ,   "Lysobacter antibioticus"             ,       
-                                     "Stutzerimonas stutzeri"                   ,   "Mycobacterium parmense"              ,       
-                                     "Sphingopyxis macrogoltabida"              ,   "Pasteurella multocida"               ,       
-                                     "Anaeromyxobacter paludicola"              ,   "Streptomyces sp. NHF165"             ,       
-                                     "Aliarcobacter cryaerophilus D2610"        ,   "Enterococcus faecium DO"             ,       
-                                     "Enterococcus cecorum"                     ,   "Corynebacterium vitaeruminis DSM 2029",      
-                                     "Citrobacter sp. Colony219"                ,   "Pseudomonas sp. J380"                ,       
-                                     "Mycolicibacterium celeriflavum"           ,   "Acidovorax sp. KKS102"               ,       
-                                     "Streptomyces sp. SirexAA-E"               ,   "Dechloromonas sp. A34"               ,       
-                                     "Mycolicibacterium mucogenicum DSM 44124"  ,   "pseudomallei group"                  ,       
-                                     "Pseudoduganella flava"                    ,   "Corynebacterium xerosis"             ,       
-                                     "Clostridium sphenoides JCM 1415"          , "Acidilutibacter cellobiosedens"        ,     
-                                     "Pandoraea oxalativorans"                  ,   "Mycolicibacterium arabiense"         ,       
-                                     "Aerococcus viridans"                      ,   "Mycobacterium noviomagense"          ,       
-                                     "Nocardioides cynanchi"                    ,   "Streptomyces tubbatahanensis"        ,       
-                                     "Rathayibacter sp. VKM Ac-2759"            ,   "Ralstonia mannitolilytica"           ,       
-                                     "Streptomyces sp. SCUT-3"                  ,   "Streptomyces durmitorensis"          ,       
-                                     "Amniculibacterium sp. G2-70"              ,   "Lysobacter oculi"                    ,       
-                                     "Streptomyces sp. INR7"                    ,   "Mycobacterium haemophilum DSM 44634" ,       
-                                     "Achromobacter sp. MFA1 R4"                ,   "Enterococcus sp. FDAARGOS_375"       ,       
-                                     "Thermomonas sp. XSG"                      ,   "Empedobacter falsenii"               ,       
-                                     "Aeromonas media"                          ,   "Planococcus sp. 107-1"               ,       
-                                     "Burkholderia sp. Bp7605"                  ,   "Acidovorax sp. NCPPB 2350"           ,       
-                                     "Collimonas arenae"                        ,   "Methylomonas koyamae"                ,       
-                                     "Celeribacter indicus"                     ,   "Lysobacter capsici"                  ,       
-                                     "Nocardioides sambongensis"                ,   "Mesorhizobium huakuii 7653R"         ,       
-                                     "Variovorax sp. PBS-H4"                    ,   "Staphylococcus saprophyticus"        ,       
-                                     "Peribacillus psychrosaccharolyticus"      ,   "Nordella sp. HKS 07"                 ,       
-                                     "Megamonas funiformis"                     ,   "Acinetobacter sp. SCLZS86"           ,       
-                                     "Chryseobacterium sp. 6424"                ,   "Pseudoxanthomonas sp. SL93"          ,       
-                                     "Pseudomonas sp. Q1-7"                     ,   "Massilia sp. NP310"                  ,      
-                                     "Maribacter sp. Hal144"                    ,   "Chryseobacterium sp. MEBOG07"        ,       
-                                     "Bordetella genomosp. 13"                  ,   "Streptomyces bathyalis"              ,    
-                                     "Anaeromyxobacter oryzae"                  ,   "Pantoea rwandensis"                ,          
-                                     "Acinetobacter johnsonii"                  ,   "Clostridium perfringens"           ,        
-                                     "Burkholderia multivorans"                 ,   "Quatrionicoccus australiensis"     ,         
-                                     "Paracoccus yeei"                          ,   "Corynebacterium variabile DSM 44702",         
-                                     "Acetivibrio thermocellus ATCC 27405"      ,   "Comamonas sp. NLF-1-9"              ,         
-                                     "Achromobacter sp. AONIH1"                 ,   "Cupriavidus necator"               ,        
-                                     "Thioflavicoccus mobilis 8321"             ,   "Variovorax sp. PBL-E5"             ,         
-                                     "Phycicoccus endophyticus"                 ,   "Thermomonas sp. IMCC34681"         ,         
-                                     "Cupriavidus sp. P-10"                     ,   "Mycolicibacterium austroafricanum" ,         
-                                     "Aeromonas sp. FDAARGOS 1410"              ,   "Mycolicibacterium mengxianglii"    ,         
-                                     "Luteibacter anthropi"                     ,   "Desulfofarcimen acetoxidans DSM 771",         
-                                     "Methylobacterium aquaticum"               ,   "Pseudomonas chlororaphis"          ,        
-                                     "Haematobacter massiliensis"               ,   "Bradyrhizobium sp. 1(2017)"        ,         
-                                     "Acidovorax monticola"                     ,   "Lacrimispora saccharolytica"       ,         
-                                     "Burkholderia plantarii"                   ,   "Roseomonas sp. FDAARGOS_362"       ,         
-                                     "Streptococcus suis"                       ,   "Hyphomonas atlantica"              ,         
-                                     "Dyadobacter sp. U1"                       ,   "Azospirillum sp. TSH100"           ,         
-                                     "Massilia forsythiae"                      ,   "Thauera chlorobenzoica"            ,         
-                                     "Azospira restricta"                       ,   "Megasphaera stantonii"             ,         
-                                     "Xylophilus rhododendri"                   ,   "Rhodococcus sp. W8901"             ,         
-                                     "Pseudomonas sp. ABC1"                     ,   "Comamonas aquatica"                ,         
-                                     "Bacteroides faecium"                      ,   "Staphylococcus xylosus"            ,         
-                                     "Pseudomonas siliginis"                    ,   "Erysipelothrix rhusiopathiae"      ,         
-                                     "Geobacter sp. SVR"                        ,   "Nocardioides sp. S5"               ,         
-                                     "Kitasatospora sp. MMS16-BH015"            ,   "Novosphingobium sp. KACC 22771"    ,         
-                                     "Comamonas serinivorans"                   ,   "Paracoccus liaowanqingii"          ,         
-                                     "Nitrobacter hamburgensis X14"             ,   "Burkholderia gladioli"             ,         
-                                     "Pseudomonas muyukensis"                   ,   "Flavonifractor plautii"            ,         
-                                     "Salmonella enterica"                      ,   "Paracoccus aminophilus JCM 7686"   ,         
-                                     "Paracoccus sp. MC1862"                    ,   "Streptococcus oriscaviae"          ,         
-                                     "Diaphorobacter sp. HDW4B"                 ,   "Sphingomonas sp. S2-65"            ,         
-                                     "Labilithrix luteola"                      ,   "Sphingomonas profundi"             ,         
-                                     "Pannonibacter phragmitetus"               ,   "Methylocella tundrae"              ,         
-                                     "Pseudomonas putida"                       ,   "Ancylobacter sp. TS-1"             ,         
-                                     "Frateuria sp. 5GH9-34"                    ,  "Pseudoxanthomonas suwonensis 11-1"  ,        
-                                     "Bradyrhizobium sp. CCBAU 051011"          ,   "Pseudomonas orientalis"            ,         
-                                     "Pseudoalteromonas luteoviolacea"          ,   "Microbacterium paraoxydans"        ,         
-                                     "Burkholderia diffusa"                     ,   "Phycicoccus sp. HDW14"             ,         
-                                     "Jiangella alkaliphila"                    ,   "Sulfuritalea hydrogenivorans sk43H",         
-                                     "Hydrogenophaga sp. SL48"                  ,   "Azospirillum sp. TSA2s"            ,         
-                                     "Aeromonas caviae"                         ,   "Rhodovulum sp. P5"                 ,         
-                                     "Methylomicrobium album BG8"               ,   "Aquimarina sp. BL5"                ,         
-                                     "Rhodoferax koreense"                      ,   "Unclassified")))
-other_species <- ARG_Species[17:434,] %>% group_by(Sample_type) %>% summarise(mean = sum(mean))
+  arrange(factor(Species, levels = c( "Mycolicibacterium insubricum"                ,  
+                                      "Pseudomonas aeruginosa"                      , "Mycolicibacterium confluentis"             , 
+                                      "Mycolicibacterium neoaurum"                  , "Gordonia amarae"                           ,  
+                                      "Xanthomonas euroxanthea"                     , "Aeromonas sp. ASNIH1"                      ,  
+                                      "Xanthomonas translucens pv. Phleipratensis"  , "Mycobacterium sp. DL592"                   ,  
+                                      "Chryseobacterium sp. KACC 21268"             , "Nitrosococcus wardiae"                     ,  
+                                      "Ferribacterium limneticum"                   , "Riemerella anatipestifer"                  ,  
+                                      "Mycolicibacterium vaccae 95051"              , "Pigmentiphaga aceris"                      ,  
+                                      "Lysinibacillus capsici"                      , "Gordonia insulae"                          ,  
+                                      "Acinetobacter schindleri"                    , "Dechloromonas denitrificans"               ,  
+                                      "Mycolicibacterium anyangense"                , "Dechloromonas sp. HYN0024"                 ,  
+                                      "Stenotrophomonas maltophilia"                , "Acidovorax sp. YS12"                       ,  
+                                      "Nitrosomonas eutropha C91"                   , "Empedobacter brevis"                       , 
+                                      "Klebsiella quasipneumoniae"                  , "Mycobacterium sp. MS1601"                  ,  
+                                      "Mycolicibacterium phocaicum"                 , "Chryseobacterium sp. POL2"                 ,  
+                                      "Niveispirillum cyanobacteriorum"             , "Mycolicibacterium fallax"                  ,  
+                                      "Actinacidiphila bryophytorum"                , "Ottowia testudinis"                        , 
+                                      "Acinetobacter variabilis"                    , "Mycolicibacterium brumae"                  ,  
+                                      "Mycolicibacterium chitae"                    , "Thiothrix litoralis"                       ,  
+                                      "Desulfovibrio vulgaris"                      , "Casimicrobium huifangae"                   ,  
+                                      "Paenarthrobacter ureafaciens"                , "Gemmobacter aquarius"                      ,  
+                                      "Lysinibacillus sp. 2017"                     , "Hydrogenophaga sp. RAC07"                  ,  
+                                      "Chromobacterium rhizoryzae"                  , "Cloacibacterium normanense"                ,  
+                                      "Ottowia oryzae"                              , "Acinetobacter sp. TR3"                     ,  
+                                      "Brucella anthropi"                           , "Acinetobacter baumannii"                   ,  
+                                      "Chryseobacterium sp. Y16C"                   , "Mycolicibacterium rhodesiae NBB3"          ,  
+                                      "Acinetobacter sp. C32I"                      , "Burkholderia cepacia complex"              ,  
+                                      "Trichlorobacter lovleyi SZ"                  , "Chryseobacterium manosquense"              ,  
+                                      "Comamonas sp. NLF-7-7"                       , "Defluviicoccus vanus"                      ,  
+                                      "Empedobacter stercoris"                      , "Mycolicibacterium helvum"                  ,  
+                                      "Chryseobacterium sp."                        , "Mycobacterium sp. IDR2000157661"           ,  
+                                      "Shinella zoogloeoides"                       , "Chlorobaculum parvum NCIB 8327"            ,  
+                                      "Aerococcus urinaeequi"                       , "Nocardioides daphniae"                     ,  
+                                      "Flavobacterium branchiophilum FL-15"         , "Mycolicibacterium sarraceniae"             ,  
+                                      "Sulfitobacter sp. BSw21498"                  , "Xanthomonas arboricola"                    ,  
+                                      "Klebsiella pneumoniae"                       , "Mycolicibacterium litorale"                , 
+                                      "Morganella morganii"                         , "Rubrivivax gelatinosus IL144"              , 
+                                      "Pulveribacter suum"                          , "Dechloromonas sp. TW-R-39-2"               , 
+                                      "Acidovorax radicis"                          , "Riemerella anatipestifer Yb2"              ,  
+                                      "Chryseobacterium taklimakanense"             , "Kaistella sp. BT6-1-3"                     ,  
+                                      "Denitrificimonas caeni"                      , "Staphylococcus aureus"                     ,  
+                                      "Schlegelella aquatica"                       , "Mycolicibacterium fluoranthenivorans"      ,  
+                                      "Acidovorax sp. JMULE5"                       , "Acinetobacter towneri"                     ,  
+                                      "Bacillus anthracis"                          , "Enterobacter hormaechei"                   ,  
+                                      "Mycolicibacterium poriferae"                 , "Aeromonas veronii"                         ,  
+                                      "Rhodococcus coprophilus"                     , "Escherichia coli"                          ,  
+                                      "Cloacibacterium caeni"                       , "Fluviibacter phosphoraccumulans"           ,  
+                                      "Lysobacter sp. CW239"                        , "Pseudomonas chlororaphis subsp. Aureofaciens",
+                                      "Pseudonocardia sp. HH130630-07"              , "Acidovorax sp. HDW3"                       ,  
+                                      "Hyphomicrobium denitrificans ATCC 51888"     , "Stenotrophomonas acidaminiphila"           ,  
+                                      "Nocardioides sp. JS614"                      , "Staphylococcus pseudoxylosus"              ,  
+                                      "Lysinibacillus sp. CD3-6"                    , "Lysinibacillus sp. G01H"                   ,  
+                                      "Paraclostridium bifermentans"                , "Stenotrophomonas sp. 169"                  ,  
+                                      "Trueperella pyogenes"                        , "Pseudomonas sp. GCEP-101"                  ,  
+                                      "Corynebacterium diphtheriae"                 , "Variovorax sp. PAMC28562"                  ,  
+                                      "Bordetella trematum"                         , "Hydrogenophaga sp. NH-16"                  ,  
+                                      "Rhodoferax sp. BAB1"                         , "Enterococcus faecalis"                     , 
+                                      "Variovorax paradoxus"                        , "Nitrosomonas ureae"                        ,  
+                                      "Raoultella ornithinolytica"                  , "Glutamicibacter nicotianae"                ,  
+                                      "Elizabethkingia anophelis"                   , "Mycobacterium heraklionense"               ,  
+                                      "Achromobacter xylosoxidans"                  , "Aromatoleum petrolei"                      , 
+                                      "Nocardioides sp. LMS-CY"                     , "Acidovorax sp. RAC01"                      , 
+                                      "Myroides odoratimimus"                       , "Acinetobacter sp. NEB 394"                 ,  
+                                      "Citricoccus sp. NR2"                         , "Chromobacterium vaccinii"                  ,  
+                                      "Nocardioides ungokensis"                     , "Variovorax sp. HW608"                      ,  
+                                      "Macrococcus armenti"                         , "Stutzerimonas stutzeri group"              ,  
+                                      "Thiothrix winogradskyi"                      , "Melaminivora suipulveris"                  ,  
+                                      "Hydrogenophaga sp. PBL-H3"                   , "Protaetiibacter intestinalis"              ,  
+                                      "Mycolicibacterium tokaiense"                 , "Massilia sp. H6"                           ,  
+                                      "Corynebacterium freneyi"                     , "Microbacterium esteraromaticum"            ,  
+                                      "Alkalitalea saponilacus"                     , "Arenimonas daejeonensis"                   ,  
+                                      "Vagococcus lutrae"                           , "Enterococcus faecium"                      ,  
+                                      "Mycolicibacterium psychrotolerans"           , "Streptomyces genisteinicus"                ,  
+                                      "Lysobacter enzymogenes"                      , "Variovorax sp. RKNM96"                     , 
+                                      "Mycobacterium grossiae"                      , "Paenibacillus urinalis"                    ,  
+                                      "Massilia sp. YMA4"                           , "Acidovorax sp. 1608163"                    ,  
+                                      "Rhizorhabdus wittichii"                      , "Sulfurimicrobium lacus"                    ,  
+                                      "Paludibacterium sp. B53371"                  , "Mycolicibacterium gilvum Spyr1"            ,  
+                                      "Mycolicibacterium sediminis"                 , "Lysobacter sp. S4-A87"                     ,  
+                                      "Moraxella osloensis"                         , "Fusobacterium polymorphum"                 ,  
+                                      "Burkholderia sp. FERM BP-3421"               , "Streptomyces actuosus"                     ,  
+                                      "Pseudomonas sp. L5B5"                        , "Streptococcus pneumoniae"                  ,  
+                                      "Erwinia sp. J780"                            , "Aliarcobacter cryaerophilus"               ,  
+                                      "Diaphorobacter sp. JS3050"                   , "Mycolicibacterium madagascariense"         ,  
+                                      "Acidovorax avenae"                           , "Pontibacter pudoricolor"                   ,  
+                                      "Cupriavidus pauculus"                        , "Cedecea neteri"                            ,  
+                                      "Paradevosia shaoguanensis"                   , "Diaphorobacter sp. ED-3"                   ,  
+                                      "Thermomonas brevis"                          , "Variovorax sp. PAMC26660"                  ,  
+                                      "Chryseobacterium suipulveris"                , "Gordonia pseudamarae"                      ,  
+                                      "Bradyrhizobium diazoefficiens"               , "Acinetobacter indicus"                     ,  
+                                      "Tahibacter sp. W38"                          , "Romboutsia sp. CE17"                       ,  
+                                      "Vagococcus carniphilus"                      , "Microbacterium foliorum"                   ,  
+                                      "Metabacillus sp. B2-18"                      ,"Corynebacterium jeikeium"                   , 
+                                      "Sphingomonas sp. CL5.1"                      ,"Vagococcus fluvialis"                       , 
+                                      "Pseudomonas pohangensis"                     , "Hydrogenophaga taeniospiralis"             ,  
+                                      "Mesobacillus jeotgali"                       , "Rhodococcus sp. PBTS 1"                    ,  
+                                      "Magnetospirillum magneticum AMB-1"           , "Gordonia sp. PP30"                         ,  
+                                      "Lysobacter soli"                             , "Methylosinus trichosporium OB3b"           ,  
+                                      "Paraburkholderia xenovorans LB400"           , "Glutamicibacter creatinolyticus"           ,  
+                                      "Klebsiella pneumoniae MGH 39"                , "Roseburia intestinalis XB6B4"              ,  
+                                      "Lysobacter sp. TY2-98"                       , "Klebsiella variicola subsp. Variicola"     ,  
+                                      "Jeotgalibaca porci"                          , "Achromobacter xylosoxidans A8"             ,  
+                                      "Actinobacillus pleuropneumoniae"             , "Pseudomonas sp. WJP1"                      ,  
+                                      "Streptomyces albus"                          , "Lysobacter antibioticus"                   ,  
+                                      "Stutzerimonas stutzeri"                      , "Sphingopyxis macrogoltabida"               ,  
+                                      "Acinetobacter gyllenbergii"                  , "Pasteurella multocida"                     ,  
+                                      "Streptomyces sp. NHF165"                     , "Aliarcobacter cryaerophilus D2610"         ,  
+                                      "Enterococcus faecium DO"                     , "Enterococcus cecorum"                      ,  
+                                      "Corynebacterium vitaeruminis DSM 20294"      , "Pseudomonas sp. J380"                      ,  
+                                      "Mycolicibacterium celeriflavum"              , "Acidovorax sp. KKS102"                     ,  
+                                      "Streptomyces sp. SirexAA-E"                  , "Mycolicibacterium fortuitum"               ,  
+                                      "Mycolicibacterium mucogenicum DSM 44124"     , "Mycolicibacterium arabiense"               ,  
+                                      "Mycolicibacterium moriokaense"               , "Thermomonas aquatica"                      ,  
+                                      "Corynebacterium xerosis"                     , "Clostridium sphenoides JCM 1415"           ,  
+                                      "Acidilutibacter cellobiosedens"              , "Aerococcus viridans"                       ,    
+                                      "Nocardioides cynanchi"                       , "Streptomyces tubbatahanensis"              ,  
+                                      "Rathayibacter sp. VKM Ac-2759"               , "Ralstonia mannitolilytica"                 ,    
+                                      "Streptomyces durmitorensis"                  , "Amniculibacterium sp. G2-70"               ,      
+                                      "Lysobacter oculi"                            , "Streptomyces sp. INR7"                     ,     
+                                      "Mycobacterium haemophilum DSM 44634"         , "Achromobacter sp. MFA1 R4"                 ,  
+                                      "Enterococcus sp. FDAARGOS_375"               , "Thermomonas sp. XSG"                       , 
+                                      "Empedobacter falsenii"                       , "Planococcus sp. 107-1"                     ,  
+                                      "Burkholderia sp. Bp7605"                     , "Acidovorax sp. NCPPB 2350"                 ,  
+                                      "Collimonas arenae"                           , "Methylomonas koyamae"                      ,  
+                                      "Celeribacter indicus"                        , "Lysobacter capsici"                        ,  
+                                      "Nocardioides sambongensis"                   , "Staphylococcus saprophyticus"              ,  
+                                      "Peribacillus psychrosaccharolyticus"         , "Nordella sp. HKS 07"                       ,  
+                                      "Megamonas funiformis"                        , "Acinetobacter sp. SCLZS86"                 ,  
+                                      "Mycobacterium noviomagense"                  , "Chryseobacterium sp. 6424"                 ,  
+                                      "Pseudoxanthomonas sp. SL93"                  , "Pseudomonas sp. Q1-7"                      ,  
+                                      "Maribacter sp. Hal144"                       , "Chryseobacterium sp. MEBOG07"              ,  
+                                      "Bordetella genomosp. 13"                     , "Streptomyces bathyalis"                    ,  
+                                      "Pseudomonas fluorescens R124"                , "Anaeromyxobacter oryzae"                   ,  
+                                      "Pantoea rwandensis"                          , "Acinetobacter johnsonii"                   ,  
+                                      "Clostridium perfringens"                     , "Burkholderia multivorans"                  ,  
+                                      "Quatrionicoccus australiensis"               , "Corynebacterium variabile DSM 44702"       ,  
+                                      "Luteibacter anthropi"                        , "Acetivibrio thermocellus ATCC 27405"       ,  
+                                      "Pseudoduganella flava"                       , "Comamonas sp. NLF-1-9"                     ,  
+                                      "Achromobacter sp. AONIH1"                    , "Thioflavicoccus mobilis 8321"              ,  
+                                      "Phycicoccus endophyticus"                    , "Thermomonas sp. IMCC34681"                 ,  
+                                      "Mycolicibacterium austroafricanum"           , "Aeromonas sp. FDAARGOS 1410"               ,  
+                                      "Mycolicibacterium mengxianglii"              , "Desulfofarcimen acetoxidans DSM 771"       ,  
+                                      "Haematobacter massiliensis"                  , "Bradyrhizobium sp. 1(2017)"                ,  
+                                      "Acidovorax monticola"                        , "Lacrimispora saccharolytica"               ,  
+                                      "Burkholderia plantarii"                      , "Roseomonas sp. FDAARGOS_362"               ,  
+                                      "Streptococcus suis"                          , "Hyphomonas atlantica"                      ,  
+                                      "Massilia forsythiae"                         , "Megasphaera stantonii"                     ,  
+                                      "Xylophilus rhododendri"                      , "Comamonas aquatica"                        ,  
+                                      "Bacteroides faecium"                         , "Staphylococcus xylosus"                    ,  
+                                      "Pseudomonas siliginis"                       , "Erysipelothrix rhusiopathiae"              ,  
+                                      "Nocardioides sp. S5"                         , "Kitasatospora sp. MMS16-BH015"             ,  
+                                      "Novosphingobium sp. KACC 22771"              , "Massilia sp. NP310"                        ,  
+                                      "Nitrobacter hamburgensis X14"                , "Burkholderia gladioli"                     ,  
+                                      "Pseudomonas muyukensis"                      , "Flavonifractor plautii"                    ,  
+                                      "Paracoccus aminophilus JCM 7686"             , "Mycolicibacterium rutilum"                 ,  
+                                      "Streptococcus oriscaviae"                    , "Diaphorobacter sp. HDW4B"                  ,  
+                                      "Sphingomonas sp. S2-65"                      , "Azospira restricta"                        , 
+                                      "Labilithrix luteola"                         , "Sphingomonas profundi"                     , 
+                                      "Bradyrhizobium sp. CCBAU 051011"             , "Pseudomonas orientalis"                    ,  
+                                      "Pseudoalteromonas luteoviolacea"             , "Cupriavidus necator"                       ,
+                                      "Unclassified"                                )))
+other_species <- ARG_Species[17:364,] %>% group_by(Sample_type) %>% summarise(mean = sum(mean))
 other_species$Species <- "Unclassified/Others"
 ARG_Species <- ARG_Species[1:16,]
 ARG_Species <- rbind(ARG_Species, other_species)
 # Plot
-ARG_Species$Species <- factor(ARG_Species$Species, levels = c("Mycolicibacterium insubricum","Pseudomonas aeruginosa","Gordonia amarae"                ,            
-                                                              "Xanthomonas euroxanthea" ,"Mycolicibacterium neoaurum",            
-                                                              "Aeromonas sp. ASNIH1","Ferribacterium limneticum",            
-                                                              "Mycolicibacterium chitae","Mycolicibacterium confluentis",            
-                                                              "Chryseobacterium sp. KACC 21268","Pigmentiphaga aceris","Unclassified/Others"))
+ARG_Species$Species <- factor(ARG_Species$Species, levels = c("Mycolicibacterium insubricum"                ,  
+                                                              "Pseudomonas aeruginosa"                      , "Mycolicibacterium confluentis"             , 
+                                                              "Mycolicibacterium neoaurum"                  , "Gordonia amarae"                           ,  
+                                                              "Xanthomonas euroxanthea"                     , "Aeromonas sp. ASNIH1"                      ,  
+                                                              "Xanthomonas translucens pv. Phleipratensis"  , "Mycobacterium sp. DL592"                   ,  
+                                                              "Chryseobacterium sp. KACC 21268"             , "Nitrosococcus wardiae"                     ,
+                                                              "Unclassified/Others"))
 ARG_Species$Sample_type <- factor(ARG_Species$Sample_type, 
                                 levels = c("AT","ARP","ODP"))
 p <- ggplot(ARG_Species, aes(x = Sample_type, y = mean, fill = Species)) + 
@@ -850,6 +868,6 @@ p <- ggplot(ARG_Species, aes(x = Sample_type, y = mean, fill = Species)) +
 print(p)
 # ggsave("ARG_coverage_species.png", p,
 #        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
-#        width = 4.73, height = 5,
+#        width = 5.32, height = 5,
 #        units = "in", bg='transparent') # save to png format
 

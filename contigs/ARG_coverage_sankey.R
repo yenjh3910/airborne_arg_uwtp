@@ -84,20 +84,22 @@ links$IDsource <- match(links$source, nodes$name)-1
 links$IDtarget <- match(links$target, nodes$name)-1
 # Sankey Diagram
 ## Add a 'group' column to the nodes data frame:
-nodes$group <- as.factor(c("d",
-                           "p","p",
-                           "c","c","c","c",
-                           "o","o","o","o","o","o","o","o","o",
-                           "f","f","f","f","f","f","f","f","f",
-                           "g","g","g","g","g","g","g","g","g",
-                           "s","s","s","s","s","s","s","s","s","s"))
+nodes$group <- as.factor(c(rep("d",length(unique(AT_species_coverage$Domain))),
+                           rep("p",length(unique(AT_species_coverage$Phylum))),
+                           rep("c",length(unique(AT_species_coverage$Class))),
+                           rep("o",length(unique(AT_species_coverage$Order))),
+                           rep("f",length(unique(AT_species_coverage$Family))),
+                           rep("g",length(unique(AT_species_coverage$Genus))),
+                           rep("s",length(unique(AT_species_coverage$Species)))
+                           ))
 # Add a 'group' column to each connection:
-links$group <- as.factor(c("p_link","p_link",
-                           "c_link","c_link","c_link","c_link",
-                           "o_link","o_link","o_link","o_link","o_link","o_link","o_link","o_link","o_link",
-                           "f_link","f_link","f_link","f_link","f_link","f_link","f_link","f_link","f_link",
-                           "g_link","g_link","g_link","g_link","g_link","g_link","g_link","g_link","g_link",
-                           "s_link","s_link","s_link","s_link","s_link","s_link","s_link","s_link","s_link","s_link"))
+links$group <- as.factor(c(rep("p_link",length(unique(AT_species_coverage$Phylum))),
+                           rep("c_link",length(unique(AT_species_coverage$Class))),
+                           rep("o_link",length(unique(AT_species_coverage$Order))),
+                           rep("f_link",length(unique(AT_species_coverage$Family))),
+                           rep("g_link",length(unique(AT_species_coverage$Genus))),
+                           rep("s_link",length(unique(AT_species_coverage$Species)))
+                           ))
 # Give a color for each group:
 RColorBrewer::display.brewer.all()
 display.brewer.pal(n=7,name="Set2")
@@ -114,6 +116,7 @@ p<-sankeyNetwork(Links = links, Nodes= nodes,
               Value = "value", NodeID = "name", 
               colourScale=my_color, LinkGroup="group", NodeGroup="group",
               sinksRight=FALSE,fontSize = 15,fontFamily = "Arial")
+print(p)
 # save the widget
 library(htmlwidgets)
 # saveWidget(p, "../../airborne_arg_uwtp_result/Figure/Sankey/AT_top10_coverage_sankey.html")
@@ -202,20 +205,22 @@ links$IDsource <- match(links$source, nodes$name)-1
 links$IDtarget <- match(links$target, nodes$name)-1
 # Sankey Diagram
 ## Add a 'group' column to the nodes dARPa frame:
-nodes$group <- as.factor(c("d",
-                           rep("p", 3),
-                           rep("c", 4),
-                           rep("o", 6),
-                           rep("f", 7),
-                           rep("g", 7),
-                           rep("s", 10)))
+nodes$group <- as.factor(c(rep("d",length(unique(ARP_species_coverage$Domain))),
+                           rep("p",length(unique(ARP_species_coverage$Phylum))),
+                           rep("c",length(unique(ARP_species_coverage$Class))),
+                           rep("o",length(unique(ARP_species_coverage$Order))),
+                           rep("f",length(unique(ARP_species_coverage$Family))),
+                           rep("g",length(unique(ARP_species_coverage$Genus))),
+                           rep("s",length(unique(ARP_species_coverage$Species)))
+                           ))
 # Add a 'group' column to each connection:
-links$group <- as.factor(c(rep("p_link", 3),
-                           rep("c_link", 4),
-                           rep("o_link", 6),
-                           rep("f_link", 7),
-                           rep("g_link", 7),
-                           rep("s_link", 10)))
+links$group <- as.factor(c(rep("p_link",length(unique(ARP_species_coverage$Phylum))),
+                           rep("c_link",length(unique(ARP_species_coverage$Class))),
+                           rep("o_link",length(unique(ARP_species_coverage$Order))),
+                           rep("f_link",length(unique(ARP_species_coverage$Family))),
+                           rep("g_link",length(unique(ARP_species_coverage$Genus))),
+                           rep("s_link",length(unique(ARP_species_coverage$Species)))
+                           ))
 # Give a color for each group:
 RColorBrewer::display.brewer.all()
 display.brewer.pal(n=7,name="Set2")
@@ -232,8 +237,9 @@ p <- sankeyNetwork(Links = links, Nodes= nodes,
                  Value = "value", NodeID = "name", 
                  colourScale=my_color, LinkGroup="group", NodeGroup="group",
                  sinksRight=FALSE,fontSize = 15,fontFamily = "Arial")
+print(p)
 # save the widget
-#saveWidget(p, "../../airborne_arg_uwtp_result/Figure/Sankey/ARP_top10_coverage_sankey.html")
+# saveWidget(p, "../../airborne_arg_uwtp_result/Figure/Sankey/ARP_top10_coverage_sankey.html")
 
 
 

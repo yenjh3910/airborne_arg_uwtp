@@ -385,7 +385,7 @@ $ Rscript ARG_coverage_sankey.R
 ```
 # Installation & environment creation
 $ conda create --name plasflow python=3.5
-$ source activate plasflow
+$ conda activate plasflow
 $ conda config --set channel_priority flexible
 $ conda install plasflow -c smaegol
 $ conda install -c bioconda perl-bioperl perl-getopt-long
@@ -429,27 +429,45 @@ $ ~/quast/quast.py ~/megahit/megahit_coassembly/AT/final.contigs.fa -o ~/megahit
 $ ~/quast/quast.py ~/megahit/megahit_coassembly/ARP/final.contigs.fa -o ~/megahit/megahit_coassembly/ARP/quast
 $ ~/quast/quast.py ~/megahit/megahit_coassembly/ODP/final.contigs.fa -o ~/megahit/megahit_coassembly/ODP/quast
 ```
-### Get breadth of coverage
+### (Get breadth of coverage)[https://www.metagenomics.wiki/tools/samtools/breadth-of-coverage]
 ```
 # Enter environment
 $ conda activate diamond
 
 # Installation
 $ mamba install -c bioconda samtools
+$ mamba install -c bioconda seqtk
 
 # Create bowtie2 index database
 $ mkdir ~/megahit/megahit_coassembly/AT/breadth_coverage
 $ bowtie2-build ~/megahit/megahit_coassembly/AT/final.contigs.fa \
     ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.index
 
-# Map reads and sort bam file
+# Map reads
 $ bowtie2 -x ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.index \
     --no-unal -1 ~/clean_read/AT*_1.fastq.gz -2 ~/clean_read/AT*_2.fastq.gz \
     -S ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.sam  -p 16
-$ samtools view -bS - | \
-  samtools sort -m 5G - ~/megahit/megahit_coassembly/AT/breadth_coverage/mapping_result_sorted.bam
-$ samtools index mapping_result_sorted.bam
-$ samtools mpileup mapping_result_sorted.bam | awk -v X="5" '$4>=X' | wc -l
+
+# Convert to bam format
+$ samtools view -bS ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.sam > \
+    ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.bam
+
+# Sort bam file
+$ samtools sort ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.bam -o ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly_sorted.bam
+
+# Create samtools index
+$ samtools index ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly_sorted.bam
+
+# Get total number of bases covered at MIN_COVERAGE_DEPTH = 5 or higher
+$ samtools mpileup ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly_sorted.bam | awk -v X="5" '$4>=X' | wc -l
+
+# Get length of reference genome
+$ bowtie2-inspect -s ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.index \
+    | awk '{ FS = "\t" } ; BEGIN{L=0}; {L=L+$3}; END{print L}'
+
+# Alternative way of 'samtools mpileup'
+$ pileup.sh in=~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.sam \
+    out=~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.sam.map.txt
 ```
 ## Binning
 ### [metaWRAP](https://github.com/bxlab/metaWRAP)

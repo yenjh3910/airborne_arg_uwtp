@@ -125,6 +125,7 @@ p <- ggscatter(noODP_cor, x = "ARG", y = "MGE",
                                expression(Aeration~tank~PM[2.5])),
                     values = c("AT" = "#F8766D",
                                "ARP" = "#00BFC4"))
+print(p)
 # ggsave("Contigs_ARG_MGE_correlation.png", p,
 #        path = "../../airborne_arg_uwtp_result/Figure/correlation",
 #        width = 6, height = 5)
@@ -152,6 +153,7 @@ p <- ggscatter(AT_cor, x = "ARG", y = "MGE",
   scale_fill_manual(name = "", 
                     labels = c(expression(Aeration~tank)),
                     values = c("AT" = "#F8766D"))
+print(p)
 # ggsave("AT_Contigs_ARG_MGE_correlation.png", p,
 #        path = "../../airborne_arg_uwtp_result/Figure/correlation",
 #        width = 6, height = 5)
@@ -254,12 +256,6 @@ ggplot(plot_contigs, aes(xmin = start, xmax = end, y = Contigs, fill = Type,
   theme_genes()
 
 
-
-
-
-
-
-
 #### Plot gggene in aeration tank area (AT + ARP)
 ARG_MGE_IntersectMore3 <- ARG_cooccur_MGE %>% filter(!(Sample_type == "ODP")) %>% 
   group_by(Contigs_Sample) %>%
@@ -273,7 +269,7 @@ select_contigs_sample <- c("k141_313559_AT2",
                            "k141_712198_AT1",
                            "k141_243726_ARP5")
 plot_contigs <- ARG_MGE_cooccurATARP %>% filter(Contigs_Sample %in% select_contigs_sample)
-plot_contigs <- plot_contigs[-12,] # Deal with qacEdelta
+plot_contigs <- plot_contigs[,-11] # Deal with qacEdelta
 plot_contigs["subtype"][plot_contigs["subtype"] == "qacEdelta"] <- "qacEdelta1" # Deal with qacEdelta
 plot_contigs["Type"][plot_contigs["Type"] == "qacEdelta"] <- "Multidrug" # Deal with qacEdelta
 ## Order gene type
@@ -282,7 +278,7 @@ plot_contigs$Type <- factor(plot_contigs$Type,
                                        "Multidrug","Sulfonamide",
                                        "Tetracycline",
                                        "Integrase","IS91",
-                                       "Transposase","tniB"))
+                                       "Transposase"))
 ### Plot
 #### View with gene label, but we need to add label afterward manually
 ggplot(plot_contigs, aes(xmin = start, xmax = end, y = Contigs, fill = Type,
@@ -299,7 +295,7 @@ p <- ggplot(plot_contigs, aes(xmin = start, xmax = end, y = Contigs, fill = Type
   facet_wrap(~ Contigs, scales = "free", ncol = 1) +
   scale_fill_brewer(palette = "Set3") +
   theme_genes()
-
+print(p)
 # ggsave("ARG_MGE_cooccurance.png", p,
 #        path = "../../airborne_arg_uwtp_result/Figure/gggene",
 #        width = 10, height = 5,

@@ -5,6 +5,7 @@
 library(tidyverse)
 library(stringr)
 library(tibble)
+library(FSA)
 
 # Read ARG_type file
 arg_type <- read.table("../../airborne_arg_uwtp_result/args_oap/ARG/stage_two_output/normalized_cell.type.txt",
@@ -140,6 +141,10 @@ print(p)
 gather_arg_type <- gather_arg_type %>% group_by(sample) %>% 
                                        mutate(sum = sum(copy_per_cell))
 gather_arg_type <- gather_arg_type %>% select(sample,sample_type,sum) %>% unique()
+# Kruskal-Wallis Test
 kruskal.test(sum ~ sample_type, data = gather_arg_type)
+# Post hoc of Kruskal-Wallis Test (DunnTest)
+dunnTest(sum ~ sample_type, data=gather_arg_type, method="bonferroni")
+# # Mann Whitney U Test (Wilcoxon Rank Sum Test)
 pairwise.wilcox.test(gather_arg_type$sum, gather_arg_type$sample_type,
-                     p.adjust.method = "none")
+                     p.adjust.method = "bonferroni")

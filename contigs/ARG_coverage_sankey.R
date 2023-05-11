@@ -115,11 +115,11 @@ p<-sankeyNetwork(Links = links, Nodes= nodes,
               Source = "IDsource", Target = "IDtarget",
               Value = "value", NodeID = "name", 
               colourScale=my_color, LinkGroup="group", NodeGroup="group",
-              sinksRight=FALSE,fontSize = 15,fontFamily = "Arial")
+              sinksRight=FALSE,fontSize = 13,fontFamily = "Arial")
 print(p)
 # save the widget
 library(htmlwidgets)
-# saveWidget(p, "../../airborne_arg_uwtp_result/Figure/Sankey/AT_top10_coverage_sankey.html")
+#saveWidget(p, "../../airborne_arg_uwtp_result/Figure/Sankey/AT_top10_coverage_sankey.html")
 
 
 
@@ -236,11 +236,56 @@ p <- sankeyNetwork(Links = links, Nodes= nodes,
                  Source = "IDsource", Target = "IDtarget",
                  Value = "value", NodeID = "name", 
                  colourScale=my_color, LinkGroup="group", NodeGroup="group",
-                 sinksRight=FALSE,fontSize = 15,fontFamily = "Arial")
+                 sinksRight=FALSE,fontSize = 13,fontFamily = "Arial")
 print(p)
 # save the widget
-# saveWidget(p, "../../airborne_arg_uwtp_result/Figure/Sankey/ARP_top10_coverage_sankey.html")
+#saveWidget(p, "../../airborne_arg_uwtp_result/Figure/Sankey/ARP_top10_coverage_sankey.html")
 
+
+######## Barplot of sankey  which should be added in PPT manually ########
+# AT
+AT_bar <- final_ARG_coverage %>% filter(Species %in% AT_species_coverage$Species)
+## Order species
+AT_bar$Species <- factor(AT_bar$Species, 
+                         levels = AT_species_coverage$Species[1:10])
+# ARP
+ARP_bar <- final_ARG_coverage %>% filter(Species %in% ARP_species_coverage$Species)
+## Order species
+ARP_bar$Species <- factor(ARP_bar$Species, 
+                      levels = ARP_species_coverage$Species[1:10])
+# Bind dataframe
+taxa_bar <- rbind(AT_bar,ARP_bar)
+# Edit ARG type
+taxa_bar$type <- str_to_title(taxa_bar$type)
+taxa_bar$type[taxa_bar$type == "Macrolide-Lincosamide-Streptogramin"] <- "MLS"
+taxa_bar$type[taxa_bar$type == "Beta_lactam"] <- "Beta-lactam"
+# Select color
+library(RColorBrewer)
+RColorBrewer::display.brewer.all()
+display.brewer.pal(n=12,name="Set3")
+brewer.pal(n=12,name="Set3")
+# Plot
+p <- ggplot(taxa_bar, aes(x = Species, y = coverage, fill = type))+
+  geom_bar(stat="identity", position = "fill",width = 0.5) +
+  coord_flip()+
+  scale_x_discrete(limits = rev(levels(taxa_bar$Species))) + 
+  theme_bw()+
+  #scale_fill_brewer(palette="Set3") +
+  xlab("") + ylab("") +
+  guides(fill=guide_legend(title="ARG type")) +
+  scale_fill_manual(values=c("#8DD3C7","#FFED6F","#BEBADA","#FB8072","#80B1D3",
+                             "#FDB462","#B3DE69","#FCCDE5", "#BC80BD","#D9D9D9")) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_rect(fill='transparent'), #transparent panel bg
+        plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
+        legend.background = element_rect(fill='transparent')) #transparent legend bg))
+print(p) 
+
+# Save
+# ggsave("Sankey_barplot.png", p,
+#        path = "../../airborne_arg_uwtp_result/Figure/Sankey",
+#        width = 7, height = 7,
+#        units = "in", bg='transparent') # save to png format
 
 
 

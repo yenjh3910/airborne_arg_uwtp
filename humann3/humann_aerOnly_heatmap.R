@@ -5,6 +5,7 @@ library(tidyverse)
 library(ontologyIndex)
 library(pheatmap)
 library(RColorBrewer)
+library(FSA)
 humann3_go <- read.table("../../airborne_arg_uwtp_result/humann3/GO/genefamilies_rename_go_cpm.tsv",
                          sep = "\t", header = TRUE, quote = "", comment.char = "")
 # Rename column

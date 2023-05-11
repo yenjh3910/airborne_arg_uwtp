@@ -104,7 +104,8 @@ p <- ggscatter(noODP_cor, x = "ARG", y = "MGE",
           add = "reg.line", conf.int = TRUE, 
           size = 2.5, alpha = 0.6, ellipse.alpha = 0.6) + 
   # stat_cor(aes(color= Sample_type), show.legend = FALSE) +
-  labs(x = "ARGs coverage (×/Gb)", y = "MGEs coverage (×/Gb)") +
+  labs(x = expression(ARGs~coverage~(log[10]*"(×/Gb)")), 
+       y = expression(MGEs~coverage~(log[10]*"(×/Gb)"))) +
   theme(axis.text.x = element_text(size = 14),
         axis.text.y = element_text(size = 14),
         axis.title = element_text(size = 16),
@@ -136,7 +137,8 @@ p <- ggscatter(AT_cor, x = "ARG", y = "MGE",
           add = "reg.line", conf.int = TRUE, 
           size = 2, alpha = 0.6, ellipse.alpha = 0.6) + 
   #stat_cor(aes(color= Sample_type), show.legend = FALSE) +
-  labs(x = "ARGs coverage (×/Gb)", y = "MGEs coverage (×/Gb)") +
+  labs(x = expression(ARGs~coverage~(log[10]*"(×/Gb)")), 
+       y = expression(MGEs~coverage~(log[10]*"(×/Gb)"))) +
   theme(axis.text.x = element_text(size = 14),
         axis.text.y = element_text(size = 14),
         axis.title = element_text(size = 16),
@@ -164,7 +166,8 @@ p <- ggscatter(ARP_cor, x = "ARG", y = "MGE",
           add = "reg.line", conf.int = TRUE, 
           size = 2, alpha = 0.6, ellipse.alpha = 0.6) + 
   #stat_cor(aes(color= Sample_type), show.legend = FALSE) +
-  labs(x = "ARGs coverage (×/Gb)", y = "MGEs coverage (×/Gb)") +
+  labs(x = expression(ARGs~coverage~(log[10]*"(×/Gb)")), 
+       y = expression(MGEs~coverage~(log[10]*"(×/Gb)"))) +
   theme(axis.text.x = element_text(size = 14),
         axis.text.y = element_text(size = 14),
         axis.title = element_text(size = 16),

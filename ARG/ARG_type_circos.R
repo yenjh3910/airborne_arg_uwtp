@@ -47,23 +47,41 @@ row.names(arg_circos)[3] <- "MLS"
 row.names(arg_circos)[6] <- "Beta-lactam"
 # Change column order
 arg_circos <- arg_circos[, c("AT", "ARP", "ODP")] 
-# # Convert abundance to relative abundance
-# arg_circos <- apply(arg_circos,-1, function(x) x/sum(x))
-
 # Set color
 display.brewer.all()
 brewer.pal(n=6,name="Set2")
 grid.col = c("#8DD3C7","#FFFFB3","#BEBADA",
              "#FB8072","#80B1D3","#FDB462",
-             "#B3DE69","#FCCDE5","#D9D9D9",
-             "#BC80BD","#CCEBC5", # ARG type
+             "#B3DE69","#FCCDE5","#FFED6F",
+             "#BC80BD","#D9D9D9", # ARG type
              "#FBB4AE","#B3CDE3","#CCEBC5" # sample type 
             )
 
 
 # Save
-# pdf("../../airborne_arg_uwtp_result/Figure/ARG/ARG_circos.pdf")
+#pdf("../../airborne_arg_uwtp_result/Figure/ARG/ARG_circos.pdf")
 graphics.off() # Reset figure window
+circos.par(canvas.xlim = c(-0.5, 0.5), canvas.ylim = c(-1.5, 1))
+chordDiagram(arg_circos, annotationTrack = "grid",
+             preAllocateTracks = 1, grid.col = grid.col, 
+             directional = 1, big.gap = 10, scale = 0)
+circos.trackPlotRegion(track.index = 1, 
+                       panel.fun = function(x, y) {
+                         xlim = get.cell.meta.data("xlim")
+                         ylim = get.cell.meta.data("ylim")
+                         sector.name = get.cell.meta.data("sector.index")
+                         circos.text(cex = 0.8,mean(xlim), ylim[1] + .5, sector.name, facing = "clockwise", niceFacing = TRUE, adj = c(0, 0.5))
+                         circos.axis(h = "top", labels.cex = 0.4, major.tick.percentage = 1, sector.index = sector.name, track.index = 2)
+                       }, bg.border = NA)
+#dev.off()
+
+#########################################################################
+
+# Convert abundance to relative abundance
+arg_circos <- apply(arg_circos,-1, function(x) x/sum(x))
+# Save
+graphics.off() # Reset figure window
+# pdf("../../airborne_arg_uwtp_result/Figure/ARG/ARG_relative_circos.pdf")
 circos.par(canvas.xlim = c(-0.5, 0.5), canvas.ylim = c(-1.5, 1))
 chordDiagram(arg_circos, annotationTrack = "grid",
              preAllocateTracks = 1, grid.col = grid.col, 

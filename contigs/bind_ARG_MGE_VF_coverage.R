@@ -295,6 +295,7 @@ p <- ggplot(plot_contigs, aes(xmin = start, xmax = end, y = Contigs, fill = Type
   facet_wrap(~ Contigs, scales = "free", ncol = 1) +
   scale_fill_brewer(palette = "Set3") +
   theme_genes()
+
 print(p)
 # ggsave("ARG_MGE_cooccurance.png", p,
 #        path = "../../airborne_arg_uwtp_result/Figure/gggene",

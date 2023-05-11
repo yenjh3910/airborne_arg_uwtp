@@ -112,7 +112,6 @@ p <- ggplot(gather_arg_type, aes(x = sample, y = copy_per_cell, fill = type)) +
   facet_wrap(~sample_type, scales = "free_x", labeller = label_parsed) + 
   theme_bw() + 
   xlab("") + ylab("Relative abundance (ARGs/cell)") + 
-  scale_fill_brewer(palette="Set3") + 
   guides(fill=guide_legend(title="ARG type")) + 
   # scale_y_continuous(expand = c(0, 0)) + # y start at 0
   theme(axis.text.x = element_text(size = 10, angle = 90, hjust=1),
@@ -125,13 +124,16 @@ p <- ggplot(gather_arg_type, aes(x = sample, y = copy_per_cell, fill = type)) +
         plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
         # panel.grid.major = element_blank(), #remove major gridlines
         # panel.grid.minor = element_blank(), #remove minor gridlines
-        legend.background = element_rect(fill='transparent')) #transparent legend bg
+        legend.background = element_rect(fill='transparent')) + #transparent legend bg
+        scale_fill_manual(values=c("#8DD3C7","#FFFFB3","#BEBADA","#FB8072","#80B1D3",
+                                   "#FDB462","#B3DE69","#FCCDE5", "#FFED6F","#BC80BD",
+                                   "#D9D9D9"))
 
 print(p)
 
-# ggsave("ARG_type_cell.png", p, 
+# ggsave("ARG_type_cell.png", p,
 #        path = "../../airborne_arg_uwtp_result/Figure/ARG",
-#        width = 7, height = 5, 
+#        width = 7, height = 5,
 #        units = "in", bg='transparent') # save to png format
 
 # Statistic

@@ -363,7 +363,6 @@ p <- ggplot(ARG_Class, aes(x = Sample_type, y = mean, fill = Class)) +
   geom_bar(stat="identity") + 
   theme_bw() + 
   xlab("") + ylab("Coverage (x/GB)") +
-  scale_fill_brewer(palette="Set3")+
   scale_x_discrete(labels=c("AT" = expression(Aeration~tank), 
                             "ARP" = expression(Aeration~tank~PM[2.5]),
                             "ODP" = expression(Outdoor~PM[2.5])))+
@@ -374,7 +373,10 @@ p <- ggplot(ARG_Class, aes(x = Sample_type, y = mean, fill = Class)) +
         plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
         panel.grid.major = element_blank(), #remove major gridlines
         panel.grid.minor = element_blank(), #remove minor gridlines
-        legend.background = element_rect(fill='transparent')) #transparent legend bg)
+        legend.background = element_rect(fill='transparent')) + #transparent legend bg)
+        scale_fill_manual(values=c("#8DD3C7","#FFFFB3","#BEBADA","#FB8072","#80B1D3",
+                             "#FDB462","#B3DE69","#FCCDE5", "#FFED6F","#BC80BD",
+                             "#CCEBC5","#D9D9D9"))
 print(p)
 # ggsave("ARG_coverage_class.png", p,
 #        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
@@ -445,7 +447,6 @@ p <- ggplot(ARG_Order, aes(x = Sample_type, y = mean, fill = Order)) +
   geom_bar(stat="identity") + 
   theme_bw() + 
   xlab("") + ylab("Coverage (x/GB)")+
-  scale_fill_brewer(palette="Set3")+
   scale_x_discrete(labels=c("AT" = expression(Aeration~tank), 
                             "ARP" = expression(Aeration~tank~PM[2.5]),
                             "ODP" = expression(Outdoor~PM[2.5])))+
@@ -456,7 +457,10 @@ p <- ggplot(ARG_Order, aes(x = Sample_type, y = mean, fill = Order)) +
         plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
         panel.grid.major = element_blank(), #remove major gridlines
         panel.grid.minor = element_blank(), #remove minor gridlines
-        legend.background = element_rect(fill='transparent')) #transparent legend bg)
+        legend.background = element_rect(fill='transparent')) + #transparent legend bg)
+        scale_fill_manual(values=c("#8DD3C7","#FFFFB3","#BEBADA","#FB8072","#80B1D3",
+                             "#FDB462","#B3DE69","#FCCDE5", "#FFED6F","#BC80BD",
+                             "#CCEBC5","#D9D9D9"))
 print(p)
 # ggsave("ARG_coverage_order.png", p,
 #        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
@@ -547,7 +551,6 @@ p <- ggplot(ARG_Family, aes(x = Sample_type, y = mean, fill = Family)) +
   geom_bar(stat="identity") + 
   theme_bw() + 
   xlab("") + ylab("Coverage (x/GB)") +
-  scale_fill_brewer(palette="Set3") +
   scale_x_discrete(labels=c("AT" = expression(Aeration~tank), 
                             "ARP" = expression(Aeration~tank~PM[2.5]),
                             "ODP" = expression(Outdoor~PM[2.5])))+
@@ -558,7 +561,10 @@ p <- ggplot(ARG_Family, aes(x = Sample_type, y = mean, fill = Family)) +
         plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
         panel.grid.major = element_blank(), #remove major gridlines
         panel.grid.minor = element_blank(), #remove minor gridlines
-        legend.background = element_rect(fill='transparent')) #transparent legend bg)
+        legend.background = element_rect(fill='transparent')) + #transparent legend bg)
+        scale_fill_manual(values=c("#8DD3C7","#FFFFB3","#BEBADA","#FB8072","#80B1D3",
+                             "#FDB462","#B3DE69","#FCCDE5", "#FFED6F","#BC80BD",
+                             "#CCEBC5","#D9D9D9"))
 print(p)
 # ggsave("ARG_coverage_family.png", p,
 #        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
@@ -634,7 +640,6 @@ p <- ggplot(ARG_Genus, aes(x = Sample_type, y = mean, fill = Genus)) +
   geom_bar(stat="identity") + 
   theme_bw() + 
   xlab("") + ylab("Coverage (x/GB)") +
-  scale_fill_brewer(palette="Set3") + 
   scale_x_discrete(labels=c("AT" = expression(Aeration~tank), 
                             "ARP" = expression(Aeration~tank~PM[2.5]),
                             "ODP" = expression(Outdoor~PM[2.5])))+
@@ -645,7 +650,10 @@ p <- ggplot(ARG_Genus, aes(x = Sample_type, y = mean, fill = Genus)) +
         plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
         panel.grid.major = element_blank(), #remove major gridlines
         panel.grid.minor = element_blank(), #remove minor gridlines
-        legend.background = element_rect(fill='transparent')) #transparent legend bg)
+        legend.background = element_rect(fill='transparent')) + #transparent legend bg)
+        scale_fill_manual(values=c("#8DD3C7","#FFFFB3","#BEBADA","#FB8072","#80B1D3",
+                             "#FDB462","#B3DE69","#FCCDE5", "#FFED6F","#BC80BD",
+                             "#CCEBC5","#D9D9D9"))
 print(p)
 # ggsave("ARG_coverage_genus.png", p,
 #        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
@@ -853,7 +861,6 @@ p <- ggplot(ARG_Species, aes(x = Sample_type, y = mean, fill = Species)) +
   geom_bar(stat="identity") + 
   theme_bw() + 
   xlab("") + ylab("Coverage (x/GB)") +
-  scale_fill_brewer(palette="Set3") + 
   scale_x_discrete(labels=c("AT" = expression(Aeration~tank), 
                             "ARP" = expression(Aeration~tank~PM[2.5]),
                             "ODP" = expression(Outdoor~PM[2.5])))+
@@ -864,7 +871,10 @@ p <- ggplot(ARG_Species, aes(x = Sample_type, y = mean, fill = Species)) +
         plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
         panel.grid.major = element_blank(), #remove major gridlines
         panel.grid.minor = element_blank(), #remove minor gridlines
-        legend.background = element_rect(fill='transparent')) #transparent legend bg)
+        legend.background = element_rect(fill='transparent')) + #transparent legend bg)
+        scale_fill_manual(values=c("#8DD3C7","#FFFFB3","#BEBADA","#FB8072","#80B1D3",
+                             "#FDB462","#B3DE69","#FCCDE5", "#FFED6F","#BC80BD",
+                             "#CCEBC5","#D9D9D9"))
 print(p)
 # ggsave("ARG_coverage_species.png", p,
 #        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",

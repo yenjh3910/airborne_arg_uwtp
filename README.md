@@ -181,8 +181,7 @@ $ args_oap stage_one -i ~/clean_read -o ~/args_oap/BacMet/stage_one_output -f fa
 $ args_oap stage_two -i ~/args_oap/BacMet/stage_one_output -o ~/args_oap/BacMet/stage_two_output -t 16 --database ~/args_oap/BacMet/BacMet_exp_metal.fasta --structure1 ~/args_oap/BacMet/metal_only_structure.txt
 
 # Since default parameter in stage two is too strict for MGE, following parameters (--e 1e-5 --id 70) were used: 
-$ args_oap stage_two -i ~/args_oap/BacMet/stage_one_output -o ~/args_oap/BacMet/stage_two_output_evalue-5_id70 --e 1e-5 --id 70 -t 16 --database ~/args_oap/BacMet/BacMet_exp_metal.fasta --structure1 ~/ar
-gs_oap/BacMet/metal_only_structure.txt
+$ args_oap stage_two -i ~/args_oap/BacMet/stage_one_output -o ~/args_oap/BacMet/stage_two_output_evalue-5_id70 --e 1e-5 --id 70 -t 16 --database ~/args_oap/BacMet/BacMet_exp_metal.fasta --structure1 ~/args_oap/BacMet/metal_only_structure.txt
 ```
 ### R script after Taxanomic Profile & ARGs Profile
 ```
@@ -288,6 +287,10 @@ $ sudo apt-get update && sudo apt-get install -y pkg-config libfreetype6-dev lib
 $ ~/shell_script/assmebly_individual.sh
 ## Quality check
 $ ~/shell_script/quast_individual_contigs.sh
+
+# View mapping read to contigs
+$ conda activate diamond
+$ ~/shell_script/assembly_individual_coverage.sh
 ```
 ## Taxanomic Assignment of Assembly Contigs
 Use kraken2 to assign the toxanomy to individual assmebly contigs  
@@ -389,6 +392,8 @@ $ conda activate plasflow
 $ conda config --set channel_priority flexible
 $ conda install plasflow -c smaegol
 $ conda install -c bioconda perl-bioperl perl-getopt-long
+
+pip install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-0.10.0rc0-cp35-cp35m-linux_x86_64.whl
 ```
 # Binning-based Analysis
 ## Contigs Co-assembly
@@ -418,18 +423,18 @@ $ cat ~/clean_read/nODP*_2.fastq > ~/clean_read/nODP_reads_2.fastq
 
 # Run co-assembly
 $ megahit -t 16 -m 0.99 -1 ~/clean_read/nAT_reads_1.fastq -2 ~/clean_read/nAT_reads_2.fastq \
-    --min-contig-len 1000 -o ~/megahit/megahit_coassembly/AT --presets meta-large
+  --min-contig-len 1000 -o ~/megahit/megahit_coassembly/AT --presets meta-large
 $ megahit -t 16 -m 0.99 -1 ~/clean_read/nARP_reads_1.fastq -2 ~/clean_read/nARP_reads_2.fastq \
-    --min-contig-len 1000 -o ~/megahit/megahit_coassembly/ARP --presets meta-large
+  --min-contig-len 1000 -o ~/megahit/megahit_coassembly/ARP --presets meta-large
 $ megahit -t 16 -m 0.99 -1 ~/clean_read/nODP_reads_1.fastq -2 ~/clean_read/nODP_reads_2.fastq \
-    --min-contig-len 1000 -o ~/megahit/megahit_coassembly/ODP --presets meta-large
+  --min-contig-len 1000 -o ~/megahit/megahit_coassembly/ODP --presets meta-large
 
 # Quality check
 $ ~/quast/quast.py ~/megahit/megahit_coassembly/AT/final.contigs.fa -o ~/megahit/megahit_coassembly/AT/quast
 $ ~/quast/quast.py ~/megahit/megahit_coassembly/ARP/final.contigs.fa -o ~/megahit/megahit_coassembly/ARP/quast
 $ ~/quast/quast.py ~/megahit/megahit_coassembly/ODP/final.contigs.fa -o ~/megahit/megahit_coassembly/ODP/quast
 ```
-### (Get breadth of coverage)[https://www.metagenomics.wiki/tools/samtools/breadth-of-coverage]
+### [Get breadth of coverage](https://www.metagenomics.wiki/tools/samtools/breadth-of-coverage)
 ```
 # Enter environment
 $ conda activate diamond
@@ -441,16 +446,16 @@ $ mamba install -c bioconda seqtk
 # Create bowtie2 index database
 $ mkdir ~/megahit/megahit_coassembly/AT/breadth_coverage
 $ bowtie2-build ~/megahit/megahit_coassembly/AT/final.contigs.fa \
-    ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.index
+  ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.index
 
 # Map reads
 $ bowtie2 -x ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.index \
-    --no-unal -1 ~/clean_read/AT*_1.fastq.gz -2 ~/clean_read/AT*_2.fastq.gz \
-    -S ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.sam  -p 16
+  --no-unal -1 ~/clean_read/AT*_1.fastq.gz -2 ~/clean_read/AT*_2.fastq.gz \
+  -S ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.sam  -p 16
 
 # Convert to bam format
 $ samtools view -bS ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.sam > \
-    ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.bam
+  ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.bam
 
 # Sort bam file
 $ samtools sort ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.bam -o ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly_sorted.bam
@@ -463,11 +468,11 @@ $ samtools mpileup ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembl
 
 # Get length of reference genome
 $ bowtie2-inspect -s ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.index \
-    | awk '{ FS = "\t" } ; BEGIN{L=0}; {L=L+$3}; END{print L}'
+  | awk '{ FS = "\t" } ; BEGIN{L=0}; {L=L+$3}; END{print L}'
 
 # Alternative way of 'samtools mpileup'
 $ pileup.sh in=~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.sam \
-    out=~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.sam.map.txt
+  out=~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.sam.map.txt
 ```
 ## Binning
 ### [metaWRAP](https://github.com/bxlab/metaWRAP)
@@ -498,10 +503,31 @@ $ conda config --add channels defaults
 $ conda config --add channels conda-forge
 $ conda config --add channels bioconda
 $ conda config --add channels ursky
-$ mamba install --only-deps -c ursky metawrap-mg
+$ mamba install --only-deps -c ursky metawrap-mg # Fail
+$ mamba install biopython blas=2.5 blast=2.6.0 bmtagger bowtie2 bwa checkm-genome fastqc kraken=1.1 krona=2.7 matplotlib \
+  maxbin2 megahit metabat2 pandas prokka quast r-ggplot2 r-recommended salmon samtools=1.9 seaborn spades trim-galore
 
 ## Configure checkm
 $ mamba install -c bioconda checkm-genome
 $ checkm data setRoot # Tell CheckM where to find this data before running anything
 $ checkm data setRoot db/checkm_db # Tell CheckM where to find this data
+```
+#### metaWRAP binning
+```
+$ mkdir ~/metawrap_run
+$ gunzip ~/clean_read/A*.fastq.gz
+$ metawrap binning -o ~/metawrap_run/initial_binning -t 16 -a ~/megahit/megahit_coassembly/aeration_AT_ARP/final.contigs.fa \
+  --metabat2 --maxbin2 --concoct ~/clean_read/A*.fastq
+
+#### Something wrong with metabat2 ########
+#### Bin metabat2 by myself #####
+$ cd ~/metabat2
+$ runMetaBat.sh ~/megahit/megahit_coassembly/aeration_AT_ARP/final.contigs.fa ~/metawrap_run/initial_binning/work_files/*.bam
+$ mv {final.contigs.fa.metabat-bins-20220508_131755} metabat2_bins
+$ rm ~/metabat2/final.contigs.fa.depth.txt  
+$ mv ~/metabat2/metabat2_bins ~/metawrap_run/initial_binning
+#################################
+
+$ metawrap binning -o ~/metawrap_run/initial_binning -t 16 -a ~/megahit/megahit_coassembly/aeration_AT_ARP/final.contigs.fa \
+  --maxbin2 --concoct ~/clean_read/A*.fastq
 ```

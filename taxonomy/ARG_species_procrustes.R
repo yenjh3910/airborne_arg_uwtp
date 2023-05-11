@@ -54,7 +54,6 @@ ODP_species<- tmp
 ARP_AT_species <- full_join(ARP_species, AT_species)
 merge_species <- full_join(ARP_AT_species, ODP_species)
 merge_species <- merge_species %>% replace(is.na(.), 0) # Replace NA with 0
-
 # Filtering low abundance read
 THRESHOLD <- 0.00005 # 0.005 % as filtering threshold
 for (i in 2:16) {

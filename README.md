@@ -321,7 +321,7 @@ $ ~/shell_script/cdhit_orf.sh
 BLAST sequence
 ```
 # Create environment
-$ conda create -n diamond =3.10
+$ conda create -n diamond python=3.10
 $ conda activate diamond
 
 # Installation
@@ -387,13 +387,32 @@ $ Rscript ARG_coverage_sankey.R
 ### [PlasFlow](https://github.com/smaegol/PlasFlow)
 ```
 # Installation & environment creation
-$ conda create --name plasflow python=3.5
-$ conda activate plasflow
+$   python=3.5
+$ c$onda activate plasflow
 $ conda config --set channel_priority flexible
 $ conda install plasflow -c smaegol
 $ conda install -c bioconda perl-bioperl perl-getopt-long
 
-pip install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-0.10.0rc0-cp35-cp35m-linux_x86_64.whl
+$ pip install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-0.10.0rc0-cp35-cp35m-linux_x86_64.whl
+```
+## Risk assessment
+### [MetaCompare](https://github.com/minoh0201/MetaCompare)
+```
+# Installation
+$ sudo apt-get update
+$ sudo apt-get install python3-biopython
+$ sudo apt-get install python3-pandas
+$ git clone https://github.com/minoh0201/MetaCompare
+$ cd MetaCompare
+$ mkdir BlastDB
+$ cd BlastDB
+$ wget http://bench.cs.vt.edu/ftp/data/metacomp/BlastDB.tar.gz
+$ tar -zxvf BlastDB.tar.gz
+$ cd ..
+$ ./metacmp.py
+
+# Run
+$ ~/shell_script/metacompare.sh
 ```
 # Binning-based Analysis
 ## Contigs Co-assembly
@@ -414,65 +433,46 @@ $ ~/shell_script/norm_read.sh
 $ conda activate megahit
 
 # Concatenate reads
-$ cat ~/clean_read/nAT*_1.fastq > ~/clean_read/nAT_reads_1.fastq
-$ cat ~/clean_read/nAT*_2.fastq > ~/clean_read/nAT_reads_2.fastq
-$ cat ~/clean_read/nARP*_1.fastq > ~/clean_read/nARP_reads_1.fastq
-$ cat ~/clean_read/nARP*_2.fastq > ~/clean_read/nARP_reads_2.fastq
-$ cat ~/clean_read/nODP*_1.fastq > ~/clean_read/nODP_reads_1.fastq
-$ cat ~/clean_read/nODP*_2.fastq > ~/clean_read/nODP_reads_2.fastq
+$ cat ~/clean_read/nA*_1.fastq > ~/clean_read/naer_reads_1.fastq
+$ cat ~/clean_read/nA*_2.fastq > ~/clean_read/naer_reads_2.fastq
 
 # Run co-assembly
-$ megahit -t 16 -m 0.99 -1 ~/clean_read/nAT_reads_1.fastq -2 ~/clean_read/nAT_reads_2.fastq \
-  --min-contig-len 1000 -o ~/megahit/megahit_coassembly/AT --presets meta-large
-$ megahit -t 16 -m 0.99 -1 ~/clean_read/nARP_reads_1.fastq -2 ~/clean_read/nARP_reads_2.fastq \
-  --min-contig-len 1000 -o ~/megahit/megahit_coassembly/ARP --presets meta-large
-$ megahit -t 16 -m 0.99 -1 ~/clean_read/nODP_reads_1.fastq -2 ~/clean_read/nODP_reads_2.fastq \
-  --min-contig-len 1000 -o ~/megahit/megahit_coassembly/ODP --presets meta-large
+$ megahit -t 16 -m 0.99 -1 ~/clean_read/naer_reads_1.fastq -2 ~/clean_read/naer_reads_2.fastq \
+  --min-contig-len 1000 -o ~/megahit/megahit_coassembly/aeration_AT_ARP --presets meta-large
 
 # Quality check
-$ ~/quast/quast.py ~/megahit/megahit_coassembly/AT/final.contigs.fa -o ~/megahit/megahit_coassembly/AT/quast
-$ ~/quast/quast.py ~/megahit/megahit_coassembly/ARP/final.contigs.fa -o ~/megahit/megahit_coassembly/ARP/quast
-$ ~/quast/quast.py ~/megahit/megahit_coassembly/ODP/final.contigs.fa -o ~/megahit/megahit_coassembly/ODP/quast
+$ ~/quast/quast.py ~/megahit/megahit_coassembly/aeration_AT_ARP/final.contigs.fa \
+  -o ~/megahit/megahit_coassembly/aeration_AT_ARP/coassembly_aeration_quast
 ```
-### [Get breadth of coverage](https://www.metagenomics.wiki/tools/samtools/breadth-of-coverage)
+### Get read and base number mapped to co-assembly contigs
 ```
 # Enter environment
 $ conda activate diamond
 
-# Installation
-$ mamba install -c bioconda samtools
-$ mamba install -c bioconda seqtk
-
 # Create bowtie2 index database
-$ mkdir ~/megahit/megahit_coassembly/AT/breadth_coverage
-$ bowtie2-build ~/megahit/megahit_coassembly/AT/final.contigs.fa \
-  ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.index
+$ mkdir ~/megahit/megahit_coassembly/aeration_AT_ARP/breadth_coverage
+$ bowtie2-build ~/megahit/megahit_coassembly/aeration_AT_ARP/final.contigs.fa \
+  ~/megahit/megahit_coassembly/aeration_AT_ARP/breadth_coverage/coassembly_aer_contig.index
 
+# AT
 # Map reads
-$ bowtie2 -x ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.index \
-  --no-unal -1 ~/clean_read/AT*_1.fastq.gz -2 ~/clean_read/AT*_2.fastq.gz \
-  -S ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.sam  -p 16
+bowtie2 -x ~/megahit/megahit_coassembly/aeration_AT_ARP/breadth_coverage/coassembly_aer_contig.index \
+  -1 ~/clean_read/AT*_1.fastq.gz -2 ~/clean_read/AT*_2.fastq.gz \
+  -S ~/megahit/megahit_coassembly/aeration_AT_ARP/breadth_coverage/coassembly_AT_to_aer.sam.map  -p 16
 
-# Convert to bam format
-$ samtools view -bS ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.sam > \
-  ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.bam
+# Print mapping read number and generate mapping file
+$ pileup.sh in=~/megahit/megahit_coassembly/aeration_AT_ARP/breadth_coverage/coassembly_AT_to_aer.sam \
+  out=~/megahit/megahit_coassembly/aeration_AT_ARP/breadth_coverage/coassembly_AT_to_aer.sam.map.txt
 
-# Sort bam file
-$ samtools sort ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.bam -o ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly_sorted.bam
+# ARP
+# Map reads
+bowtie2 -x ~/megahit/megahit_coassembly/aeration_AT_ARP/breadth_coverage/coassembly_aer_contig.index \
+  -1 ~/clean_read/ARP*_1.fastq.gz -2 ~/clean_read/ARP*_2.fastq.gz \
+  -S ~/megahit/megahit_coassembly/aeration_AT_ARP/breadth_coverage/coassembly_ARP_to_aer.sam.map  -p 16
 
-# Create samtools index
-$ samtools index ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly_sorted.bam
-
-# Get total number of bases covered at MIN_COVERAGE_DEPTH = 5 or higher
-$ samtools mpileup ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly_sorted.bam | awk -v X="5" '$4>=X' | wc -l
-
-# Get length of reference genome
-$ bowtie2-inspect -s ~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.index \
-  | awk '{ FS = "\t" } ; BEGIN{L=0}; {L=L+$3}; END{print L}'
-
-# Alternative way of 'samtools mpileup'
-$ pileup.sh in=~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.sam \
-  out=~/megahit/megahit_coassembly/AT/breadth_coverage/AT_coassembly.sam.map.txt
+# Print mapping read number and generate mapping file
+$ pileup.sh in=~/megahit/megahit_coassembly/aeration_AT_ARP/breadth_coverage/coassembly_ARP_to_aer.sam \
+  out=~/megahit/megahit_coassembly/aeration_AT_ARP/breadth_coverage/coassembly_ARP_to_aer.sam.map.txt
 ```
 ## Binning
 ### [metaWRAP](https://github.com/bxlab/metaWRAP)
@@ -489,6 +489,9 @@ $ cd ~/db/checkm_db
 $ wget https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_2015_01_16.tar.gz
 $ tar -xvf *.tar.gz
 $ rm *.gz
+$ cd
+$ checkm data setRoot # Tell CheckM where to find this data before running anything
+$ checkm data setRoot db/checkm_db # Tell CheckM where to find this data
 
 ## Make metaWRAP executable
 $ vi ~/.bash_profile
@@ -503,14 +506,7 @@ $ conda config --add channels defaults
 $ conda config --add channels conda-forge
 $ conda config --add channels bioconda
 $ conda config --add channels ursky
-$ mamba install --only-deps -c ursky metawrap-mg # Fail
-$ mamba install biopython blas=2.5 blast=2.6.0 bmtagger bowtie2 bwa checkm-genome fastqc kraken=1.1 krona=2.7 matplotlib \
-  maxbin2 megahit metabat2 pandas prokka quast r-ggplot2 r-recommended salmon samtools=1.9 seaborn spades trim-galore
-
-## Configure checkm
-$ mamba install -c bioconda checkm-genome
-$ checkm data setRoot # Tell CheckM where to find this data before running anything
-$ checkm data setRoot db/checkm_db # Tell CheckM where to find this data
+$ mamba install --only-deps -c ursky metawrap-mg
 ```
 #### metaWRAP binning
 ```
@@ -526,8 +522,11 @@ $ runMetaBat.sh ~/megahit/megahit_coassembly/aeration_AT_ARP/final.contigs.fa ~/
 $ mv {final.contigs.fa.metabat-bins-20220508_131755} metabat2_bins
 $ rm ~/metabat2/final.contigs.fa.depth.txt  
 $ mv ~/metabat2/metabat2_bins ~/metawrap_run/initial_binning
+
+$ metabat2 -i ~/metawrap_run/initial_binning/work_files/assembly.fa -a ~/metawrap_run/initial_binning/work_files/metabat_depth.txt -o ~/metawrap_run/initial_binning/metabat2_bins/bin -t 16 --unbinned
 #################################
 
 $ metawrap binning -o ~/metawrap_run/initial_binning -t 16 -a ~/megahit/megahit_coassembly/aeration_AT_ARP/final.contigs.fa \
-  --maxbin2 --concoct ~/clean_read/A*.fastq
+  --metabat2 --concoct ~/clean_read/A*.fastq
 ```
+

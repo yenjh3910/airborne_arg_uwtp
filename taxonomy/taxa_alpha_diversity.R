@@ -216,11 +216,12 @@ print(p)
 # Statistic
 ## Shannon
 kruskal.test(shannon ~ sample_type, data = alpha_diversity)
-dunnTest(shannon ~ sample_type, data=alpha_diversity, method="bonferroni")
+dunnTest(shannon ~ sample_type, data=alpha_diversity, method="holm")
 pairwise.wilcox.test(alpha_diversity$shannon, alpha_diversity$sample_type,
-                     p.adjust.method = "bonferroni")
+                     p.adjust.method = "holm")
 ## Invsimpson
 kruskal.test(invsimpson ~ sample_type, data = alpha_diversity)
-dunnTest(invsimpson ~ sample_type, data=alpha_diversity, method="bonferroni")
+dunnTest(invsimpson ~ sample_type, data=alpha_diversity, method="holm")
 pairwise.wilcox.test(alpha_diversity$invsimpson, alpha_diversity$sample_type,
-                     p.adjust.method = "bonferroni")
+                     p.adjust.method = "holm")
+

@@ -10,8 +10,6 @@ library(FSA)
 # Read ARG_type file
 arg_type <- read.table("../../airborne_arg_uwtp_result/args_oap/ARG/stage_two_output/normalized_cell.type.txt",
                    header = TRUE, sep = "")
-
-
 # Preview raw data
 gather_arg_type <- gather(arg_type, key = "sample", value = "copy_per_cell", 
                           ARP1:ODP5) # Transform to gather format
@@ -28,7 +26,9 @@ for (i in 1:nrow(gather_arg_type)) {
       gather_arg_type$sample_type[i] <- "ODP"
   }
 }
-# Statastic
+gather_arg_type %>% group_by(sample) %>% summarize(sum(copy_per_cell)) # Level of ARG in each sample
+type_percentage <- gather_arg_type # Use for calculation of type percentange finally
+# Statastic of sample type
 arg_sum <- gather_arg_type %>% group_by(sample) %>% mutate(sum = sum(copy_per_cell))
 arg_sum <- arg_sum %>% group_by(sample_type) %>% mutate(mean = mean(sum))
 arg_sum <- arg_sum %>% group_by(sample_type)%>% mutate(sd = sd(sum)) %>% 
@@ -144,7 +144,37 @@ gather_arg_type <- gather_arg_type %>% select(sample,sample_type,sum) %>% unique
 # Kruskal-Wallis Test
 kruskal.test(sum ~ sample_type, data = gather_arg_type)
 # Post hoc of Kruskal-Wallis Test (DunnTest)
-dunnTest(sum ~ sample_type, data=gather_arg_type, method="bonferroni")
+dunnTest(sum ~ sample_type, data=gather_arg_type, method="holm")
 # # Mann Whitney U Test (Wilcoxon Rank Sum Test)
 pairwise.wilcox.test(gather_arg_type$sum, gather_arg_type$sample_type,
+                     p.adjust.method = "holm")
+pairwise.wilcox.test(gather_arg_type$sum, gather_arg_type$sample_type,
                      p.adjust.method = "bonferroni")
+pairwise.wilcox.test(gather_arg_type$sum, gather_arg_type$sample_type,
+                     p.adjust.method = "BH")
+
+# Calculate mean abundance between sample type
+## Covert first letter to uppercase
+type_percentage$type <- str_to_title(type_percentage$type)
+## Change specific ARG type
+type_percentage$type[type_percentage$type == "Macrolide-Lincosamide-Streptogramin"] <- "MLS"
+type_percentage$type[type_percentage$type == "Beta_lactam"] <- "Beta-lactam"
+type_percentage$type <- gsub("_"," ",type_percentage$type)
+type_percentage$type[type_percentage$type == "Tetracenomycin c"] <- "Tetracenomycin C"
+# Calculation
+final_pecent <- type_percentage %>% group_by(sample_type,type) %>% 
+                    mutate(abundance = sum(copy_per_cell)) %>% 
+                    select(!(sample)) %>% select(!(copy_per_cell)) %>% 
+                    unique() %>% 
+                    ungroup() %>% 
+                    group_by(sample_type) %>% 
+                    mutate(sample_type_sum = sum(abundance)) %>% 
+                    mutate(percentage = (abundance/sample_type_sum)*100)
+final_pecent_spread <- final_pecent %>% select(!(abundance)) %>% 
+                                        select(!(sample_type_sum)) %>% 
+                                        spread(sample_type,percentage)
+final_pecent_spread <- final_pecent_spread[,c(1,3,2,4)]
+# Export to csv
+# write.csv(final_pecent_spread,
+#           "../../airborne_arg_uwtp_result/args_oap/ARG/ARG_type_percentage.csv",
+#           row.names = FALSE)                                        

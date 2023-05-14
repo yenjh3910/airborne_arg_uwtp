@@ -4,6 +4,7 @@ source("./ARG_coverage.R")
 ### final_ARG_coverage is the element we want ###
 library(networkD3)
 library(RColorBrewer)
+library(htmlwidgets)
 # Aeration tank (AT)
 ## Calculate species mean coverage according to sum coverage in each sample
 AT_species_coverage <- final_ARG_coverage %>% filter(Sample_type == "AT") %>% 
@@ -115,10 +116,9 @@ p<-sankeyNetwork(Links = links, Nodes= nodes,
               Source = "IDsource", Target = "IDtarget",
               Value = "value", NodeID = "name", 
               colourScale=my_color, LinkGroup="group", NodeGroup="group",
-              sinksRight=FALSE,fontSize = 13,fontFamily = "Arial")
+              sinksRight=FALSE,fontSize = 17,fontFamily = "Arial")
 print(p)
 # save the widget
-library(htmlwidgets)
 #saveWidget(p, "../../airborne_arg_uwtp_result/Figure/Sankey/AT_top10_coverage_sankey.html")
 
 
@@ -236,7 +236,7 @@ p <- sankeyNetwork(Links = links, Nodes= nodes,
                  Source = "IDsource", Target = "IDtarget",
                  Value = "value", NodeID = "name", 
                  colourScale=my_color, LinkGroup="group", NodeGroup="group",
-                 sinksRight=FALSE,fontSize = 13,fontFamily = "Arial")
+                 sinksRight=FALSE,fontSize = 17,fontFamily = "Arial")
 print(p)
 # save the widget
 #saveWidget(p, "../../airborne_arg_uwtp_result/Figure/Sankey/ARP_top10_coverage_sankey.html")
@@ -284,7 +284,7 @@ print(p)
 # Save
 # ggsave("Sankey_barplot.png", p,
 #        path = "../../airborne_arg_uwtp_result/Figure/Sankey",
-#        width = 7, height = 7,
+#        width = 6, height = 7,
 #        units = "in", bg='transparent') # save to png format
 
 

@@ -42,8 +42,7 @@ res_ARP_ODP <- gather_go %>% filter(!(sample_type == "AT")) %>% group_by(Gene) %
 res <- full_join(res_AT_ARP, res_AT_ODP, "Gene")
 res <- full_join(res, res_ARP_ODP, "Gene")
 ### Filter out the p.value that is bigger than 0.05 in all sample type
-#res <- res %>% filter((AT_ARP_Wilcox < 0.05)|(AT_ODP_Wilcox < 0.05)|(ARP_ODP_Wilcox < 0.05))
-res <- res %>% filter((AT_ARP_Wilcox < 0.05))
+res <- res %>% filter((AT_ARP_Wilcox < 0.05)|(AT_ODP_Wilcox < 0.05)|(ARP_ODP_Wilcox < 0.05))
 ## mean z-score
 gather_go <- gather_go %>% group_by(sample_type) %>% mutate(mean_z = mean(z_score)) 
 gather_go <- gather_go %>% arrange(desc(mean_z))

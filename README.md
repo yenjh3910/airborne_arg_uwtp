@@ -14,6 +14,7 @@ A comprehensive metagenomic pipeline for airborne ARGs (Antibiotic Resistance Ge
     - [Gene Alignment to Assembly Contigs](https://github.com/yenjh3910/airborne_arg_uwtp#gene-alignment-to-assembly-contigs)
     - [Calculate coverage of aligning contigs](https://github.com/yenjh3910/airborne_arg_uwtp#calculate-coverage-of-aligning-contigs)
     - [Prediction of Plasmid Sequences](https://github.com/yenjh3910/airborne_arg_uwtp#prediction-of-plasmid-sequences)
+    - [Risk Assessment](https://github.com/yenjh3910/airborne_arg_uwtp#risk-assessment)
 - [Binning-based Analysis](https://github.com/yenjh3910/airborne_arg_uwtp#binning-based-analysis)
     - [Contigs Co-assembly](https://github.com/yenjh3910/airborne_arg_uwtp/tree/master#contigs-co-assembly)
     - [Binning](https://github.com/yenjh3910/airborne_arg_uwtp#binning)
@@ -395,7 +396,7 @@ $ conda install -c bioconda perl-bioperl perl-getopt-long
 
 $ pip install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-0.10.0rc0-cp35-cp35m-linux_x86_64.whl
 ```
-## Risk assessment
+## Risk Assessment
 ### [MetaCompare](https://github.com/minoh0201/MetaCompare)
 ```
 # Installation

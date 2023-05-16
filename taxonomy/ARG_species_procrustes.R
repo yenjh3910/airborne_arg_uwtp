@@ -152,7 +152,7 @@ p <- ggplot(Y) +
   geom_abline(intercept = 0, slope = X[2,2]/X[2,1], size = 0.3) +
   annotate('text', label = sprintf('M^2 == 0.2799 '),
            x = 0.20, y = 0.29, size = 5, parse = TRUE) +
-  annotate('text', label = 'P==0.001',
+  annotate('text', label = 'P<0.01',
            x = 0.20, y = 0.26, size = 5, parse = TRUE) +
   theme(title = element_text(size=14),
         axis.title = element_text(size=15),
@@ -166,3 +166,22 @@ print(p)
 # # Save
 # ggsave("ARG_species_procrustes.png", p, path = "../../airborne_arg_uwtp_result/Figure/procrustes",
 #        width = 7, height = 5, units = "in", bg='transparent') # save to png format
+
+# Create legend manually
+Sample <- c("AT", "ARP", "ODP")
+legend_two <- c("Antibiotic resistome","Kraken2 species","Kraken2 species")
+value <- c(1,2,3)
+df <- data.frame(Sample = Sample, legend_two = legend_two, value = value)
+p <- ggplot(df, aes(x=Sample, y=value, fill=Sample)) + 
+  geom_bar(stat="identity",alpha=0.5)+
+  scale_fill_manual("Sample", values = color)+
+  theme(panel.background = element_rect(fill='transparent'),
+        plot.background = element_rect(fill='transparent', color=NA),
+        legend.background = element_rect(fill='transparent'))
+p<-ggplot(df) + 
+  geom_point(aes(value, value, shape=legend_two,size = 3,alpha=0.5))+
+  scale_fill_manual("Sample", values = color)+
+  theme_bw() +
+  theme(panel.background = element_rect(fill='transparent'),
+        plot.background = element_rect(fill='transparent', color=NA),
+        legend.background = element_rect(fill='transparent'))

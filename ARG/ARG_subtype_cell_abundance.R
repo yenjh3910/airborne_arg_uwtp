@@ -98,8 +98,26 @@ p <- pheatmap(t(log_top_subtype),
          fontsize = 12, fontsize_row = 12, fontsize_col = 10,
          cellwidth = 12, cellheight = 17, bg = "transparent", 
          cluster_rows=as.hclust(row_dend))
-
+print(p)
 # ggsave("ARG_subtype_cell.png", p, 
 #        path = "../../airborne_arg_uwtp_result/Figure/ARG",
 #        width = 17, height = 8, 
 #        units = "in", bg='transparent') # save to png format
+
+
+# Calculate subtype mean and sd
+# Add sample type column
+gather_arg_subtype$sample_type <- gather_arg_subtype$sample
+gather_arg_subtype$sample_type <- gsub("1|2|3|4|5","",gather_arg_subtype$sample_type)
+# Transfer to log value
+gather_arg_subtype$copy_per_cell <- log10(gather_arg_subtype$copy_per_cell)
+## Remove -Inf row (Since -Inf will cause following mean equal-Inf)
+#gather_arg_subtype <- gather_arg_subtype %>% filter(!(copy_per_cell==-Inf))
+# mean & sd calculation
+subtype_mean_sd <- gather_arg_subtype %>% group_by(subtype,sample_type) %>% 
+                                          mutate(mean = mean(copy_per_cell)) %>% 
+                                          mutate(sd = sd(copy_per_cell)) %>% 
+                                          select(subtype, sample_type, mean, sd) %>% 
+                                          unique()
+# Split type-subtype by "_"
+subtype_mean_sd <- subtype_mean_sd %>% separate(subtype, c("type","subtype"), sep = "__")

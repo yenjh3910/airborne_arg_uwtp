@@ -4,6 +4,7 @@ library(vegan)
 library(tidyverse)
 library(ggbreak)
 library(openxlsx)
+library(FSA)
 
 # Merge bracken file
 ## Import ARP
@@ -115,12 +116,12 @@ p <- ggplot(mean_alpha, aes(x=sample_type, y=sobs_mean, fill=sample_type)) +
   geom_bar(stat="identity",alpha=0.6) +
   geom_errorbar(aes(ymin=sobs_mean-sobs_sd, ymax=sobs_mean+sobs_sd), width=.2) +
   theme_bw() +
-  xlab("")+ ylab("Richness") + 
+  xlab("")+ ylab("Observed Richness") + 
   scale_fill_manual(values=c("#F8766D", "#00BFC4", "#7CAE00")) +
   scale_x_discrete(labels=c("AT" = expression(Aeration~tank), 
                             "ARP" = expression(Aeration~tank~PM[2.5]),
                             "ODP" = expression(Outdoor~PM[2.5]))) + 
-  ylim(0, 4000) +
+  #ylim(0, 4000) +
   theme(axis.text.x = element_text(angle = 45, hjust=1,size = 15),
         axis.text.y = element_text(size = 12),
         axis.title = element_text(size = 18),
@@ -134,13 +135,14 @@ p <- ggplot(mean_alpha, aes(x=sample_type, y=sobs_mean, fill=sample_type)) +
         axis.line.x.top = element_blank(),
         axis.text.y.right = element_blank(),
         axis.ticks.y.right = element_blank(),
-        axis.line.y.right = element_blank())
+        axis.line.y.right = element_blank()) +
+        scale_y_continuous(expand = c(0, 0), limits = c(0, 4000))
 
 print(p)
-# #Save
+#Save
 # ggsave("richness.png", p,
 #        path = "../../airborne_arg_uwtp_result/Figure/taxonomy",
-#        width = 3, height = 6, units = "in") # save to png format
+#        width = 2.735, height = 5.815, units = "in") # save to png format
 
 ######################################################################
 
@@ -214,6 +216,12 @@ print(p)
 #################################################################################
 
 # Statistic
+## Richness
+kruskal.test(sobs ~ sample_type, data = alpha_diversity)
+dunnTest(sobs ~ sample_type, data=alpha_diversity, method="holm")
+pairwise.wilcox.test(alpha_diversity$sobs, alpha_diversity$sample_type,
+                     p.adjust.method = "holm")
+
 ## Shannon
 kruskal.test(shannon ~ sample_type, data = alpha_diversity)
 dunnTest(shannon ~ sample_type, data=alpha_diversity, method="holm")
@@ -224,4 +232,3 @@ kruskal.test(invsimpson ~ sample_type, data = alpha_diversity)
 dunnTest(invsimpson ~ sample_type, data=alpha_diversity, method="holm")
 pairwise.wilcox.test(alpha_diversity$invsimpson, alpha_diversity$sample_type,
                      p.adjust.method = "holm")
-

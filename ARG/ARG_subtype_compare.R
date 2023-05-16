@@ -140,3 +140,31 @@ print(p)
 #        path = "../../airborne_arg_uwtp_result/Figure/ARG",
 #        width = 30, height = 16,
 #        units = "in", bg='transparent') # save to png format
+
+
+
+# Legend outside the box and remove grid
+p <- ggplot(higher_arg_ARP, aes(x=subtype, y=ratio, fill=mechanism)) +
+  geom_bar(stat="identity") + 
+  xlab("") + ylab(expression(ARG~ratio~(Aeration~tank~PM[2.5]/Aeration~tank))) + 
+  theme_bw() +
+  scale_fill_manual(values=c("#FB8072", "#80B1D3", "#FDB462",
+                             "#B3DE69","#BEBADA","#FCCDE5","#D9D9D9")) +
+  guides(fill=guide_legend(title="Mechanism",nrow=2,byrow=TRUE)) +
+  theme(axis.text.x = element_text(angle = 70, hjust=1),
+        #axis.text.y = element_text(size = 30),
+        #axis.title = element_text(size = 27),
+        #legend.key.size = unit(1.1, 'cm'),
+        legend.title = element_text(size = 12.5),
+        legend.text = element_text(size = 12.5),
+        legend.position = "top",
+        panel.background = element_rect(fill='transparent'), #transparent panel bg
+        plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
+        panel.grid.major = element_blank(), #remove major gridlines
+        panel.grid.minor = element_blank(), #remove minor gridlines
+        legend.background = element_rect(fill='transparent')) #transparent legend bg
+
+# ggsave("ARG_mechanism_relative_abundance_v2.png", p,
+#        path = "../../airborne_arg_uwtp_result/Figure/ARG",
+#        width = 9, height = 7,
+#        units = "in", bg='transparent') # save to png format

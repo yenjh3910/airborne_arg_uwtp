@@ -143,3 +143,11 @@ print(p)
 #        path = "../../airborne_arg_uwtp_result/Figure/taxonomy",
 #        width = 7.5, height = 5,
 #        units = "in", bg='transparent') # save to png format
+
+
+# Statastic
+taxa_mean_sd <- gat_merge_taxa %>% group_by(taxa, sample_type) %>% 
+                                   mutate(mean = mean(abundance)) %>% 
+                                   mutate(sd = sd(abundance)) %>% 
+                                   select(taxa,sample_type,mean,sd) %>% 
+                                   unique()

@@ -27,7 +27,7 @@ for (i in 1:nrow(gather_arg_type)) {
   }
 }
 gather_arg_type %>% group_by(sample) %>% summarize(sum(copy_per_cell)) # Level of ARG in each sample
-type_percentage <- gather_arg_type # Use for calculation of type percentange finally
+type_percentage <- gather_arg_type # Use for calculation of type percentage & type mean,sd finally
 # Statastic of sample type
 arg_sum <- gather_arg_type %>% group_by(sample) %>% mutate(sum = sum(copy_per_cell))
 arg_sum <- arg_sum %>% group_by(sample_type) %>% mutate(mean = mean(sum))
@@ -161,7 +161,16 @@ type_percentage$type[type_percentage$type == "Macrolide-Lincosamide-Streptogrami
 type_percentage$type[type_percentage$type == "Beta_lactam"] <- "Beta-lactam"
 type_percentage$type <- gsub("_"," ",type_percentage$type)
 type_percentage$type[type_percentage$type == "Tetracenomycin c"] <- "Tetracenomycin C"
-# Calculation
+# Calculate mean and sd of ARG type in each sample type
+final_type_mean_sd <- type_percentage %>% group_by(sample_type,type) %>%
+                      mutate(mean = mean(copy_per_cell)) %>% 
+                      mutate(sd = sd(copy_per_cell)) %>% 
+                      select(type,sample_type,mean,sd) %>% 
+                      unique()
+final_type_mean_sd %>% filter(sample_type == "AT") %>% arrange(desc(mean)) # Print mean & sd of AT
+final_type_mean_sd %>% filter(sample_type == "ARP") %>% arrange(desc(mean)) # Print mean & sd of ARP
+final_type_mean_sd %>% filter(sample_type == "ODP") %>% arrange(desc(mean)) # Print mean & sd of ODP
+# Calculation type percentage
 final_pecent <- type_percentage %>% group_by(sample_type,type) %>% 
                     mutate(abundance = sum(copy_per_cell)) %>% 
                     select(!(sample)) %>% select(!(copy_per_cell)) %>% 

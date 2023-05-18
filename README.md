@@ -565,3 +565,13 @@ $ conda activate diamond
 # Run
 $ ~/shell_script/diamond_bin.sh
 ```
+### R script after Gene Alignment to bins
+```
+$ cd ./binning
+
+# QC & merge blast bins with database
+Remove 0 bytes dmnd file in ../../airborne_arg_uwtp_result/bins_diamind
+$ Rscript bins_ARG_diamond.R
+$ Rscript bins_MGE_diamond.R
+$ Rscript bins_VF_diamond.R
+```

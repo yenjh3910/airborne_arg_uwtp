@@ -113,7 +113,7 @@ gather_arg_subtype$sample_type <- gsub("1|2|3|4|5","",gather_arg_subtype$sample_
 gather_arg_subtype$copy_per_cell <- log10(gather_arg_subtype$copy_per_cell)
 ## Remove -Inf row (Since -Inf will cause following mean equal-Inf)
 #gather_arg_subtype <- gather_arg_subtype %>% filter(!(copy_per_cell==-Inf))
-# mean & sd calculation
+# mean & sd calculation (log)
 subtype_mean_sd <- gather_arg_subtype %>% group_by(subtype,sample_type) %>% 
                                           mutate(mean = mean(copy_per_cell)) %>% 
                                           mutate(sd = sd(copy_per_cell)) %>% 
@@ -121,3 +121,33 @@ subtype_mean_sd <- gather_arg_subtype %>% group_by(subtype,sample_type) %>%
                                           unique()
 # Split type-subtype by "_"
 subtype_mean_sd <- subtype_mean_sd %>% separate(subtype, c("type","subtype"), sep = "__")
+
+# mean & sd calculation (not log)
+gather_arg_subtype_order$sample_type <- gather_arg_subtype_order$sample
+gather_arg_subtype_order$sample_type <- gsub("1|2|3|4|5","",gather_arg_subtype_order$sample_type)
+subtype_mean_sd_notlog <- gather_arg_subtype_order %>% group_by(subtype,sample_type) %>% 
+  mutate(mean = mean(copy_per_cell)) %>% 
+  mutate(sd = sd(copy_per_cell)) %>% 
+  select(subtype, sample_type, mean, sd) %>% 
+  unique()
+
+## P value (FDR adjust by "holm")
+### Calculate p.value among each sample
+res_AT_ARP <- gather_arg_subtype_order %>% filter(!(sample_type == "ODP")) %>% group_by(subtype) %>% 
+  do(w = wilcox.test(copy_per_cell~sample_type, data=., p.adjust.method = "holm",
+                     paired=FALSE, exact = FALSE)) %>% 
+  summarise(subtype, AT_ARP_Wilcox = w$p.value)
+res_AT_ODP <- gather_arg_subtype_order %>% filter(!(sample_type == "ARP")) %>% group_by(subtype) %>% 
+  do(w = wilcox.test(copy_per_cell~sample_type, data=., p.adjust.method = "holm",
+                     paired=FALSE, exact = FALSE)) %>% 
+  summarise(subtype, AT_ODP_Wilcox = w$p.value)
+res_ARP_ODP <- gather_arg_subtype_order %>% filter(!(sample_type == "AT")) %>% group_by(subtype) %>% 
+  do(w = wilcox.test(copy_per_cell~sample_type, data=., p.adjust.method = "holm",
+                     paired=FALSE, exact = FALSE)) %>% 
+  summarise(subtype, ARP_ODP_Wilcox = w$p.value)
+### Join p.value dataframe
+res <- full_join(res_AT_ARP, res_AT_ODP, "subtype")
+res <- full_join(res, res_ARP_ODP, "subtype")
+### Filter out the p.value that is bigger than 0.05 in all sample type
+res <- res %>% filter((AT_ARP_Wilcox < 0.05)|(AT_ODP_Wilcox < 0.05)|(ARP_ODP_Wilcox < 0.05))
+sig_AT_ARP<- res %>% filter(AT_ARP_Wilcox<0.05)  # significant ARG between AT and ARP

@@ -186,4 +186,16 @@ final_pecent_spread <- final_pecent_spread[,c(1,3,2,4)]
 # Export to csv
 # write.csv(final_pecent_spread,
 #           "../../airborne_arg_uwtp_result/args_oap/ARG/ARG_type_percentage.csv",
-#           row.names = FALSE)                                        
+#           row.names = FALSE)
+
+
+
+# ARG type barplot
+type_percentage %>% ggplot(aes(x=sample_type, y=copy_per_cell))+
+  geom_boxplot(aes(fill=sample_type)) + 
+  facet_wrap(~ type, ncol=7,scales='free') + 
+  theme_bw()+ 
+  labs(x="") +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())

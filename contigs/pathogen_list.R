@@ -34,8 +34,8 @@ CoverageArgType$type <- factor(CoverageArgType$type,
                                        "Sulfonamide"  , "Polymyxin"             , "Chloramphenicol",       
                                        "Bacitracin"   , "Pleuromutilin tiamulin", "Quinolone"   ))
 # Plot barplot
-ggplot(CoverageArgType, aes(x = Sample_type, y = coverage_sum, fill = type)) + 
-  geom_bar(stat="identity") + 
+p <- ggplot(CoverageArgType, aes(x = Sample_type, y = coverage_sum, fill = type)) + 
+  geom_bar(stat="identity",width = 0.7) + 
   theme_bw() + 
   xlab("") + ylab("Coverage (x/GB)") + 
   scale_fill_brewer(palette="Set3") +
@@ -45,14 +45,18 @@ ggplot(CoverageArgType, aes(x = Sample_type, y = coverage_sum, fill = type)) +
                             "ODP" = expression(Outdoor~PM[2.5]))) +
   guides(fill=guide_legend(ncol=2, bycol=TRUE,title = "ARG type")) +
   theme(axis.text.x = element_text(size = 12),
-        legend.title = element_text(size = 11),
-        legend.text = element_text(size = 11),
+        axis.text.y = element_text(size = 10),
+        legend.title = element_text(size = 8),
+        legend.text = element_text(size = 8),
         panel.background = element_rect(fill='transparent'), #transparent panel bg
         plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
         panel.grid.major = element_blank(), #remove major gridlines
         panel.grid.minor = element_blank(), #remove minor gridlines
         legend.background = element_rect(fill='transparent')) #transparent legend bg)
-  
+
+# ggsave("ARG_pathogen_coverage.png", p, path = "../../airborne_arg_uwtp_result/Figure/pathogen",
+#         width = 7.7, height = 2, units = "in") # save to png format
+ 
 # Bubble chart of ARG coverage in pathogen
 pathogen_arg_coverage$Species %>% unique()  # Check Species
 ## Change Species name to brief version
@@ -85,7 +89,7 @@ AerCoveragePathogen$Species <- factor(AerCoveragePathogen$Species,
                                           "Morganella morganii"         ,
                                           "Streptococcus suis"          ))
 ## Plot
-ggplot(AerCoveragePathogen, aes(x = Sample_type, y = Species)) + 
+p <- ggplot(AerCoveragePathogen, aes(x = Sample_type, y = Species)) + 
   geom_point(aes(size = coverage_sum,fill = Sample_type), alpha = 0.75, shape = 21) +
   scale_size_continuous(limits = c(0.00001, 100), range = c(1,50), breaks = c(0.1,1,3,6)) +
   theme_bw() + 
@@ -103,3 +107,6 @@ ggplot(AerCoveragePathogen, aes(x = Sample_type, y = Species)) +
         panel.background = element_rect(fill='transparent'), #transparent panel bg
         plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
         legend.background = element_rect(fill='transparent'))
+
+# ggsave("ARG_pathogen_bubble.png", p, path = "../../airborne_arg_uwtp_result/Figure/pathogen",
+#         width = 6.78, height = 3.62, units = "in") # save to png format

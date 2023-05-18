@@ -23,7 +23,6 @@ gather_go <- gather_go %>% group_by(Gene) %>%
 # Caluclate p=value & view mean z-score
 gather_go$sample_type <- gather_go$sample
 gather_go$sample_type <- gsub("1|2|3|4|5","",gather_go$sample)
-
 ## P value (FDR adjust by "holm")
 ### Calculate p.value among each sample
 res_AT_ARP <- gather_go %>% filter(!(sample_type == "ODP")) %>% group_by(Gene) %>% 
@@ -186,3 +185,14 @@ p <-pheatmap(select_go_mat, cluster_cols = FALSE, cluster_rows = FALSE,
 #        path = "../../airborne_arg_uwtp_result/Figure/humann3",
 #        width = 11, height = 5,
 #        units = "in", bg='transparent') # save to png format
+
+
+# statistic
+gat_select_go <- select_go %>% gather(key="sample", value = "z", ARP1:ODP5)
+gat_select_go$sample_type <- gat_select_go$sample
+gat_select_go$sample_type <- gsub("1|2|3|4|5","",gat_select_go$sample)
+z_mean_sd <- gat_select_go %>% group_by(sample_type,Gene) %>% 
+                               mutate(mean = mean(z)) %>% 
+                               mutate(sd = sd(z)) %>% 
+                               select(Gene,sample_type,mean,sd) %>% 
+                               unique()

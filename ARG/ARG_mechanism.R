@@ -220,3 +220,9 @@ p <- ggplot(arg_mechanism, aes(x = sample_type, y = mean, fill = mechanism))+
 print(p)
 # ggsave("ARG_mechanism_relative_abundance.png", p, path = "../../airborne_arg_uwtp_result/Figure/ARG",
 #         width = 11, height = 5, units = "in") # save to png format
+
+
+# mechanism percentage
+arg_proportion <- arg_mechanism %>% group_by(sample_type) %>% mutate(ratio = mean/sum(mean)) %>% 
+                  select(mechanism,sample_type,ratio)
+arg_proportion$ratio[1]-arg_proportion$ratio[7]

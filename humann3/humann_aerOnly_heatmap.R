@@ -92,3 +92,14 @@ p <-pheatmap(stress_go_mat, cluster_cols = TRUE,
 #        path = "../../airborne_arg_uwtp_result/Figure/humann3",
 #        width = 7, height = 7,
 #        units = "in", bg='transparent') # save to png format
+
+
+# Statistic
+gat_stress_go <- stress_go %>% gather(key="sample", value = "z", ARP1:AT5)
+gat_stress_go$sample_type <- gat_stress_go$sample
+gat_stress_go$sample_type <- gsub("1|2|3|4|5","",gat_stress_go$sample)
+z_mean_sd <- gat_stress_go %>% group_by(sample_type,Gene) %>%
+  mutate(mean = mean(z)) %>%
+  mutate(sd = sd(z)) %>%
+  select(Gene,sample_type,mean,sd) %>%
+  unique()

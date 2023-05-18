@@ -60,7 +60,7 @@ for (i in 2:16) {
   individual_threshold <- sum(merge_taxa[,i])*THRESHOLD
   merge_taxa[,i] <- replace(merge_taxa[,i], merge_taxa[,i] < individual_threshold, 0)
 }
-# Fitst column as row name
+# First column as row name
 rownames(merge_taxa) <- merge_taxa$taxa
 merge_taxa <-  merge_taxa[,-1]
 ## Transform to percentage

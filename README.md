@@ -18,6 +18,8 @@ A comprehensive metagenomic pipeline for airborne ARGs (Antibiotic Resistance Ge
 - [Binning-based Analysis](https://github.com/yenjh3910/airborne_arg_uwtp#binning-based-analysis)
     - [Contigs Co-assembly](https://github.com/yenjh3910/airborne_arg_uwtp/tree/master#contigs-co-assembly)
     - [Binning](https://github.com/yenjh3910/airborne_arg_uwtp#binning)
+    - [Taxonomy Classification of Bin](https://github.com/yenjh3910/airborne_arg_uwtp#taxonomy-classification-of-bin)
+    - [Gene Alignment to Bin](https://github.com/yenjh3910/airborne_arg_uwtp#gene-alignment-to-bin)
 # Environment Setup
 ## [Anaconda Installation](https://www.anaconda.com/products/distribution)
 ```
@@ -302,7 +304,7 @@ $ ~/shell_script/kraken2_contigs.sh
 ```
 ## Gene Alignment to Assembly Contigs
 ### [Prodigal](https://github.com/hyattpd/Prodigal) & [CD-HIT](https://github.com/weizhongli/cdhit)
-Gene prediction & (reductant sequence remove)
+Gene prediction & reductant sequence remove
 ```
 # Create environment
 $ conda create -n prodigal
@@ -513,21 +515,53 @@ $ mamba install --only-deps -c ursky metawrap-mg
 ```
 $ mkdir ~/metawrap_run
 $ gunzip ~/clean_read/A*.fastq.gz
+
+# Bin with three different algorithms
 $ metawrap binning -o ~/metawrap_run/initial_binning -t 16 -a ~/megahit/megahit_coassembly/aeration_AT_ARP/final.contigs.fa \
   --metabat2 --maxbin2 --concoct ~/clean_read/A*.fastq
 
-#### Something wrong with metabat2 ########
-#### Bin metabat2 by myself #####
-$ cd ~/metabat2
-$ runMetaBat.sh ~/megahit/megahit_coassembly/aeration_AT_ARP/final.contigs.fa ~/metawrap_run/initial_binning/work_files/*.bam
-$ mv {final.contigs.fa.metabat-bins-20220508_131755} metabat2_bins
-$ rm ~/metabat2/final.contigs.fa.depth.txt  
-$ mv ~/metabat2/metabat2_bins ~/metawrap_run/initial_binning
+# Bin refinement
+$ metawrap bin_refinement -o ~/metawrap_run/bin_refinement -t 16 -A ~/metawrap_run/initial_binning/metabat2_bins \
+  -B ~/metawrap_run/initial_binning/maxbin2_bins \
+  -C  ~/metawrap_run/initial_binning/concoct_bins -c 50 -x 10 -m 56
 
-$ metabat2 -i ~/metawrap_run/initial_binning/work_files/assembly.fa -a ~/metawrap_run/initial_binning/work_files/metabat_depth.txt -o ~/metawrap_run/initial_binning/metabat2_bins/bin -t 16 --unbinned
-#################################
-
-$ metawrap binning -o ~/metawrap_run/initial_binning -t 16 -a ~/megahit/megahit_coassembly/aeration_AT_ARP/final.contigs.fa \
-  --metabat2 --concoct ~/clean_read/A*.fastq
+ # Find the abundaces of the draft genomes (bins) across the samples
+ $ metawrap quant_bins -b ~/metawrap_run/bin_refinement/metawrap_50_10_bins -o ~/metawrap_run/bin_quant \
+   -a ~/megahit/megahit_coassembly/aeration_AT_ARP/final.contigs.fa ~/clean_read/A*fastq -t 16
 ```
+## Taxonomy Classification of Bin
+### [GTDBTk](https://github.com/Ecogenomics/GTDBTk)
+```
+# Create the GTDB-Tk environment
+$ conda create -n gtdbtk-2.1.1
+$ conda activate gtdbtk-2.1.1
+$ mamba install -c conda-forge -c bioconda gtdbtk=2.1.1
 
+# Download and alias the GTDB-Tk reference data
+$ download-db.sh
+
+$ gtdbtk classify_wf --genome_dir ~/metawrap_run/bin_refinement/metawrap_50_10_bins -x fa \
+  --out_dir ~/bins_gtdbdk --scratch_dir scratch.tempory --cpus 16
+```
+## Gene Alignment to Bin
+### [Prodigal](https://github.com/hyattpd/Prodigal) & [CD-HIT](https://github.com/weizhongli/cdhit)
+Gene prediction & reductant sequence remove
+```
+# Enter environment
+$ conda activate prodigal
+
+# ORF perdiction
+$ ~/shell_script/prodigal_bin.sh
+
+# Remove reductant sequence
+$ ~/shell_script/cdhit_bin.sh
+```
+### [Diamond](https://github.com/bbuchfink/diamond)
+BLAST sequence
+```
+# Enter environment
+$ conda activate diamond
+
+# Run
+$ ~/shell_script/diamond_bin.sh
+```

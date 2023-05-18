@@ -270,8 +270,9 @@ ARG_MGE_cooccurATARP <- ARG_cooccur_MGE %>%
 ### Select gene manually
 select_contigs_sample <- c("k141_313559_AT2",
                            "k141_712198_AT1",
-                           "k141_243726_ARP5")
-plot_contigs <- ARG_MGE_cooccurATARP %>% filter(Contigs_Sample %in% select_contigs_sample)
+                           "k141_243726_ARP5",
+                           "k141_838814_ODP5")
+plot_contigs <- ARG_cooccur_MGE %>% filter(Contigs_Sample %in% select_contigs_sample)
 plot_contigs <- plot_contigs[,-11] # Deal with qacEdelta
 plot_contigs["subtype"][plot_contigs["subtype"] == "qacEdelta"] <- "qacEdelta1" # Deal with qacEdelta
 plot_contigs["Type"][plot_contigs["Type"] == "qacEdelta"] <- "Multidrug" # Deal with qacEdelta
@@ -300,7 +301,7 @@ p <- ggplot(plot_contigs, aes(xmin = start, xmax = end, y = Contigs, fill = Type
   theme_genes()
 
 print(p)
-# ggsave("ARG_MGE_cooccurance.png", p,
+# ggsave("ARG_MGE_cooccurance_v2.png", p,
 #        path = "../../airborne_arg_uwtp_result/Figure/gggene",
-#        width = 10, height = 5,
+#        width = 10, height = 6,
 #        units = "in", bg='transparent') # save to png format

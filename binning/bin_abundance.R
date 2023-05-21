@@ -1,68 +1,163 @@
-# bin_quality.R
+# bin_abundance.R
 
 # Import
 library(tidyverse)
-library(ggpubr)
-bin_quality <- read.table("../../airborne_arg_uwtp_result/metawrap_bin/bin_refinement/metawrap_50_10_bins.stats",
-                          header = TRUE)
-# Quality category
-highq_bin <- bin_quality %>% filter(completeness>=80 & contamination<=5) %>% 
-                select(bin) %>% 
-                mutate(Quality = "High")
-medq_bin <- bin_quality %>% filter(completeness>=60 & contamination<=7) %>% 
-                            select(bin) %>% 
-                            mutate(Quality = "Medium")
-medq_bin <- medq_bin[!(medq_bin$bin %in% highq_bin$bin),]
-
-lowq_bin <- bin_quality[!(bin_quality$bin %in% highq_bin$bin),]
-lowq_bin <- lowq_bin[!(lowq_bin$bin %in% medq_bin$bin),] %>% 
-            select(bin) %>% 
-            mutate(Quality = "Low")
-bin_category <- rbind(highq_bin,medq_bin)
-bin_category <- rbind(bin_category,lowq_bin)
-bin_quality <- full_join(bin_quality,bin_category)
-# Order sample type
-bin_quality$Quality <- factor(bin_quality$Quality, levels = c("High","Medium","Low"))
-# Select color
+library(pheatmap)
 library(RColorBrewer)
-RColorBrewer::display.brewer.all()
-display.brewer.pal(n=12,name="Set3")
-brewer.pal(n=12,name="Set3")
-# Plot
-p <- ggscatter(bin_quality, x = "completeness", y = "contamination",
-          color="Quality",alpha = 0.5) + 
-  labs(x = "Completeness (%)", y = "Contamination (%)") + 
-  theme(legend.position = "right",
-        legend.text = element_text(size = 12),
-        legend.title = element_text(size = 12),
-        aspect.ratio=1, 
-        panel.background = element_rect(fill='transparent'), #transparent panel bg
-        plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
-        legend.background = element_rect(fill='transparent')) + #transparent legend bg
-  scale_color_manual(values = c("High" = "#F8766D",
-                                "Medium" = "#619CFF", 
-                                "Low" = "#00BA38"))
+bin_abundance <- read.table("../../airborne_arg_uwtp_result/metawrap_bin/bin_quant/bin_abundance_table.tab",
+                          header = TRUE, sep="\t")
+colnames(bin_abundance)[1] <- "MAG"
+source("./bin_gtdbtk.R")
+colnames(sep_bin_tax)[1] <- "MAG"
+source("./bins_ARG_diamond.R")
+source("./bins_MGE_diamond.R")
+source("./bins_VF_diamond.R")
 
+# Filter ARG carrying bin
+SARG_MAG <- bin_abundance %>% filter(MAG %in% SARG$BinID)
+# Join bin with gtdbtk tax name
+SARG_MAG <- left_join(SARG_MAG, sep_bin_tax)
+SARG_MAG_sp <- SARG_MAG %>% filter(!(Species=='s__')) %>% 
+                            select(!(Domain)) %>% select(!(Phylum)) %>%
+                            select(!(Class)) %>% select(!(Order)) %>%
+                            select(!(Family)) %>% select(!(Genus))
+SARG_MAG_g <- SARG_MAG %>% filter(Species=='s__') %>% 
+                           filter(!(Genus=='g__')) %>% 
+                           select(!(Domain)) %>% select(!(Phylum)) %>%
+                           select(!(Class)) %>% select(!(Order)) %>%
+                           select(!(Family)) %>% select(!(Species))
+SARG_MAG_fam <- SARG_MAG %>% filter(Species=='s__') %>% 
+                             filter(Genus=='g__') %>% 
+                             filter(!(Family=='f__')) %>% 
+                             select(!(Domain)) %>% select(!(Phylum)) %>%
+                             select(!(Class)) %>% select(!(Order)) %>%
+                             select(!(Genus)) %>% select(!(Species))
+colnames(SARG_MAG_sp)[12] <- "Taxonomy"
+colnames(SARG_MAG_g)[12] <- "Taxonomy"
+colnames(SARG_MAG_fam)[12] <- "Taxonomy"
+SARG_MAG <- rbind(SARG_MAG_sp,SARG_MAG_g)
+SARG_MAG <- rbind(SARG_MAG,SARG_MAG_fam)
+colnames(SARG)[12] <- "MAG" # View later
+SARG <- left_join(SARG,SARG_MAG) # View later
+SARG <- SARG %>% select(MAG,subtype,type,Taxonomy) # View later
+SARG$Taxonomy <- paste(SARG$MAG, SARG$Taxonomy, sep="_") # View later
+SARG_MAG$Taxonomy <- paste(SARG_MAG$MAG, SARG_MAG$Taxonomy, sep="_")
+
+# Annotation row
+# Tax
+tax_annontate <- SARG_MAG %>% select(Taxonomy)
+colnames(tax_annontate) <- "tmp"
+species_annotate <- tax_annontate %>% filter(grepl('s__',tax_annontate$tmp)) %>% 
+                                      mutate(Taxonomy = 'Species')
+genus_annotate  <- tax_annontate %>% filter(grepl('g__',tax_annontate$tmp)) %>% 
+                                    mutate(Taxonomy = 'Genus')
+family_annotate <- tax_annontate %>% filter(grepl('f__',tax_annontate$tmp)) %>% 
+                                     mutate(Taxonomy = 'Family')
+tax_annontate <- rbind(species_annotate,genus_annotate)
+tax_annontate <- rbind(tax_annontate,family_annotate)
+# Gene 
+# ARG+MGE+VF
+ARG_MGE_VF_MAG <- bin_abundance %>% filter(MAG %in% SARG$BinID) %>% 
+  filter(MAG %in% MGE$BinID) %>% 
+  filter(MAG %in% VF$BinID) %>% select(MAG)
+# ARG+VF
+ARG_VF_MAG <- bin_abundance %>% filter(MAG %in% SARG$BinID) %>% 
+  filter(MAG %in% VF$BinID) %>% 
+  filter(!(MAG %in% MGE$BinID)) %>% select(MAG)
+# ARG+MGE
+ARG_MGE_MAG <- bin_abundance %>% filter(MAG %in% SARG$BinID) %>% 
+  filter(MAG %in% MGE$BinID) %>% 
+  filter(!(MAG %in% VF$BinID)) %>% select(MAG)
+## Join
+ARG_MGE_VF_MAG <- left_join(ARG_MGE_VF_MAG,SARG_MAG) %>% select(MAG,Taxonomy)
+row.names(ARG_MGE_VF_MAG) <- ARG_MGE_VF_MAG$Taxonomy
+ARG_MGE_VF_MAG <- ARG_MGE_VF_MAG %>% mutate(Genes = "ARGs+MGEs+VFs")
+ARG_MGE_VF_MAG <- ARG_MGE_VF_MAG %>% select(Genes)
+
+ARG_VF_MAG <- left_join(ARG_VF_MAG,SARG_MAG) %>% select(MAG,Taxonomy)
+row.names(ARG_VF_MAG) <- ARG_VF_MAG$Taxonomy
+ARG_VF_MAG <- ARG_VF_MAG %>% mutate(Genes = "ARGs+VFs")
+ARG_VF_MAG <- ARG_VF_MAG %>% select(Genes)
+
+ARG_MGE_MAG <- left_join(ARG_MGE_MAG,SARG_MAG) %>% select(MAG,Taxonomy)
+row.names(ARG_MGE_MAG) <- ARG_MGE_MAG$Taxonomy
+ARG_MGE_MAG <- ARG_MGE_MAG %>% mutate(Genes = "ARGs+MGEs")
+ARG_MGE_MAG <- ARG_MGE_MAG %>% select(Genes)
+
+annotation_row <- rbind(ARG_MGE_VF_MAG,ARG_VF_MAG)
+annotation_row <- rbind(annotation_row,ARG_MGE_MAG)
+# Join tax and gene
+annotation_row$tmp <- row.names(annotation_row)
+annotation_row <- full_join(tax_annontate,annotation_row)
+row.names(annotation_row) <- annotation_row[,1]
+annotation_row <- annotation_row %>% select(!(tmp))
+
+# taxa as column name
+SARG_MAG <- SARG_MAG[,-1]
+row.names(SARG_MAG) <- SARG_MAG[,11]
+SARG_MAG <- SARG_MAG[,-11]
+# Log scale
+log_SARG_MAG <- log10(SARG_MAG)
+log_SARG_MAG[log_SARG_MAG == -Inf] <- NA
+
+# Annotation col
+annotation_col = data.frame(Sample = factor(rep(c("AT", "ARP"), 
+                                                c(5, 5))))
+rownames(annotation_col) = colnames(log_SARG_MAG)
+# Select color
+display.brewer.all()
+display.brewer.pal(n=12,name="Set3")
+brewer.pal(12, "Set3")
+ann_colors = list(Sample = c(AT = "#FB8072", ARP = "#80B1D3"),
+                  Taxonomy = c(Family = "#FFED6F", Genus = "#FCCDE5", Species ="#CCEBC5"),
+                  Genes = c('ARGs+MGEs+VFs' ="#8DD3C7",'ARGs+MGEs' ="#FDB462",'ARGs+VFs' ="#BEBADA"))
+# Remove taxa_prefix
+row.names(annotation_row) <- gsub(".__","",row.names(annotation_row))
+row.names(annotation_row) <- gsub("bin.","Bin ",row.names(annotation_row))
+row.names(log_SARG_MAG) <- gsub(".__","",row.names(log_SARG_MAG))
+row.names(log_SARG_MAG) <- gsub("bin.","Bin ",row.names(log_SARG_MAG))
+# Plot
+p <-pheatmap(log_SARG_MAG, 
+         annotation_col = annotation_col, annotation_row = annotation_row,
+         annotation_colors = ann_colors, clustering_distance_rows = "euclidean",
+         clustering_distance_cols = "euclidean",
+         fontsize = 12, fontsize_row = 12, fontsize_col = 10,
+         cellwidth = 12, cellheight = 17, bg = "transparent")
 print(p)
-# ggsave("MAG_quality.png", p, path = "../../airborne_arg_uwtp_result/Figure/binning",
-#        width = 4, height = 4, units = "in", bg='transparent') # save to png format
-# Density
-p <- ggplot(bin_quality, aes(x=completeness)) + 
-  geom_density(color="#FCCDE5", fill="#FCCDE5",alpha=0.6) +
-  theme_classic() +
-  theme(panel.background = element_rect(fill='transparent'), 
-        plot.background = element_rect(fill='transparent', color=NA), 
-        legend.background = element_rect(fill='transparent'))
-print(p)
-# ggsave("completeness_density.png", p, path = "../../airborne_arg_uwtp_result/Figure/binning",
-#        width = 2.63, height = 1, units = "in", bg='transparent') # save to png format
-p <- ggplot(bin_quality, aes(x=contamination)) + 
-  geom_density(color="#BEBADA", fill="#BEBADA",alpha=0.6) +
-  coord_flip() +
-  theme_classic() +
-  theme(panel.background = element_rect(fill='transparent'), 
-        plot.background = element_rect(fill='transparent', color=NA), 
-        legend.background = element_rect(fill='transparent'))
-print(p)
-# ggsave("contamination_density.png", p, path = "../../airborne_arg_uwtp_result/Figure/binning",
-#        width = 1.2, height = 2.5, units = "in", bg='transparent') # save to png format
+
+# ggsave("MAG_heatmap.png", p,
+#        path = "../../airborne_arg_uwtp_result/Figure/binning",
+#        width = 8.5, height = 7,
+#        units = "in", bg='transparent') # save to png format
+
+
+# View carrying ARG
+MAG_name <- SARG %>% select(MAG,Taxonomy) %>% unique()
+colnames(MGE)[12] <- "MAG"
+MGE <- MGE %>% select(MAG,subtype,type)
+MGE <- left_join(MGE,MAG_name)
+MGE <- MGE[complete.cases(MGE), ]
+arg_mge_bin <- rbind(SARG,MGE)
+
+# GGGene
+# Import manual csv
+library(openxlsx)
+library(gggenes)
+bin_gene <- read.xlsx("../../airborne_arg_uwtp_result/bins_diamond/mag_gene_position.xlsx")
+
+ggplot(bin_gene, aes(xmin = adjust_start, xmax = adjust_end, y = MAG, fill = Type,
+                         forward = Direction, label = Subtype)) +
+  geom_gene_arrow() +
+  geom_gene_label(align = "left") +
+  facet_wrap(~ MAG, scales = "free", ncol = 1) +
+  scale_fill_brewer(palette = "Set3") +
+  theme_genes()
+
+ggplot(bin_gene, aes(xmin = adjust_start, xmax = adjust_end, y = MAG, fill = Type,
+                     forward = Direction)) +
+  geom_gene_arrow() +
+  facet_wrap(~ MAG, scales = "free", ncol = 1) +
+  scale_fill_brewer(palette = "Set3") +
+  theme_genes() +
+  theme(legend.position = "top") +
+  guides(fill=guide_legend(nrow=2,byrow=TRUE))

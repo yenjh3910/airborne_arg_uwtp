@@ -266,7 +266,8 @@ $ ~/shell_script/humann3_post_processing.sh
 ```
 ### R script after Functional Profile
 ```
-$ Rscript humann3_heatmap.R
+$ Rscript humann_aerOnly_heatmap.R
+$ Rscript humann3_heatmap_without_stress.R
 ```
 # Assembly-based Analysis
 ## Contigs Assembly
@@ -417,6 +418,11 @@ $ ./metacmp.py
 # Run
 $ ~/shell_script/metacompare.sh
 ```
+### R script after metacompare
+```
+$ cd ./metacompare
+$ Rscript metacompare_plot.R
+```
 # Binning-based Analysis
 ## Contigs Co-assembly
 ### Reads normalization
@@ -531,17 +537,23 @@ $ metawrap bin_refinement -o ~/metawrap_run/bin_refinement -t 16 -A ~/metawrap_r
 ```
 ## Taxonomy Classification of Bin
 ### [GTDBTk](https://github.com/Ecogenomics/GTDBTk)
+Download and alias the GTDB-Tk reference data
+[Release database](https://ecogenomics.github.io/GTDBTk/installing/index.html#gtdb-tk-reference-data)
 ```
 # Create the GTDB-Tk environment
-$ conda create -n gtdbtk-2.1.1
-$ conda activate gtdbtk-2.1.1
-$ mamba install -c conda-forge -c bioconda gtdbtk=2.1.1
+$ conda create -n gtdbtk-2.3.0 -c conda-forge -c bioconda gtdbtk=2.3.0
+$ conda activate gtdbtk-2.3.0
 
-# Download and alias the GTDB-Tk reference data
-$ download-db.sh
+# Setting environment-specific variables
+$ conda env config vars set GTDBTK_DATA_PATH=~/db/gtdbtk/release214
 
+# Checl install
+# gtdbtk check_install
+# gtdbtk test --out_dir gtdbtk_test
+
+# Run
 $ gtdbtk classify_wf --genome_dir ~/metawrap_run/bin_refinement/metawrap_50_10_bins -x fa \
-  --out_dir ~/bins_gtdbdk --scratch_dir scratch.tempory --cpus 16
+  --out_dir ~/bins_gtdbdk --scratch_dir scratch.tempory --cpus 16  --skip_ani_screen
 ```
 ## Gene Alignment to Bin
 ### [Prodigal](https://github.com/hyattpd/Prodigal) & [CD-HIT](https://github.com/weizhongli/cdhit)
@@ -574,4 +586,6 @@ Remove 0 bytes dmnd file in ../../airborne_arg_uwtp_result/bins_diamind
 $ Rscript bins_ARG_diamond.R
 $ Rscript bins_MGE_diamond.R
 $ Rscript bins_VF_diamond.R
+$ Rscript bin_quality.R
+$ Rscript bin_abundance.R
 ```

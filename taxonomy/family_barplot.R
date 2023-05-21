@@ -84,7 +84,17 @@ taxa_family <- unique(
     order(gat_merge_taxa$abundance,
           decreasing = T),
   ]$taxa)
-# family taxa as thier highest abundance
+
+# Statistic for all taxa
+all_taxa <- gat_merge_taxa
+all_taxa$sample_type <- gsub("1|2|3|4|5","",all_taxa$sample)
+all_taxa <- all_taxa %>% group_by(taxa,sample_type) %>% 
+                         mutate(mean_percent = mean(abundance*100)) %>%
+                         mutate(sd_percent = sd(abundance*100)) %>%
+                         select(taxa,sample_type,mean_percent,sd_percent) %>% unique()
+spread_all_taxa <- all_taxa %>% select(!(sd_percent)) %>% spread(key = "sample_type", value = "mean_percent")
+
+# family taxa as their highest abundance
 merge_taxa <- merge_taxa[,-16]
 merge_taxa <- merge_taxa %>% 
   arrange(factor(rownames(merge_taxa), levels = taxa_family))

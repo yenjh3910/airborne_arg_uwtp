@@ -1,7 +1,8 @@
-# ARG_coverage.R
+# ARG_coverage_notMean.R
 
 library(tidyverse)
 library(openxlsx)
+library(RColorBrewer)
 # SARG
 ## Import coverage file & bind
 temp <- list.files(path = "../../airborne_arg_uwtp_result/contigs_bowtie2/SARG/coverage", pattern = "*_SARG.sam.map.txt")
@@ -239,51 +240,13 @@ final_ARG_coverage$Species <- replace_na(final_ARG_coverage$Species, "Unclassifi
 final_ARG_coverage <- final_ARG_coverage %>% select(!(Avg_fold)) %>% select(!(Length)) %>% select(!(Std_Dev))
 colnames(final_ARG_coverage)[2] <- "Sample" 
 final_ARG_coverage$Sample_type <- gsub("1|2|3|4|5","",final_ARG_coverage$Sample)
+
 ############### Phylum ##############
-# Statistic
-ARG_Phylum <- final_ARG_coverage  %>% ungroup() %>% group_by(Sample, Phylum) %>% 
+# Sum ARG coverage in same sample type
+ARG_Phylum <- final_ARG_coverage  %>% ungroup() %>% group_by(Sample_type, Phylum) %>% 
   summarise(coverage = sum(coverage)) %>% filter(!(coverage == 0))
-ARG_Phylum$Sample_type <- gsub("1|2|3|4|5","",ARG_Phylum$Sample)
-# Calculate mean and sd (Some microbes do not appear in all sample, so mean()&sd() must wrong)
-ARG_Phylum <- ARG_Phylum %>% ungroup() %>% group_by(Phylum, Sample_type) %>% mutate(mean = sum(coverage)/5)
-ARG_Phylum <- ARG_Phylum %>% ungroup() %>% group_by(Phylum, Sample_type) %>% 
-  mutate(sd = sqrt(sum((coverage-mean)^2/(5-1))))
-# Filter necesssary column for figure
-ARG_Phylum <- ARG_Phylum %>% select(Phylum,Sample_type,mean,sd) %>% unique()
-# Add st_mean for figure
-ARG_Phylum <- ARG_Phylum %>% group_by(Sample_type) %>% 
-  mutate(sd_mean = mean)
-ARG_Phylum <- ARG_Phylum %>% arrange(Sample_type)
-## sum ARP st_mean
-for (i in 1:(nrow(ARG_Phylum %>% filter(Sample_type == "ARP"))-1)) {
-  ARG_Phylum[{i},5] <-  ARG_Phylum[{i},5] + 
-    sum(ARG_Phylum[{i+1}:nrow(ARG_Phylum %>% filter(Sample_type == "ARP")),5])}
-## sum AT st_mean
-for (i in (nrow(ARG_Phylum %>% filter(Sample_type == "ARP"))+1):(nrow(ARG_Phylum %>% filter(!(Sample_type == "ODP")))-1)) {
-  ARG_Phylum[{i},5] <-  ARG_Phylum[{i},5] + 
-    sum(ARG_Phylum[{i+1}:nrow(ARG_Phylum %>% filter(!(Sample_type == "ODP"))),5])}
-## sum ODP st_mean
-for (i in (nrow(ARG_Phylum %>% filter(!(Sample_type == "ODP")))+1):(nrow(ARG_Phylum)-1)) {
-  ARG_Phylum[{i},5] <-  ARG_Phylum[{i},5] + 
-    sum(ARG_Phylum[{i+1}:nrow(ARG_Phylum) ,5])}
-# Visualize with barplot ()
-## Select color
-library(RColorBrewer)
-RColorBrewer::display.brewer.all()
-display.brewer.pal(n=12,name="Set3")
-brewer.pal(n=12,name="Set3")
-phylum_col <- c( "#8DD3C7","#FFFFB3","#BEBADA","#FB8072","#FDB462","#B3DE69","#D9D9D9",
-                 "#8DD3C7","#FFFFB3","#BEBADA","#80B1D3","#B3DE69","#FCCDE5","#D9D9D9",
-                 "#8DD3C7","#FFFFB3","#B3DE69","#D9D9D9")
-ggplot(ARG_Phylum, aes(x = Sample_type, y = mean, fill = Phylum))+
-  geom_bar(stat="identity") +
-  geom_errorbar(aes(x=Sample_type, ymin=sd_mean, ymax=sd_mean+sd), 
-                width=0.4, color=phylum_col, alpha=0.9, size=0.5) + 
-  theme_bw()+ 
-  scale_fill_brewer(palette="Set3")
-### Not plot with errorbar
 #### Order phylum
-ARG_Phylum <- ARG_Phylum %>% arrange(desc(mean))
+ARG_Phylum <- ARG_Phylum %>% arrange(desc(coverage))
 unique(ARG_Phylum$Phylum)
 ARG_Phylum$Phylum <- factor(ARG_Phylum$Phylum, 
                             levels = c("Pseudomonadota","Actinomycetota","Bacteroidota","Bacillota","Thermodesulfobacteriota",
@@ -292,7 +255,7 @@ ARG_Phylum$Phylum <- factor(ARG_Phylum$Phylum,
 ARG_Phylum$Sample_type <- factor(ARG_Phylum$Sample_type, 
                             levels = c("AT","ARP","ODP"))
 # Plot
-p <- ggplot(ARG_Phylum, aes(x = Sample_type, y = mean, fill = Phylum)) + 
+p <- ggplot(ARG_Phylum, aes(x = Sample_type, y = coverage, fill = Phylum)) + 
   geom_bar(stat="identity") + 
   theme_bw() + 
   xlab("") + ylab("Coverage (x/GB)") + 
@@ -309,26 +272,21 @@ p <- ggplot(ARG_Phylum, aes(x = Sample_type, y = mean, fill = Phylum)) +
         panel.grid.minor = element_blank(), #remove minor gridlines
         legend.background = element_rect(fill='transparent')) #transparent legend bg)
 print(p)
-ggsave("ARG_coverage_phylum.png", p,
-       path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
-       width = 4, height = 5,
-       units = "in", bg='transparent') # save to png format
+# ggsave("ARG_coverage_phylum.png", p,
+#        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
+#        width = 4, height = 5,
+#        units = "in", bg='transparent') # save to png format
 
 
 
 ############### Class ################
-ARG_Class <- final_ARG_coverage  %>% ungroup() %>% group_by(Sample, Class) %>% 
+ARG_Class <- final_ARG_coverage  %>% ungroup() %>% group_by(Sample_type, Class) %>% 
   summarise(coverage = sum(coverage)) %>% filter(!(coverage == 0))
-ARG_Class$Sample_type <- gsub("1|2|3|4|5","",ARG_Class$Sample)
-## Calculate mean
-ARG_Class <- ARG_Class %>% ungroup() %>% group_by(Class, Sample_type) %>% mutate(mean = sum(coverage)/5)
-## Filter necesssary column for figure
-ARG_Class <- ARG_Class %>% select(Class,Sample_type,mean) %>% unique()
 ## Expand color
 nb.cols <- 18
 mycolors <- colorRampPalette(brewer.pal(12, "Set3"))(nb.cols)
 ## Order Class
-ARG_Class <- ARG_Class %>% arrange(desc(mean))
+ARG_Class <- ARG_Class %>% arrange(desc(coverage))
 unique(ARG_Class$Class)
 ARG_Class$Class <- factor(ARG_Class$Class, 
                           levels = c("Actinomycetes","Gammaproteobacteria","Betaproteobacteria","Flavobacteriia",  
@@ -336,7 +294,7 @@ ARG_Class$Class <- factor(ARG_Class$Class,
                                      "Chlorobiia","Epsilonproteobacteria","Bacteroidia","Fusobacteriia",
                                      "Cytophagia","Negativicutes","Tissierellia","Erysipelotrichia","Unclassified"))
 ## Plot
-ggplot(ARG_Class, aes(x = Sample_type, y = mean, fill = Class)) + 
+ggplot(ARG_Class, aes(x = Sample_type, y = coverage, fill = Class)) + 
   geom_bar(stat="identity") + 
   theme_bw() + 
   xlab("") + ylab("Coverage (x/GB)") +
@@ -347,7 +305,7 @@ ARG_Class <-ARG_Class %>%
                                    "Bacilli","Alphaproteobacteria","Deltaproteobacteria","Clostridia","Desulfuromonadia",
                                    "Chlorobiia","Epsilonproteobacteria","Bacteroidia","Fusobacteriia",
                                    "Cytophagia","Negativicutes","Tissierellia","Erysipelotrichia","Unclassified")))
-other_class <- ARG_Class[25:34,] %>% group_by(Sample_type) %>% summarise(mean = sum(mean))
+other_class <- ARG_Class[25:34,] %>% group_by(Sample_type) %>% summarise(coverage = sum(coverage))
 other_class$Class <- "Unclassified/Others"
 ARG_Class <- ARG_Class[1:24,]
 ARG_Class <- rbind(ARG_Class, other_class)
@@ -359,7 +317,7 @@ ARG_Class$Class <- factor(ARG_Class$Class,
 ARG_Class$Sample_type <- factor(ARG_Class$Sample_type, 
                                  levels = c("AT","ARP","ODP"))
 ## Plot
-p <- ggplot(ARG_Class, aes(x = Sample_type, y = mean, fill = Class)) + 
+p <- ggplot(ARG_Class, aes(x = Sample_type, y = coverage, fill = Class)) + 
   geom_bar(stat="identity") + 
   theme_bw() + 
   xlab("") + ylab("Coverage (x/GB)") +
@@ -378,25 +336,20 @@ p <- ggplot(ARG_Class, aes(x = Sample_type, y = mean, fill = Class)) +
                              "#FDB462","#B3DE69","#FCCDE5", "#FFED6F","#BC80BD",
                              "#CCEBC5","#D9D9D9"))
 print(p)
-ggsave("ARG_coverage_class.png", p,
-       path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
-       width = 3.835, height = 5,
-       units = "in", bg='transparent') # save to png format
+# ggsave("ARG_coverage_class.png", p,
+#        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
+#        width = 3.835, height = 5,
+#        units = "in", bg='transparent') # save to png format
 
 
 ############### Order ################
-ARG_Order <- final_ARG_coverage  %>% ungroup() %>% group_by(Sample, Order) %>% 
+ARG_Order <- final_ARG_coverage  %>% ungroup() %>% group_by(Sample_type, Order) %>% 
   summarise(coverage = sum(coverage)) %>% filter(!(coverage == 0))
-ARG_Order$Sample_type <- gsub("1|2|3|4|5","",ARG_Order$Sample)
-## Calculate mean
-ARG_Order <- ARG_Order %>% ungroup() %>% group_by(Order, Sample_type) %>% mutate(mean = sum(coverage)/5)
-## Filter necesssary column for figure
-ARG_Order <- ARG_Order %>% select(Order,Sample_type,mean) %>% unique()
 ## Expand color
 nb.cols <- 46
 mycolors <- colorRampPalette(brewer.pal(12, "Set3"))(nb.cols)
 # Order order tax
-ARG_Order <- ARG_Order %>% arrange(desc(mean))
+ARG_Order <- ARG_Order %>% arrange(desc(coverage))
 unique(ARG_Order$Order)
 ARG_Order$Order <- factor(ARG_Order$Order, levels = c(  "Mycobacteriales" ,    "Burkholderiales"  ,   "Xanthomonadales"   , 
                                                         "Flavobacteriales",    "Pseudomonadales"  ,   "Moraxellales"      ,  "Bacillales"         ,
@@ -411,7 +364,7 @@ ARG_Order$Order <- factor(ARG_Order$Order, levels = c(  "Mycobacteriales" ,    "
                                                         "Vibrionales"     ,    "Hyphomonadales"   ,   "Veillonellales"    ,  "Erysipelotrichales" ,
                                                         "Unclassified"))
 ## Plot
-ggplot(ARG_Order, aes(x = Sample_type, y = mean, fill = Order)) + 
+ggplot(ARG_Order, aes(x = Sample_type, y = coverage, fill = Order)) + 
   geom_bar(stat="identity") + 
   theme_bw() + 
   xlab("") + ylab("Coverage (x/GB)")+
@@ -431,7 +384,7 @@ ARG_Order <-ARG_Order %>%
                                    "Myxococcales"    ,    "Tissierellales"   ,   "Methylococcales"   ,  "Selenomonadales"    ,
                                    "Vibrionales"     ,    "Hyphomonadales"   ,   "Veillonellales"    ,  "Erysipelotrichales" ,
                                    "Unclassified")))
-other_order <- ARG_Order[26:77,] %>% group_by(Sample_type) %>% summarise(mean = sum(mean))
+other_order <- ARG_Order[26:77,] %>% group_by(Sample_type) %>% summarise(coverage = sum(coverage))
 other_order$Order <- "Unclassified/Others"
 ARG_Order <- ARG_Order[1:25,]
 ARG_Order <- rbind(ARG_Order, other_order)
@@ -443,7 +396,7 @@ ARG_Order$Order <- factor(ARG_Order$Order, levels = c("Mycobacteriales" ,    "Bu
 #### Order sample_type
 ARG_Order$Sample_type <- factor(ARG_Order$Sample_type, 
                                  levels = c("AT","ARP","ODP"))
-p <- ggplot(ARG_Order, aes(x = Sample_type, y = mean, fill = Order)) + 
+p <- ggplot(ARG_Order, aes(x = Sample_type, y = coverage, fill = Order)) + 
   geom_bar(stat="identity") + 
   theme_bw() + 
   xlab("") + ylab("Coverage (x/GB)")+
@@ -462,26 +415,21 @@ p <- ggplot(ARG_Order, aes(x = Sample_type, y = mean, fill = Order)) +
                              "#FDB462","#B3DE69","#FCCDE5", "#FFED6F","#BC80BD",
                              "#CCEBC5","#D9D9D9"))
 print(p)
-ggsave("ARG_coverage_order.png", p,
-       path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
-       width = 3.65, height = 5,
-       units = "in", bg='transparent') # save to png format
+# ggsave("ARG_coverage_order.png", p,
+#        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
+#        width = 3.65, height = 5,
+#        units = "in", bg='transparent') # save to png format
 
 
 
 ############### Family ################
-ARG_Family <- final_ARG_coverage  %>% ungroup() %>% group_by(Sample, Family) %>% 
+ARG_Family <- final_ARG_coverage  %>% ungroup() %>% group_by(Sample_type, Family) %>% 
   summarise(coverage = sum(coverage)) %>% filter(!(coverage == 0))
-ARG_Family$Sample_type <- gsub("1|2|3|4|5","",ARG_Family$Sample)
-## Calculate mean
-ARG_Family <- ARG_Family %>% ungroup() %>% group_by(Family, Sample_type) %>% mutate(mean = sum(coverage)/5)
-## Filter necesssary column for figure
-ARG_Family <- ARG_Family %>% select(Family,Sample_type,mean) %>% unique()
 ## Expand color
 nb.cols <- 93
 mycolors <- colorRampPalette(brewer.pal(12, "Set3"))(nb.cols)
 # Order family tax
-ARG_Family <- ARG_Family %>% arrange(desc(mean))
+ARG_Family <- ARG_Family %>% arrange(desc(coverage))
 unique(ARG_Family$Family)
 ARG_Family$Family <- factor(ARG_Family$Family, levels = c( "Mycobacteriaceae"     ,    "Xanthomonadaceae" ,    "Weeksellaceae"      ,   
                                                            "Comamonadaceae"       ,  "Pseudomonadaceae"   ,    "Moraxellaceae"      ,    "Azonexaceae"        ,   
@@ -506,7 +454,7 @@ ARG_Family$Family <- factor(ARG_Family$Family, levels = c( "Mycobacteriaceae"   
                                                            "Bacteroidaceae"       ,  "Erysipelotrichaceae",    "Labilitrichaceae"   ,    "Pseudoalteromonadaceae",
                                                            "Unclassified"))
 ## Plot
-ggplot(ARG_Family, aes(x = Sample_type, y = mean, fill = Family)) + 
+ggplot(ARG_Family, aes(x = Sample_type, y = coverage, fill = Family)) + 
   geom_bar(stat="identity") + 
   theme_bw() + 
   xlab("") + ylab("Coverage (x/GB)")+
@@ -536,7 +484,7 @@ ARG_Family <-ARG_Family %>%
                                     "Anaeromyxobacteraceae",  "Peptococcaceae"     ,    "Hyphomonadaceae"    ,    "Veillonellaceae"    ,   
                                     "Bacteroidaceae"       ,  "Erysipelotrichaceae",    "Labilitrichaceae"   ,    "Pseudoalteromonadaceae",
                                     "Unclassified")))
-other_family <- ARG_Family[23:126,] %>% group_by(Sample_type) %>% summarise(mean = sum(mean))
+other_family <- ARG_Family[23:126,] %>% group_by(Sample_type) %>% summarise(coverage = sum(coverage))
 other_family$Family <- "Unclassified/Others"
 ARG_Family <- ARG_Family[1:22,]
 ARG_Family <- rbind(ARG_Family, other_family)
@@ -547,7 +495,7 @@ ARG_Family$Family <- factor(ARG_Family$Family, levels = c("Mycobacteriaceae"    
                                                           "Unclassified/Others"))
 ARG_Family$Sample_type <- factor(ARG_Family$Sample_type, 
                                 levels = c("AT","ARP","ODP"))
-p <- ggplot(ARG_Family, aes(x = Sample_type, y = mean, fill = Family)) + 
+p <- ggplot(ARG_Family, aes(x = Sample_type, y = coverage, fill = Family)) + 
   geom_bar(stat="identity") + 
   theme_bw() + 
   xlab("") + ylab("Coverage (x/GB)") +
@@ -566,32 +514,27 @@ p <- ggplot(ARG_Family, aes(x = Sample_type, y = mean, fill = Family)) +
                              "#FDB462","#B3DE69","#FCCDE5", "#FFED6F","#BC80BD",
                              "#CCEBC5","#D9D9D9"))
 print(p)
-ggsave("ARG_coverage_family.png", p,
-       path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
-       width = 3.72, height = 5,
-       units = "in", bg='transparent') # save to png format
+# ggsave("ARG_coverage_family.png", p,
+#        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
+#        width = 3.72, height = 5,
+#        units = "in", bg='transparent') # save to png format
 
 
 
 ############### Genus ################
-ARG_Genus <- final_ARG_coverage  %>% ungroup() %>% group_by(Sample, Genus) %>% 
+ARG_Genus <- final_ARG_coverage  %>% ungroup() %>% group_by(Sample_type, Genus) %>% 
   summarise(coverage = sum(coverage)) %>% filter(!(coverage == 0))
-ARG_Genus$Sample_type <- gsub("1|2|3|4|5","",ARG_Genus$Sample)
-## Calculate mean
-ARG_Genus <- ARG_Genus %>% ungroup() %>% group_by(Genus, Sample_type) %>% mutate(mean = sum(coverage)/5)
-## Filter necesssary column for figure
-ARG_Genus <- ARG_Genus %>% select(Genus,Sample_type,mean) %>% unique()
 ## Expand color
 nb.cols <- 178
 mycolors <- colorRampPalette(brewer.pal(12, "Set3"))(nb.cols)
 ## Plot
-ggplot(ARG_Genus, aes(x = Sample_type, y = mean, fill = Genus)) + 
+ggplot(ARG_Genus, aes(x = Sample_type, y = coverage, fill = Genus)) + 
   geom_bar(stat="identity") + 
   theme_bw() + 
   xlab("") + ylab("Coverage (x/GB)") +
   scale_fill_manual(values = mycolors)
 ## Calculate others by summing  minimum arg
-ARG_Genus <- ARG_Genus %>% arrange(desc(mean))
+ARG_Genus <- ARG_Genus %>% arrange(desc(coverage))
 unique(ARG_Genus$Genus)
 ARG_Genus <-ARG_Genus %>% 
   arrange(factor(Genus,  levels = c( "Mycolicibacterium", "Pseudomonas"     ,  "Xanthomonas"      , "Acinetobacter"   ,
@@ -626,7 +569,7 @@ ARG_Genus <-ARG_Genus %>%
                                      "Megasphaera"      , "Xylophilus"      ,  "Bacteroides"      , "Erysipelothrix"  ,  "Kitasatospora"    ,
                                      "Novosphingobium"  , "Nitrobacter"     ,  "Flavonifractor"   , "Paracoccus"      ,  "Azospira"         ,
                                      "Labilithrix"      , "Pseudoalteromonas", "Unclassified"   )))
-other_genus <- ARG_Genus[23:204,] %>% group_by(Sample_type) %>% summarise(mean = sum(mean))
+other_genus <- ARG_Genus[23:204,] %>% group_by(Sample_type) %>% summarise(coverage = sum(coverage))
 other_genus$Genus <- "Unclassified/Others"
 ARG_Genus <- ARG_Genus[1:22,]
 ARG_Genus <- rbind(ARG_Genus, other_genus)
@@ -636,7 +579,7 @@ ARG_Genus$Genus <- factor(ARG_Genus$Genus, levels = c("Mycolicibacterium", "Pseu
                                                       "Acidovorax"       , "Lysobacter"      ,  "Unclassified/Others"))
 ARG_Genus$Sample_type <- factor(ARG_Genus$Sample_type, 
                                  levels = c("AT","ARP","ODP"))
-p <- ggplot(ARG_Genus, aes(x = Sample_type, y = mean, fill = Genus)) + 
+p <- ggplot(ARG_Genus, aes(x = Sample_type, y = coverage, fill = Genus)) + 
   geom_bar(stat="identity") + 
   theme_bw() + 
   xlab("") + ylab("Coverage (x/GB)") +
@@ -655,31 +598,26 @@ p <- ggplot(ARG_Genus, aes(x = Sample_type, y = mean, fill = Genus)) +
                              "#FDB462","#B3DE69","#FCCDE5", "#FFED6F","#BC80BD",
                              "#CCEBC5","#D9D9D9"))
 print(p)
-ggsave("ARG_coverage_genus.png", p,
-       path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
-       width = 3.64, height = 5,
-       units = "in", bg='transparent') # save to png format
+# ggsave("ARG_coverage_genus.png", p,
+#        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
+#        width = 3.64, height = 5,
+#        units = "in", bg='transparent') # save to png format
 
 
 ######### Species ##########
-ARG_Species <- final_ARG_coverage  %>% ungroup() %>% group_by(Sample, Species) %>% 
+ARG_Species <- final_ARG_coverage  %>% ungroup() %>% group_by(Sample_type, Species) %>% 
   summarise(coverage = sum(coverage)) %>% filter(!(coverage == 0))
-ARG_Species$Sample_type <- gsub("1|2|3|4|5","",ARG_Species$Sample)
-## Calculate mean
-ARG_Species <- ARG_Species %>% ungroup() %>% group_by(Species, Sample_type) %>% mutate(mean = sum(coverage)/5)
-## Filter necessary column for figure
-ARG_Species <- ARG_Species %>% select(Species,Sample_type,mean) %>% unique()
 ## Expand color
 nb.cols <- 434
 mycolors <- colorRampPalette(brewer.pal(12, "Set3"))(nb.cols)
 ## Plot
-ggplot(ARG_Species, aes(x = Sample_type, y = mean, fill = Species)) + 
+ggplot(ARG_Species, aes(x = Sample_type, y = coverage, fill = Species)) + 
   geom_bar(stat="identity") + 
   theme_bw() + 
   xlab("") + ylab("Coverage (x/GB)") +
   scale_fill_manual(values = mycolors)
 ## Calculate others by summing  minimum arg
-ARG_Species <- ARG_Species %>% arrange(desc(mean))
+ARG_Species <- ARG_Species %>% arrange(desc(coverage))
 unique(ARG_Species$Species)
 ARG_Species <-ARG_Species %>% 
   arrange(factor(Species, levels = c( "Mycolicibacterium insubricum"                ,  
@@ -843,7 +781,7 @@ ARG_Species <-ARG_Species %>%
                                       "Bradyrhizobium sp. CCBAU 051011"             , "Pseudomonas orientalis"                    ,  
                                       "Pseudoalteromonas luteoviolacea"             , "Cupriavidus necator"                       ,
                                       "Unclassified"                                )))
-other_species <- ARG_Species[17:364,] %>% group_by(Sample_type) %>% summarise(mean = sum(mean))
+other_species <- ARG_Species[17:364,] %>% group_by(Sample_type) %>% summarise(coverage = sum(coverage))
 other_species$Species <- "Unclassified/Others"
 ARG_Species <- ARG_Species[1:16,]
 ARG_Species <- rbind(ARG_Species, other_species)
@@ -857,7 +795,7 @@ ARG_Species$Species <- factor(ARG_Species$Species, levels = c("Mycolicibacterium
                                                               "Unclassified/Others"))
 ARG_Species$Sample_type <- factor(ARG_Species$Sample_type, 
                                 levels = c("AT","ARP","ODP"))
-p <- ggplot(ARG_Species, aes(x = Sample_type, y = mean, fill = Species)) + 
+p <- ggplot(ARG_Species, aes(x = Sample_type, y = coverage, fill = Species)) + 
   geom_bar(stat="identity") + 
   theme_bw() + 
   xlab("") + ylab("Coverage (x/GB)") +
@@ -876,8 +814,8 @@ p <- ggplot(ARG_Species, aes(x = Sample_type, y = mean, fill = Species)) +
                              "#FDB462","#B3DE69","#FCCDE5", "#FFED6F","#BC80BD",
                              "#CCEBC5","#D9D9D9"))
 print(p)
-ggsave("ARG_coverage_species.png", p,
-       path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
-       width = 5.32, height = 5,
-       units = "in", bg='transparent') # save to png format
+# ggsave("ARG_coverage_species.png", p,
+#        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
+#        width = 5.32, height = 5,
+#        units = "in", bg='transparent') # save to png format
 

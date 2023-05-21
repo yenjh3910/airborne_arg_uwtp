@@ -16,7 +16,7 @@ colnames(z) <- c("qseqid","sseqid","pident","length","mismatch","gapopen",
                  "qstart","qend","sstart","send","evalue","bitscore","BinID") 
 z$BinID <- gsub(".VF.dmnd", "", z$BinID)
 ## Join with VF database
-fastafile <- read.fasta("./VFDB_setB_pro.fa",seqtype = "AA",
+fastafile <- read.fasta("../contigs/VFDB_setB_pro.fa",seqtype = "AA",
                         as.string = TRUE, set.attributes = FALSE,
                         whole.header = TRUE)
 fastafile <- names(fastafile)

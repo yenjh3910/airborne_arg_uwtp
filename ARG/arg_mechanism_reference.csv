@@ -1,0 +1,987 @@
+subtype,mechanism
+rmtB,Antibiotic target alteration
+bacA,Antibiotic target alteration
+Bacillus subtilis mprF,Antibiotic target alteration
+Brucella suis mprF,Antibiotic target alteration
+Clostridium perfringens mprF,Antibiotic target alteration
+Listeria monocytogenes mprF,Antibiotic target alteration
+cfr(A),Antibiotic target alteration
+cfr(B),Antibiotic target alteration
+cfr(C),Antibiotic target alteration
+cfr(D),Antibiotic target alteration
+cfr(E),Antibiotic target alteration
+cipA,Antibiotic target alteration
+clbA,Antibiotic target alteration
+clcD,Antibiotic target alteration
+emtA,Antibiotic target alteration
+erm(31),Antibiotic target alteration
+erm(33),Antibiotic target alteration
+erm(35),Antibiotic target alteration
+erm(36),Antibiotic target alteration
+erm(38),Antibiotic target alteration
+erm(39),Antibiotic target alteration
+erm(40),Antibiotic target alteration
+erm(42),Antibiotic target alteration
+erm(45),Antibiotic target alteration
+erm(46),Antibiotic target alteration
+erm(47),Antibiotic target alteration
+erm(49),Antibiotic target alteration
+erm(50),Antibiotic target alteration
+erm(A),Antibiotic target alteration
+erm(B),Antibiotic target alteration
+erm(C),Antibiotic target alteration
+erm(F),Antibiotic target alteration
+erm(G),Antibiotic target alteration
+erm(O),Antibiotic target alteration
+erm(O)-lrm,Antibiotic target alteration
+erm(Q),Antibiotic target alteration
+erm(S),Antibiotic target alteration
+erm(T),Antibiotic target alteration
+erm(X),Antibiotic target alteration
+erm(Y),Antibiotic target alteration
+LlmA 23S ribosomal RNA methyltransferase,Antibiotic target alteration
+myrA,Antibiotic target alteration
+RlmA(II),Antibiotic target alteration
+Bifidobacteria intrinsic ileS conferring resistance to mupirocin,Antibiotic target alteration
+mupA,Antibiotic target alteration
+mupB,Antibiotic target alteration
+thiostrepton resistance gene tsnR,Antibiotic target alteration
+arnA,Antibiotic target alteration
+eptA,Antibiotic target alteration
+ICR-Mo,Antibiotic target alteration
+mcr-3.1,Antibiotic target alteration
+mcr-3.10,Antibiotic target alteration
+mcr-3.11,Antibiotic target alteration
+mcr-3.12,Antibiotic target alteration
+mcr-3.19,Antibiotic target alteration
+mcr-3.2,Antibiotic target alteration
+mcr-3.20,Antibiotic target alteration
+mcr-3.3,Antibiotic target alteration
+mcr-3.4,Antibiotic target alteration
+mcr-3.5,Antibiotic target alteration
+mcr-3.6,Antibiotic target alteration
+mcr-3.7,Antibiotic target alteration
+mcr-3.8,Antibiotic target alteration
+mcr-3.9,Antibiotic target alteration
+mcr-4.2,Antibiotic target alteration
+mcr-4.3,Antibiotic target alteration
+mcr-4.4,Antibiotic target alteration
+mcr-4.5,Antibiotic target alteration
+mcr-5.1,Antibiotic target alteration
+mcr-5.2,Antibiotic target alteration
+mcr-7.1,Antibiotic target alteration
+mcr-9.1,Antibiotic target alteration
+pmrF,Antibiotic target alteration
+ugd,Antibiotic target alteration
+tet(O/W),Antibiotic target alteration
+tet(W/N/W),Antibiotic target alteration
+vanA,Antibiotic target alteration
+vanB,Antibiotic target alteration
+vanC,Antibiotic target alteration
+vanE,Antibiotic target alteration
+vanF,Antibiotic target alteration
+vanG,Antibiotic target alteration
+vanHA,Antibiotic target alteration
+vanHD,Antibiotic target alteration
+vanHF,Antibiotic target alteration
+vanHM,Antibiotic target alteration
+vanHO,Antibiotic target alteration
+vanI,Antibiotic target alteration
+vanJ,Antibiotic target alteration
+vanKI,Antibiotic target alteration
+vanM,Antibiotic target alteration
+vanO,Antibiotic target alteration
+vanTC,Antibiotic target alteration
+vanTG,Antibiotic target alteration
+vanXA,Antibiotic target alteration
+vanXD,Antibiotic target alteration
+vanXF,Antibiotic target alteration
+vanXI,Antibiotic target alteration
+vanXO,Antibiotic target alteration
+vanYA,Antibiotic target alteration
+vanYF,Antibiotic target alteration
+vanYG1,Antibiotic target alteration
+vanYM,Antibiotic target alteration
+vanZF,Antibiotic target alteration
+fusC,Antibiotic target protection
+fusD,Antibiotic target protection
+FusF,Antibiotic target protection
+carA,Antibiotic target protection
+lmrC,Antibiotic target protection
+lsa(A),Antibiotic target protection
+lsa(B),Antibiotic target protection
+lsa(C),Antibiotic target protection
+lsa(D),Antibiotic target protection
+lsa(E),Antibiotic target protection
+mel,Antibiotic target protection
+msr(A),Antibiotic target protection
+msr(C),Antibiotic target protection
+msr(F),Antibiotic target protection
+msr(H),Antibiotic target protection
+optrA,Antibiotic target protection
+poxtA,Antibiotic target protection
+sal(A),Antibiotic target protection
+srm(B),Antibiotic target protection
+tlr(C),Antibiotic target protection
+vga(B),Antibiotic target protection
+vga(C),Antibiotic target protection
+vga(D),Antibiotic target protection
+vga(E),Antibiotic target protection
+vgaALC,Antibiotic target protection
+vmlR,Antibiotic target protection
+mfpA,Antibiotic target protection
+QnrB25,Antibiotic target protection
+QnrB33,Antibiotic target protection
+QnrB61,Antibiotic target protection
+QnrB65,Antibiotic target protection
+QnrB71,Antibiotic target protection
+QnrD1,Antibiotic target protection
+QnrD2,Antibiotic target protection
+QnrE1,Antibiotic target protection
+QnrS2,Antibiotic target protection
+QnrS5,Antibiotic target protection
+QnrS6,Antibiotic target protection
+QnrS8,Antibiotic target protection
+QnrS9,Antibiotic target protection
+QnrVC1,Antibiotic target protection
+QnrVC3,Antibiotic target protection
+QnrVC4,Antibiotic target protection
+QnrVC5,Antibiotic target protection
+QnrVC6,Antibiotic target protection
+QnrVC7,Antibiotic target protection
+RbpA,Antibiotic target protection
+otr(A),Antibiotic target protection
+tet(32),Antibiotic target protection
+tet(36),Antibiotic target protection
+tet(44),Antibiotic target protection
+tet(47),Antibiotic target protection
+tet(49),Antibiotic target protection
+tet(50),Antibiotic target protection
+tet(51),Antibiotic target protection
+tet(52),Antibiotic target protection
+tet(53),Antibiotic target protection
+tet(55),Antibiotic target protection
+tet(61),Antibiotic target protection
+tet(M),Antibiotic target protection
+tet(O),Antibiotic target protection
+tet(Q),Antibiotic target protection
+tet(S),Antibiotic target protection
+tet(T),Antibiotic target protection
+tet(W),Antibiotic target protection
+tetB(P),Antibiotic target protection
+mecA,Antibiotic target replacement
+mecB,Antibiotic target replacement
+sul1,Antibiotic target replacement
+sul2,Antibiotic target replacement
+sul3,Antibiotic target replacement
+sul4,Antibiotic target replacement
+dfrA1,Antibiotic target replacement
+dfrA10,Antibiotic target replacement
+dfrA12,Antibiotic target replacement
+dfrA14,Antibiotic target replacement
+dfrA15,Antibiotic target replacement
+dfrA16,Antibiotic target replacement
+dfrA17,Antibiotic target replacement
+dfrA22,Antibiotic target replacement
+dfrA27,Antibiotic target replacement
+dfrA3,Antibiotic target replacement
+dfrA32,Antibiotic target replacement
+dfrA5,Antibiotic target replacement
+dfrB2,Antibiotic target replacement
+dfrB3,Antibiotic target replacement
+dfrB4,Antibiotic target replacement
+dfrB6,Antibiotic target replacement
+dfrB7,Antibiotic target replacement
+dfrC,Antibiotic target replacement
+dfrD,Antibiotic target replacement
+dfrE,Antibiotic target replacement
+dfrF,Antibiotic target replacement
+dfrG,Antibiotic target replacement
+dfrK,Antibiotic target replacement
+amrA,Antibiotic efflux
+amrB,Antibiotic efflux
+farA,Antibiotic efflux
+farB,Antibiotic efflux
+bcrA,Antibiotic efflux
+bcrB,Antibiotic efflux
+cmlA1,Antibiotic efflux
+cmlA4,Antibiotic efflux
+cmlA5,Antibiotic efflux
+cmlA6,Antibiotic efflux
+cmlA8,Antibiotic efflux
+cmlB,Antibiotic efflux
+cmlB1,Antibiotic efflux
+cmrA,Antibiotic efflux
+cmx,Antibiotic efflux
+fexA,Antibiotic efflux
+Salmonella enterica cmlA,Antibiotic efflux
+Streptomyces lividans cmlR,Antibiotic efflux
+floR,Antibiotic efflux
+pp-flo,Antibiotic efflux
+Acinetobacter baumannii AbaF,Antibiotic efflux
+lmrB,Antibiotic efflux
+lmrD,Antibiotic efflux
+LpeA,Antibiotic efflux
+LpeB,Antibiotic efflux
+macA,Antibiotic efflux
+macB,Antibiotic efflux
+mef(B),Antibiotic efflux
+mef(C),Antibiotic efflux
+mef(D),Antibiotic efflux
+mef(E),Antibiotic efflux
+mef(En2),Antibiotic efflux
+ole(B),Antibiotic efflux
+ole(C),Antibiotic efflux
+abcA,Antibiotic efflux
+abeM,Antibiotic efflux
+abeS,Antibiotic efflux
+Acinetobacter baumannii AmvA,Antibiotic efflux
+acrE,Antibiotic efflux
+acrF,Antibiotic efflux
+adeF,Antibiotic efflux
+adeH,Antibiotic efflux
+adeI,Antibiotic efflux
+blt,Antibiotic efflux
+bmr,Antibiotic efflux
+bpeF,Antibiotic efflux
+ceoB,Antibiotic efflux
+efmA,Antibiotic efflux
+efpA,Antibiotic efflux
+efrA,Antibiotic efflux
+efrB,Antibiotic efflux
+emeA,Antibiotic efflux
+emrA,Antibiotic efflux
+emrB,Antibiotic efflux
+emrD,Antibiotic efflux
+emrK,Antibiotic efflux
+emrY,Antibiotic efflux
+Enterobacter cloacae acrA,Antibiotic efflux
+Escherichia coli acrA,Antibiotic efflux
+Escherichia coli emrE,Antibiotic efflux
+Escherichia coli mdfA,Antibiotic efflux
+hmrM,Antibiotic efflux
+Klebsiella pneumoniae acrA,Antibiotic efflux
+lmrP,Antibiotic efflux
+mdsA,Antibiotic efflux
+mdsB,Antibiotic efflux
+mdsC,Antibiotic efflux
+mdtE,Antibiotic efflux
+mdtF,Antibiotic efflux
+mdtH,Antibiotic efflux
+mdtK,Antibiotic efflux
+mdtL,Antibiotic efflux
+mdtM,Antibiotic efflux
+mdtN,Antibiotic efflux
+mdtO,Antibiotic efflux
+mdtP,Antibiotic efflux
+mepA,Antibiotic efflux
+MexA,Antibiotic efflux
+MexB,Antibiotic efflux
+MexC,Antibiotic efflux
+MexD,Antibiotic efflux
+MexE,Antibiotic efflux
+MexF,Antibiotic efflux
+mexJ,Antibiotic efflux
+mexK,Antibiotic efflux
+mexN,Antibiotic efflux
+mexP,Antibiotic efflux
+mexQ,Antibiotic efflux
+mexV,Antibiotic efflux
+mexW,Antibiotic efflux
+msbA,Antibiotic efflux
+mtrD,Antibiotic efflux
+mtrE,Antibiotic efflux
+MuxA,Antibiotic efflux
+MuxB,Antibiotic efflux
+MuxC,Antibiotic efflux
+opcM,Antibiotic efflux
+OpmB,Antibiotic efflux
+opmD,Antibiotic efflux
+opmE,Antibiotic efflux
+OpmH,Antibiotic efflux
+oprA,Antibiotic efflux
+OprJ,Antibiotic efflux
+OprM,Antibiotic efflux
+OprN,Antibiotic efflux
+OprZ,Antibiotic efflux
+oqxA,Antibiotic efflux
+oqxB,Antibiotic efflux
+Other_major_facilitator_superfamily_transporter,Antibiotic efflux
+patA,Antibiotic efflux
+patB,Antibiotic efflux
+PmpM,Antibiotic efflux
+pmrA,Antibiotic efflux
+qacB,Antibiotic efflux
+qacH,Antibiotic efflux
+sdeY,Antibiotic efflux
+smeA,Antibiotic efflux
+smeD,Antibiotic efflux
+smeE,Antibiotic efflux
+smeF,Antibiotic efflux
+Staphylococcys aureus LmrS,Antibiotic efflux
+tap,Antibiotic efflux
+tolC,Antibiotic efflux
+ykkD,Antibiotic efflux
+novA,Antibiotic efflux
+microcin efflux pumu gene yojI,Antibiotic efflux
+TaeA,Antibiotic efflux
+rosA,Antibiotic efflux
+rosB,Antibiotic efflux
+Acinetobacter baumannii AbaQ,Antibiotic efflux
+lfrA,Antibiotic efflux
+norA,Antibiotic efflux
+norB,Antibiotic efflux
+qepA,Antibiotic efflux
+QepA2,Antibiotic efflux
+QepA4,Antibiotic efflux
+tcmA,Antibiotic efflux
+Corynebacterium striatum tetA,Antibiotic efflux
+otr(C),Antibiotic efflux
+tet(30),Antibiotic efflux
+tet(33),Antibiotic efflux
+tet(35),Antibiotic efflux
+tet(38),Antibiotic efflux
+tet(39),Antibiotic efflux
+tet(40),Antibiotic efflux
+tet(41),Antibiotic efflux
+tet(42),Antibiotic efflux
+tet(43),Antibiotic efflux
+tet(45),Antibiotic efflux
+tet(57),Antibiotic efflux
+tet(58),Antibiotic efflux
+tet(59),Antibiotic efflux
+tet(A),Antibiotic efflux
+tet(B),Antibiotic efflux
+tet(C),Antibiotic efflux
+tet(D),Antibiotic efflux
+tet(E),Antibiotic efflux
+tet(G),Antibiotic efflux
+tet(H),Antibiotic efflux
+tet(K),Antibiotic efflux
+tet(L),Antibiotic efflux
+tet(U),Antibiotic efflux
+tet(V),Antibiotic efflux
+tet(Y),Antibiotic efflux
+tet(Z),Antibiotic efflux
+tetA,Antibiotic efflux
+tetA(46),Antibiotic efflux
+tetA(48),Antibiotic efflux
+tetA(60),Antibiotic efflux
+tetA(P),Antibiotic efflux
+tetB(46),Antibiotic efflux
+tetB(48),Antibiotic efflux
+tetB(60),Antibiotic efflux
+oprC,Antibiotic efflux
+AAC(2')-Ib,Antibiotic inactivation
+AAC(2')-Ic,Antibiotic inactivation
+AAC(2')-Id,Antibiotic inactivation
+AAC(2')-Ie,Antibiotic inactivation
+AAC(3)-Ia,Antibiotic inactivation
+AAC(3)-Ib,Antibiotic inactivation
+AAC(3)-Ic,Antibiotic inactivation
+AAC(3)-Id,Antibiotic inactivation
+AAC(3)-IIb,Antibiotic inactivation
+AAC(3)-IIc,Antibiotic inactivation
+AAC(3)-IId,Antibiotic inactivation
+AAC(3)-IIe,Antibiotic inactivation
+AAC(3)-IIIa,Antibiotic inactivation
+AAC(3)-IIIb,Antibiotic inactivation
+AAC(3)-IIIc,Antibiotic inactivation
+AAC(3)-IV,Antibiotic inactivation
+AAC(3)-IXa,Antibiotic inactivation
+AAC(3)-VIa,Antibiotic inactivation
+AAC(3)-VIIa,Antibiotic inactivation
+AAC(3)-VIIIa,Antibiotic inactivation
+AAC(6')-29a,Antibiotic inactivation
+AAC(6')-29b,Antibiotic inactivation
+AAC(6')-30/AAC(6')-Ib' fusion protein,Antibiotic inactivation
+AAC(6')-31,Antibiotic inactivation
+AAC(6')-I30,Antibiotic inactivation
+AAC(6')-Ia,Antibiotic inactivation
+AAC(6')-Iaf,Antibiotic inactivation
+AAC(6')-Iak,Antibiotic inactivation
+AAC(6')-Ian,Antibiotic inactivation
+AAC(6')-Ib,Antibiotic inactivation
+AAC(6')-Ib',Antibiotic inactivation
+AAC(6')-Ib-cr,Antibiotic inactivation
+AAC(6')-Ib-Hangzhou,Antibiotic inactivation
+AAC(6')-Ib-Suzhou,Antibiotic inactivation
+AAC(6')-Ib10,Antibiotic inactivation
+AAC(6')-Ib11,Antibiotic inactivation
+AAC(6')-Ib3,Antibiotic inactivation
+AAC(6')-Ib4,Antibiotic inactivation
+AAC(6')-Ib7,Antibiotic inactivation
+AAC(6')-Ib8,Antibiotic inactivation
+AAC(6')-Ib9,Antibiotic inactivation
+AAC(6')-Ic,Antibiotic inactivation
+AAC(6')-Ie-APH(2'')-Ia,Antibiotic inactivation
+AAC(6')-Ii,Antibiotic inactivation
+AAC(6')-IIa,Antibiotic inactivation
+AAC(6')-IIb,Antibiotic inactivation
+AAC(6')-IIc,Antibiotic inactivation
+AAC(6')-Il,Antibiotic inactivation
+AAC(6')-Im,Antibiotic inactivation
+AAC(6')-Ir,Antibiotic inactivation
+AAC(6')-Isa,Antibiotic inactivation
+AAC(6')-Iw,Antibiotic inactivation
+aad(6),Antibiotic inactivation
+aadA,Antibiotic inactivation
+aadA10,Antibiotic inactivation
+aadA11,Antibiotic inactivation
+aadA12,Antibiotic inactivation
+aadA13,Antibiotic inactivation
+aadA14,Antibiotic inactivation
+aadA15,Antibiotic inactivation
+aadA16,Antibiotic inactivation
+aadA17,Antibiotic inactivation
+aadA2,Antibiotic inactivation
+aadA21,Antibiotic inactivation
+aadA22,Antibiotic inactivation
+aadA23,Antibiotic inactivation
+aadA24,Antibiotic inactivation
+aadA25,Antibiotic inactivation
+aadA27,Antibiotic inactivation
+aadA3,Antibiotic inactivation
+aadA4,Antibiotic inactivation
+aadA5,Antibiotic inactivation
+aadA6,Antibiotic inactivation
+aadA6/aadA10,Antibiotic inactivation
+aadA7,Antibiotic inactivation
+aadA8,Antibiotic inactivation
+aadA8b,Antibiotic inactivation
+aadA9,Antibiotic inactivation
+aadK,Antibiotic inactivation
+aadS,Antibiotic inactivation
+ANT(2'')-Ia,Antibiotic inactivation
+ANT(3'')-Ii-AAC(6')-IId fusion protein,Antibiotic inactivation
+ANT(3'')-IIa,Antibiotic inactivation
+ANT(3'')-IIb,Antibiotic inactivation
+ANT(3'')-IIc,Antibiotic inactivation
+ANT(4')-Ib,Antibiotic inactivation
+ANT(4')-IIa,Antibiotic inactivation
+ANT(4')-IIb,Antibiotic inactivation
+ANT(6)-Ia,Antibiotic inactivation
+ANT(6)-Ib,Antibiotic inactivation
+ANT(9)-Ia,Antibiotic inactivation
+APH(2'')-If,Antibiotic inactivation
+APH(2'')-Ig,Antibiotic inactivation
+APH(2'')-IIa,Antibiotic inactivation
+APH(3'')-Ia,Antibiotic inactivation
+APH(3'')-Ib,Antibiotic inactivation
+APH(3'')-Ic,Antibiotic inactivation
+APH(3')-Ia,Antibiotic inactivation
+APH(3')-Ib,Antibiotic inactivation
+APH(3')-IIa,Antibiotic inactivation
+APH(3')-IIb,Antibiotic inactivation
+APH(3')-IIc,Antibiotic inactivation
+APH(3')-IIIa,Antibiotic inactivation
+APH(3')-VIa,Antibiotic inactivation
+APH(4)-Ia,Antibiotic inactivation
+APH(6)-Ia,Antibiotic inactivation
+APH(6)-Ib,Antibiotic inactivation
+APH(6)-Ic,Antibiotic inactivation
+APH(6)-Id,Antibiotic inactivation
+APH(9)-Ib,Antibiotic inactivation
+aphA15,Antibiotic inactivation
+apmA,Antibiotic inactivation
+cpaA,Antibiotic inactivation
+spd,Antibiotic inactivation
+BahA,Antibiotic inactivation
+ACI-1,Antibiotic inactivation
+ACT-12,Antibiotic inactivation
+ACT-22,Antibiotic inactivation
+ACT-28,Antibiotic inactivation
+ACT-29,Antibiotic inactivation
+ACT-30,Antibiotic inactivation
+ACT-4,Antibiotic inactivation
+ACT-6,Antibiotic inactivation
+ACT-9,Antibiotic inactivation
+ADC-18,Antibiotic inactivation
+ADC-19,Antibiotic inactivation
+ADC-25,Antibiotic inactivation
+ADC-30,Antibiotic inactivation
+ADC-6,Antibiotic inactivation
+ADC-68,Antibiotic inactivation
+ADC-76,Antibiotic inactivation
+ADC-77,Antibiotic inactivation
+ADC-8,Antibiotic inactivation
+AER-1,Antibiotic inactivation
+AIM-1,Antibiotic inactivation
+AQU-1,Antibiotic inactivation
+AQU-2,Antibiotic inactivation
+AQU-3,Antibiotic inactivation
+ARL-1,Antibiotic inactivation
+ARL-4,Antibiotic inactivation
+ARL-6,Antibiotic inactivation
+AST-1,Antibiotic inactivation
+BcI,Antibiotic inactivation
+BcII,Antibiotic inactivation
+BCL-1,Antibiotic inactivation
+BES-1,Antibiotic inactivation
+BJP-1,Antibiotic inactivation
+BKC-1,Antibiotic inactivation
+Bla1,Antibiotic inactivation
+Bla2,Antibiotic inactivation
+blaF,Antibiotic inactivation
+blaZ,Antibiotic inactivation
+BRO-2,Antibiotic inactivation
+CARB-1,Antibiotic inactivation
+CARB-10,Antibiotic inactivation
+CARB-12,Antibiotic inactivation
+CARB-14,Antibiotic inactivation
+CARB-16,Antibiotic inactivation
+CARB-19,Antibiotic inactivation
+CARB-2,Antibiotic inactivation
+CARB-3,Antibiotic inactivation
+CARB-5,Antibiotic inactivation
+CARB-6,Antibiotic inactivation
+CARB-7,Antibiotic inactivation
+CARB-8,Antibiotic inactivation
+CARB-9,Antibiotic inactivation
+CblA-1,Antibiotic inactivation
+CBP-1,Antibiotic inactivation
+cepA,Antibiotic inactivation
+CepS,Antibiotic inactivation
+CfxA,Antibiotic inactivation
+CfxA2,Antibiotic inactivation
+CfxA3,Antibiotic inactivation
+CfxA4,Antibiotic inactivation
+CfxA5,Antibiotic inactivation
+CfxA6,Antibiotic inactivation
+CGA-1,Antibiotic inactivation
+CIA-1,Antibiotic inactivation
+CIA-2,Antibiotic inactivation
+CIA-3,Antibiotic inactivation
+CME-1,Antibiotic inactivation
+CMH-1,Antibiotic inactivation
+CMY-10,Antibiotic inactivation
+CMY-100,Antibiotic inactivation
+CMY-112,Antibiotic inactivation
+CMY-119,Antibiotic inactivation
+CMY-2,Antibiotic inactivation
+CMY-34,Antibiotic inactivation
+CMY-37,Antibiotic inactivation
+CMY-48,Antibiotic inactivation
+CMY-59,Antibiotic inactivation
+CMY-6,Antibiotic inactivation
+CMY-66,Antibiotic inactivation
+CMY-8,Antibiotic inactivation
+CMY-9,Antibiotic inactivation
+cphA2,Antibiotic inactivation
+cphA3,Antibiotic inactivation
+cphA4,Antibiotic inactivation
+cphA5,Antibiotic inactivation
+cphA6,Antibiotic inactivation
+cphA7,Antibiotic inactivation
+cphA8,Antibiotic inactivation
+CPS-1,Antibiotic inactivation
+CTX-M-19,Antibiotic inactivation
+CTX-M-75,Antibiotic inactivation
+DHA-1,Antibiotic inactivation
+DHA-10,Antibiotic inactivation
+DHA-20,Antibiotic inactivation
+DHA-21,Antibiotic inactivation
+DHA-22,Antibiotic inactivation
+DHA-9,Antibiotic inactivation
+EBR-1,Antibiotic inactivation
+Escherichia coli ampC,Antibiotic inactivation
+ESP-1,Antibiotic inactivation
+EXO beta-lactamase,Antibiotic inactivation
+FAR-1,Antibiotic inactivation
+FEZ-1,Antibiotic inactivation
+FOX-3,Antibiotic inactivation
+FOX-5,Antibiotic inactivation
+FOX-7,Antibiotic inactivation
+GES-11,Antibiotic inactivation
+GES-12,Antibiotic inactivation
+GES-13,Antibiotic inactivation
+GES-14,Antibiotic inactivation
+GES-15,Antibiotic inactivation
+GES-17,Antibiotic inactivation
+GES-19,Antibiotic inactivation
+GES-2,Antibiotic inactivation
+GES-20,Antibiotic inactivation
+GES-21,Antibiotic inactivation
+GES-22,Antibiotic inactivation
+GES-3,Antibiotic inactivation
+GES-4,Antibiotic inactivation
+GES-5,Antibiotic inactivation
+GES-6,Antibiotic inactivation
+GES-7,Antibiotic inactivation
+GOB-1,Antibiotic inactivation
+GOB-16,Antibiotic inactivation
+GOB-4,Antibiotic inactivation
+imiH,Antibiotic inactivation
+imiS,Antibiotic inactivation
+IMP-1,Antibiotic inactivation
+IMP-10,Antibiotic inactivation
+IMP-16,Antibiotic inactivation
+IMP-18,Antibiotic inactivation
+IMP-19,Antibiotic inactivation
+IMP-2,Antibiotic inactivation
+IMP-20,Antibiotic inactivation
+IMP-24,Antibiotic inactivation
+IMP-25,Antibiotic inactivation
+IMP-3,Antibiotic inactivation
+IMP-31,Antibiotic inactivation
+IMP-34,Antibiotic inactivation
+IMP-37,Antibiotic inactivation
+IMP-4,Antibiotic inactivation
+IMP-40,Antibiotic inactivation
+IMP-42,Antibiotic inactivation
+IMP-5,Antibiotic inactivation
+IMP-52,Antibiotic inactivation
+IMP-55,Antibiotic inactivation
+IMP-8,Antibiotic inactivation
+IMP-9,Antibiotic inactivation
+IND-15,Antibiotic inactivation
+IND-2,Antibiotic inactivation
+IND-4,Antibiotic inactivation
+JOHN-1,Antibiotic inactivation
+KHM-1,Antibiotic inactivation
+KPC-3,Antibiotic inactivation
+L1 beta-lactamase,Antibiotic inactivation
+LAP-2,Antibiotic inactivation
+Laribacter hongkongensis ampC beta-lactamase,Antibiotic inactivation
+LCR-1,Antibiotic inactivation
+LEN-1,Antibiotic inactivation
+LEN-26,Antibiotic inactivation
+LEN-3,Antibiotic inactivation
+LRA-1,Antibiotic inactivation
+LRA-10,Antibiotic inactivation
+LRA-12,Antibiotic inactivation
+LRA-17,Antibiotic inactivation
+LRA-18,Antibiotic inactivation
+LRA-19,Antibiotic inactivation
+LRA-2,Antibiotic inactivation
+LRA-3,Antibiotic inactivation
+LRA-5,Antibiotic inactivation
+MIR-11,Antibiotic inactivation
+MIR-2,Antibiotic inactivation
+MIR-23,Antibiotic inactivation
+MIR-5,Antibiotic inactivation
+MIR-9,Antibiotic inactivation
+MOX-2,Antibiotic inactivation
+MOX-3,Antibiotic inactivation
+MOX-4,Antibiotic inactivation
+MOX-5,Antibiotic inactivation
+MOX-6,Antibiotic inactivation
+MOX-7,Antibiotic inactivation
+MSI-OXA,Antibiotic inactivation
+MUS-1,Antibiotic inactivation
+NDM-10,Antibiotic inactivation
+NDM-2,Antibiotic inactivation
+NPS-1,Antibiotic inactivation
+OCH-2,Antibiotic inactivation
+OCH-5,Antibiotic inactivation
+OCH-7,Antibiotic inactivation
+OCH-8,Antibiotic inactivation
+OKP-B-4,Antibiotic inactivation
+Other class A beta-lactamase,Antibiotic inactivation
+Other class C beta-lactamase,Antibiotic inactivation
+OXA-1,Antibiotic inactivation
+OXA-10,Antibiotic inactivation
+OXA-100,Antibiotic inactivation
+OXA-101,Antibiotic inactivation
+OXA-103,Antibiotic inactivation
+OXA-118,Antibiotic inactivation
+OXA-119,Antibiotic inactivation
+OXA-12,Antibiotic inactivation
+OXA-129,Antibiotic inactivation
+OXA-13,Antibiotic inactivation
+OXA-133,Antibiotic inactivation
+OXA-14,Antibiotic inactivation
+OXA-140,Antibiotic inactivation
+OXA-142,Antibiotic inactivation
+OXA-145,Antibiotic inactivation
+OXA-147,Antibiotic inactivation
+OXA-16,Antibiotic inactivation
+OXA-164,Antibiotic inactivation
+OXA-167,Antibiotic inactivation
+OXA-17,Antibiotic inactivation
+OXA-173,Antibiotic inactivation
+OXA-183,Antibiotic inactivation
+OXA-19,Antibiotic inactivation
+OXA-198,Antibiotic inactivation
+OXA-2,Antibiotic inactivation
+OXA-20,Antibiotic inactivation
+OXA-205,Antibiotic inactivation
+OXA-209,Antibiotic inactivation
+OXA-21,Antibiotic inactivation
+OXA-211,Antibiotic inactivation
+OXA-212,Antibiotic inactivation
+OXA-225,Antibiotic inactivation
+OXA-226,Antibiotic inactivation
+OXA-23,Antibiotic inactivation
+OXA-230,Antibiotic inactivation
+OXA-233,Antibiotic inactivation
+OXA-235,Antibiotic inactivation
+OXA-236,Antibiotic inactivation
+OXA-237,Antibiotic inactivation
+OXA-239,Antibiotic inactivation
+OXA-243,Antibiotic inactivation
+OXA-246,Antibiotic inactivation
+OXA-251,Antibiotic inactivation
+OXA-258,Antibiotic inactivation
+OXA-266,Antibiotic inactivation
+OXA-27,Antibiotic inactivation
+OXA-272,Antibiotic inactivation
+OXA-275,Antibiotic inactivation
+OXA-276,Antibiotic inactivation
+OXA-277,Antibiotic inactivation
+OXA-278,Antibiotic inactivation
+OXA-28,Antibiotic inactivation
+OXA-281,Antibiotic inactivation
+OXA-282,Antibiotic inactivation
+OXA-283,Antibiotic inactivation
+OXA-284,Antibiotic inactivation
+OXA-285,Antibiotic inactivation
+OXA-29,Antibiotic inactivation
+OXA-292,Antibiotic inactivation
+OXA-296,Antibiotic inactivation
+OXA-297,Antibiotic inactivation
+OXA-298,Antibiotic inactivation
+OXA-299,Antibiotic inactivation
+OXA-3,Antibiotic inactivation
+OXA-309,Antibiotic inactivation
+OXA-33,Antibiotic inactivation
+OXA-333,Antibiotic inactivation
+OXA-334,Antibiotic inactivation
+OXA-335,Antibiotic inactivation
+OXA-338,Antibiotic inactivation
+OXA-34,Antibiotic inactivation
+OXA-347,Antibiotic inactivation
+OXA-35,Antibiotic inactivation
+OXA-359,Antibiotic inactivation
+OXA-36,Antibiotic inactivation
+OXA-360,Antibiotic inactivation
+OXA-361,Antibiotic inactivation
+OXA-362,Antibiotic inactivation
+OXA-363,Antibiotic inactivation
+OXA-365,Antibiotic inactivation
+OXA-368,Antibiotic inactivation
+OXA-37,Antibiotic inactivation
+OXA-372,Antibiotic inactivation
+OXA-373,Antibiotic inactivation
+OXA-392,Antibiotic inactivation
+OXA-398,Antibiotic inactivation
+OXA-417,Antibiotic inactivation
+OXA-421,Antibiotic inactivation
+OXA-423,Antibiotic inactivation
+OXA-427,Antibiotic inactivation
+OXA-45,Antibiotic inactivation
+OXA-46,Antibiotic inactivation
+OXA-464,Antibiotic inactivation
+OXA-47,Antibiotic inactivation
+OXA-483,Antibiotic inactivation
+OXA-5,Antibiotic inactivation
+OXA-50,Antibiotic inactivation
+OXA-53,Antibiotic inactivation
+OXA-56,Antibiotic inactivation
+OXA-58,Antibiotic inactivation
+OXA-65,Antibiotic inactivation
+OXA-664,Antibiotic inactivation
+OXA-67,Antibiotic inactivation
+OXA-724,Antibiotic inactivation
+OXA-9,Antibiotic inactivation
+OXA-97,Antibiotic inactivation
+OXY-2-1,Antibiotic inactivation
+PDC-8,Antibiotic inactivation
+PEDO-1,Antibiotic inactivation
+PER-3,Antibiotic inactivation
+R39 beta-lactamase,Antibiotic inactivation
+RCP-1,Antibiotic inactivation
+Rhodobacter sphaeroides ampC,Antibiotic inactivation
+Rm3,Antibiotic inactivation
+ROB-1,Antibiotic inactivation
+RSA-1,Antibiotic inactivation
+SCO-1,Antibiotic inactivation
+Sed1 beta-lactamase,Antibiotic inactivation
+SIM-1,Antibiotic inactivation
+SMB-1,Antibiotic inactivation
+SPG-1,Antibiotic inactivation
+SRT-2,Antibiotic inactivation
+TEM-1,Antibiotic inactivation
+TEM-117,Antibiotic inactivation
+TEM-118,Antibiotic inactivation
+TEM-184,Antibiotic inactivation
+TEM-185,Antibiotic inactivation
+TEM-192,Antibiotic inactivation
+TEM-193,Antibiotic inactivation
+TEM-7,Antibiotic inactivation
+TEM-87,Antibiotic inactivation
+TEM-88,Antibiotic inactivation
+THIN-B beta-lactamase,Antibiotic inactivation
+TLA-2,Antibiotic inactivation
+TUS-1,Antibiotic inactivation
+VEB-1,Antibiotic inactivation
+VEB-1b,Antibiotic inactivation
+VEB-3,Antibiotic inactivation
+VEB-4,Antibiotic inactivation
+VEB-6,Antibiotic inactivation
+VEB-7,Antibiotic inactivation
+VEB-8,Antibiotic inactivation
+VEB-9,Antibiotic inactivation
+VIM-1,Antibiotic inactivation
+VIM-34,Antibiotic inactivation
+y56,Antibiotic inactivation
+bleomycin resistance protein,Antibiotic inactivation
+Agrobacterium fabrum chloramphenicol acetyltransferase,Antibiotic inactivation
+Bacillus clausii chloramphenicol acetyltransferase,Antibiotic inactivation
+Bacillus pumilus cat86,Antibiotic inactivation
+Campylobacter coli chloramphenicol acetyltransferase,Antibiotic inactivation
+catA8,Antibiotic inactivation
+catB10,Antibiotic inactivation
+catB11,Antibiotic inactivation
+catB2,Antibiotic inactivation
+catB3,Antibiotic inactivation
+catB8,Antibiotic inactivation
+catB9,Antibiotic inactivation
+catD,Antibiotic inactivation
+catQ,Antibiotic inactivation
+catS,Antibiotic inactivation
+Clostridium butyricum catB,Antibiotic inactivation
+cmlv,Antibiotic inactivation
+Enterococcus faecium chloramphenicol acetyltransferase,Antibiotic inactivation
+Lactobacillus reuteri cat-TC,Antibiotic inactivation
+Pseudomonas aeruginos catB6,Antibiotic inactivation
+Pseudomonas aeruginos catB7,Antibiotic inactivation
+Streptococcus suis chloramphenicol acetyltransferase,Antibiotic inactivation
+Vibrio anguillarum chloramphenicol acetyltransferase,Antibiotic inactivation
+FosA,Antibiotic inactivation
+FosA3,Antibiotic inactivation
+FosA5,Antibiotic inactivation
+FosA6,Antibiotic inactivation
+FosB,Antibiotic inactivation
+FosB1,Antibiotic inactivation
+FosB4,Antibiotic inactivation
+FosB6,Antibiotic inactivation
+FosC2,Antibiotic inactivation
+FosD,Antibiotic inactivation
+FosX,Antibiotic inactivation
+ere(A),Antibiotic inactivation
+ere(B),Antibiotic inactivation
+ere(D),Antibiotic inactivation
+ereA2,Antibiotic inactivation
+gimA,Antibiotic inactivation
+linG,Antibiotic inactivation
+lnu(A),Antibiotic inactivation
+lnu(B),Antibiotic inactivation
+lnu(C),Antibiotic inactivation
+lnu(D),Antibiotic inactivation
+lnu(E),Antibiotic inactivation
+lnu(F),Antibiotic inactivation
+lnu(G),Antibiotic inactivation
+lnu(H),Antibiotic inactivation
+lnu(P),Antibiotic inactivation
+mgtA,Antibiotic inactivation
+mph(A),Antibiotic inactivation
+mph(B),Antibiotic inactivation
+mph(C),Antibiotic inactivation
+mph(F),Antibiotic inactivation
+mph(G),Antibiotic inactivation
+mph(H),Antibiotic inactivation
+mph(I),Antibiotic inactivation
+mph(K),Antibiotic inactivation
+mph(L),Antibiotic inactivation
+mph(M),Antibiotic inactivation
+mph(N),Antibiotic inactivation
+mph(O),Antibiotic inactivation
+oleD,Antibiotic inactivation
+vat(B),Antibiotic inactivation
+vat(C),Antibiotic inactivation
+vat(F),Antibiotic inactivation
+vat(H),Antibiotic inactivation
+VatI,Antibiotic inactivation
+vgb(A),Antibiotic inactivation
+viomycin phosphotransferase,Antibiotic inactivation
+puromycin resistance protein,Antibiotic inactivation
+arr-1,Antibiotic inactivation
+arr-2,Antibiotic inactivation
+arr-3,Antibiotic inactivation
+arr-4,Antibiotic inactivation
+arr-5,Antibiotic inactivation
+arr-8,Antibiotic inactivation
+iri,Antibiotic inactivation
+rgt1438,Antibiotic inactivation
+rphA,Antibiotic inactivation
+rphB,Antibiotic inactivation
+SAT-4,Antibiotic inactivation
+sta,Antibiotic inactivation
+tet(34),Antibiotic inactivation
+tet(37),Antibiotic inactivation
+tet(X),Antibiotic inactivation
+tet(X3),Antibiotic inactivation
+tet(X4),Antibiotic inactivation
+tetX1,Antibiotic inactivation
+tetX2,Antibiotic inactivation
+tetX6,Antibiotic inactivation
+AAC(3)-IIg,Antibiotic inactivation
+AAC(3)-IVb,Antibiotic inactivation
+ALG6-1,Antibiotic inactivation
+BcIII,Antibiotic inactivation
+blaC,Antibiotic inactivation
+blaS1,Antibiotic inactivation
+BSU-1,Antibiotic inactivation
+CAR-1,Antibiotic inactivation
+CRD3-1,Antibiotic inactivation
+CRH-1,Antibiotic inactivation
+CRH-2,Antibiotic inactivation
+CRH-3,Antibiotic inactivation
+DHT2-1,Antibiotic inactivation
+EVM-1,Antibiotic inactivation
+FIA-1,Antibiotic inactivation
+GPC-1,Antibiotic inactivation
+IDC-1,Antibiotic inactivation
+IDC-2,Antibiotic inactivation
+LMB-1,Antibiotic inactivation
+LUS-1,Antibiotic inactivation
+LUT-3,Antibiotic inactivation
+LUT-4,Antibiotic inactivation
+LUT-5,Antibiotic inactivation
+LUT-6,Antibiotic inactivation
+MAB,Antibiotic inactivation
+mreA,Antibiotic efflux
+MYO-1,Antibiotic inactivation
+OXA-573,Antibiotic inactivation
+OXA-727,Antibiotic inactivation
+OXA-926,Antibiotic inactivation
+PAU-1,Antibiotic inactivation
+PLN-1,Antibiotic inactivation
+POM-2,Antibiotic inactivation
+PRC-1,Antibiotic inactivation
+PST-1,Antibiotic inactivation
+PST-2,Antibiotic inactivation
+RSA2-1,Antibiotic inactivation
+RSD2-2,Antibiotic inactivation
+SGM-1,Antibiotic inactivation
+SGM-4,Antibiotic inactivation
+SGM-5,Antibiotic inactivation
+SGM-6,Antibiotic inactivation
+Yrc-1,Antibiotic inactivation
+BLMT,Antibiotic inactivation
+FosM1,Antibiotic inactivation
+FosM2,Antibiotic inactivation
+Erm(52),Antibiotic target alteration
+fexB,Antibiotic efflux
+mdeA,Antibiotic efflux
+mefF,Antibiotic efflux
+mefJ,Antibiotic efflux
+qacE,Antibiotic efflux
+qacEdelta1,Antibiotic efflux
+qacG,Antibiotic efflux
+RanA,Antibiotic efflux
+RanB,Antibiotic efflux
+salD,Antibiotic target alteration
+ArnT,Antibiotic target alteration
+msr(G),Antibiotic target protection
+msr(I),Antibiotic target protection
+salE,Antibiotic target protection
+mcr-10.1,Antibiotic target alteration
+sdrM,Antibiotic efflux
+SatA,Antibiotic inactivation
+tet(X5),Antibiotic inactivation
+DfrA36,Antibiotic target replacement
+Other streptomycin resistance protein,Others
+Burkholderia pseudomallei Omp38,Others
+Klebsiella pneumoniae OmpK37,Others

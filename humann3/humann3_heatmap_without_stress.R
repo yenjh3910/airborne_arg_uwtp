@@ -65,13 +65,25 @@ get_term_property(ontology=GO_db , property="children",
                   term="GO:0043934", as_names=TRUE) # View GO children
 #Select gene
 subGene <- GO_db$id[grep(GO_db$ancestors, pattern="GO:0043934")]
-# Fiter select gene from GO database
+# Filter select gene from GO database
 tmp <- go_zscore %>% filter(grepl(pattern = subGene[1], x = Gene))
 for (i in 2:length(subGene)){
   tmp2 <- go_zscore %>% filter(grepl(pattern = subGene[i], x = Gene))
   tmp <- rbind(tmp,tmp2)
 }
 tmp$Trait <- GO_db$name[["GO:0043934"]]
+##########################
+# See sporulation species
+tmp3 <- humann3_go %>% filter(grepl(pattern = subGene[1], x = Gene))
+for (i in 2:length(subGene)){
+  tmp4 <- humann3_go %>% filter(grepl(pattern = subGene[i], x = Gene))
+  tmp3 <- rbind(tmp3,tmp4)
+}
+spore_species <- tmp3
+spore_species <- spore_species %>% separate(Gene, c("Gene","Taxa"), sep = "\\|")
+spore_species <- spore_species %>% separate(Taxa, c("Genus","Species"), sep = ".s__")
+spore_species$Genus <- gsub("g__", "", spore_species$Genus)
+##########################
 ###### Second look #######
 GO_db$name[["GO:0043937"]] # View GO name
 get_term_property(ontology=GO_db , property="ancestors", 
@@ -108,26 +120,13 @@ get_term_property(ontology=GO_db , property="children",
                   term="GO:0009416", as_names=TRUE) # View GO children
 # Select gene
 subGene <- GO_db$id[grep(GO_db$ancestors, pattern="GO:0009416")]
-# Fiter select gene from GO database
+# Filter select gene from GO database
 for (i in 1:length(subGene)){
   tmp2 <- go_zscore %>% filter(grepl(pattern = subGene[i], x = Gene))
   tmp2$Trait <- GO_db$name[["GO:0009416"]]
   tmp <- rbind(tmp,tmp2)
 }
-###### Fourth look #######
-GO_db$name[["GO:0009414"]] # View GO name
-get_term_property(ontology=GO_db , property="ancestors", 
-                  term="GO:0009414", as_names=TRUE) # View GO ancestors
-get_term_property(ontology=GO_db , property="children", 
-                  term="GO:0009414", as_names=TRUE) # View GO children
-# Select gene
-subGene <- GO_db$id[grep(GO_db$ancestors, pattern="GO:0009414")]
-# Fiter select gene from GO database
-for (i in 1:length(subGene)){
-  tmp2 <- go_zscore %>% filter(grepl(pattern = subGene[i], x = Gene))
-  tmp2$Trait <- GO_db$name[["GO:0009414"]]
-  tmp <- rbind(tmp,tmp2)
-}
+
 # Create trait dataframe
 gene_trait <- tmp %>% select(Trait) %>% as.data.frame()
 row.names(gene_trait) <- tmp$Gene
@@ -136,8 +135,7 @@ gene_trait$Trait[1:11] <- 'Sporulation / Regulation of sporulation'
 # Order trait
 trait_order <- c("Horizontal gene transfer",
                  "Sporulation / Regulation of sporulation",
-                 "Response to light stimulus",
-                 "Response to water deprivation")
+                 "Response to light stimulus")
 gene_trait <- gene_trait  %>%
   mutate(Trait =  factor(Trait, levels = trait_order)) %>%
   arrange(Trait) 
@@ -150,6 +148,29 @@ tmp <- tmp %>%
   arrange(Gene) 
 select_go <- tmp
 select_go <- select_go[,-17]
+
+# Remove non bacteria host
+# Unclassified, Fungi, Plant:
+# GO:0030437, GO:0043935, GO:0048315, GO:0009704,
+# GO:0009416, GO:0009585, GO:0009637, GO:0009638,
+# GO:0009639, GO:0009640, GO:0009642, GO:0010205,
+# GO:0010224, GO:0048573, GO:0048574
+select_go <- select_go %>% filter(!(grepl(pattern = "^GO:0030437", x = Gene)))
+select_go <- select_go %>% filter(!(grepl(pattern = "^GO:0043935", x = Gene)))
+select_go <- select_go %>% filter(!(grepl(pattern = "^GO:0048315", x = Gene)))
+select_go <- select_go %>% filter(!(grepl(pattern = "^GO:0009704", x = Gene)))
+select_go <- select_go %>% filter(!(grepl(pattern = "^GO:0009416", x = Gene)))
+select_go <- select_go %>% filter(!(grepl(pattern = "^GO:0009585", x = Gene)))
+select_go <- select_go %>% filter(!(grepl(pattern = "^GO:0009637", x = Gene)))
+select_go <- select_go %>% filter(!(grepl(pattern = "^GO:0009638", x = Gene)))
+select_go <- select_go %>% filter(!(grepl(pattern = "^GO:0009639", x = Gene)))
+select_go <- select_go %>% filter(!(grepl(pattern = "^GO:0009640", x = Gene)))
+select_go <- select_go %>% filter(!(grepl(pattern = "^GO:0009642", x = Gene)))
+select_go <- select_go %>% filter(!(grepl(pattern = "^GO:0010205", x = Gene)))
+select_go <- select_go %>% filter(!(grepl(pattern = "^GO:0010224", x = Gene)))
+select_go <- select_go %>% filter(!(grepl(pattern = "^GO:0048573", x = Gene)))
+select_go <- select_go %>% filter(!(grepl(pattern = "^GO:0048574", x = Gene)))
+
 # Transform to matrix 
 select_go_mat <- as.matrix(select_go[,-1])
 row.names(select_go_mat) <- select_go$Gene
@@ -169,21 +190,22 @@ brewer.pal(n=12,name="Set3")
 ann_colors = list(Sample = c(AT = "#FB8072", ARP = "#80B1D3", ODP = "#B3DE69"),
                   Trait = c('Horizontal gene transfer' = "#BEBADA",
                             'Sporulation / Regulation of sporulation' = "#FFFFB3",
-                            'Response to light stimulus' = "#FCCDE5",
-                            'Response to water deprivation' = "#CCEBC5"))
+                            'Response to light stimulus' = "#FCCDE5"))
 
-row.names(select_go_mat) 
+row.names(select_go_mat)
 
 # Plot
 p <-pheatmap(select_go_mat, cluster_cols = FALSE, cluster_rows = FALSE,
              annotation_row = gene_trait, annotation_col = annotation_col,
              clustering_distance_rows = "euclidean", annotation_colors = ann_colors,
-             fontsize = 10, fontsize_row = 8, fontsize_col = 8,
-             cellwidth = 9, cellheight = 9, bg = "transparent")
+             fontsize = 10, fontsize_row = 9, fontsize_col = 9,
+             cellwidth = 10, cellheight = 10, bg = "transparent")
+
+print(p)
 
 # ggsave("GO_heatmap.png", p,
 #        path = "../../airborne_arg_uwtp_result/Figure/humann3",
-#        width = 11, height = 5,
+#        width = 11, height = 4,
 #        units = "in", bg='transparent') # save to png format
 
 

@@ -19,9 +19,26 @@ for (i in 1:length(pathogen_list[,1])){
   tmp <- rbind(tmp,tmp2)
 }
 pathogen_arg_coverage <- tmp
-# Calculate coverage by ARG type
-CoverageArgType <- pathogen_arg_coverage %>% group_by(type,Sample_type) %>% 
-                              summarise(coverage_sum = sum(coverage)/5)
+
+# # Calculate coverage mean and sd
+# pathogen_arg_coverage %>% group_by(Sample_type) %>% 
+#                           mutate(mean = sum(coverage)/5) %>% 
+#                           mutate(sd = sqrt(sum((coverage-mean)^2/(5-1)))) %>% 
+#                           select(Sample_type,mean,sd) %>% 
+#                           unique()
+
+# # Calculate mean coverage by ARG type
+# CoverageArgType <- pathogen_arg_coverage %>% group_by(type,Sample_type) %>% 
+#                               summarise(coverage_sum = sum(coverage)/5)
+
+# Calculate sum coverage by ARG type
+CoverageArgType <- pathogen_arg_coverage %>% group_by(type,Sample_type) %>%
+                              summarise(coverage_sum = sum(coverage))
+
+# Calculate coverage sum
+pathogen_arg_coverage %>% group_by(Sample_type) %>%
+                          summarise(sum = sum(coverage))
+
 # Order sample_type
 CoverageArgType$Sample_type <- factor(CoverageArgType$Sample_type, 
                                  levels = c("ODP","ARP","AT"))
@@ -54,6 +71,8 @@ p <- ggplot(CoverageArgType, aes(x = Sample_type, y = coverage_sum, fill = type)
         panel.grid.minor = element_blank(), #remove minor gridlines
         legend.background = element_rect(fill='transparent')) #transparent legend bg)
 
+print(p)
+
 # ggsave("ARG_pathogen_coverage.png", p, path = "../../airborne_arg_uwtp_result/Figure/pathogen",
 #         width = 7.7, height = 2, units = "in") # save to png format
  
@@ -66,9 +85,15 @@ for (i in 1:length(pathogen_arg_coverage[,1])){
                                                       "[^ ]* [^ ]*"),
                                           pathogen_arg_coverage$Species[i])}
 pathogen_arg_coverage$Species %>% unique() # Check Species
-## Calculate coverage by pathogen
+
+# ## Calculate mean coverage by pathogen
+# CoveragePathogen <- pathogen_arg_coverage %>% group_by(Species,Sample_type) %>% 
+#                           summarise(coverage_sum = sum(coverage)/5)
+
+## Calculate sum coverage by pathogen
 CoveragePathogen <- pathogen_arg_coverage %>% group_by(Species,Sample_type) %>% 
-                          summarise(coverage_sum = sum(coverage)/5)
+  summarise(coverage_sum = sum(coverage))
+
 ## Filter pathogen only occur in  both AT and ARP
 only_AT <- CoveragePathogen %>% filter(Sample_type == "AT")
 only_ARP <- CoveragePathogen %>% filter(Sample_type == "ARP")
@@ -91,7 +116,7 @@ AerCoveragePathogen$Species <- factor(AerCoveragePathogen$Species,
 ## Plot
 p <- ggplot(AerCoveragePathogen, aes(x = Sample_type, y = Species)) + 
   geom_point(aes(size = coverage_sum,fill = Sample_type), alpha = 0.75, shape = 21) +
-  scale_size_continuous(limits = c(0.00001, 100), range = c(1,50), breaks = c(0.1,1,3,6)) +
+  scale_size_continuous(limits = c(0.00001, 100), range = c(1,22), breaks = c(1,5,15,30)) +
   theme_bw() + 
   coord_flip() +
   theme_bw() + 
@@ -107,6 +132,6 @@ p <- ggplot(AerCoveragePathogen, aes(x = Sample_type, y = Species)) +
         panel.background = element_rect(fill='transparent'), #transparent panel bg
         plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
         legend.background = element_rect(fill='transparent'))
-
-# ggsave("ARG_pathogen_bubble.png", p, path = "../../airborne_arg_uwtp_result/Figure/pathogen",
-#         width = 6.78, height = 3.62, units = "in") # save to png format
+print(p)
+ggsave("ARG_pathogen_bubble.png", p, path = "../../airborne_arg_uwtp_result/Figure/pathogen",
+        width = 6.78, height = 3.62, units = "in") # save to png format

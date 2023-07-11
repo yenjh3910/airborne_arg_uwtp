@@ -66,6 +66,28 @@ for (i in 2:length(stress_subGene)){
   tmp <- rbind(tmp,tmp2)
 }
 stress_go <- tmp
+
+# Remove not bacteria species
+# Unclassified or fungi:
+# GO:0000012, GO:0007254, GO:0042267, GO:0050832,
+# GO:0071712, GO:0006954, GO:0009627, GO:0000077,
+# GO:0000727, GO:0035011, GO:0019985, GO:0030433,
+# GO:0034976, GO:0051403 
+stress_go <- stress_go %>% filter(!(grepl(pattern = "^GO:0000012", x = Gene)))
+stress_go <- stress_go %>% filter(!(grepl(pattern = "^GO:0007254", x = Gene)))
+stress_go <- stress_go %>% filter(!(grepl(pattern = "^GO:0042267", x = Gene)))
+stress_go <- stress_go %>% filter(!(grepl(pattern = "^GO:0050832", x = Gene)))
+stress_go <- stress_go %>% filter(!(grepl(pattern = "^GO:0071712", x = Gene)))
+stress_go <- stress_go %>% filter(!(grepl(pattern = "^GO:0006954", x = Gene)))
+stress_go <- stress_go %>% filter(!(grepl(pattern = "^GO:0009627", x = Gene)))
+stress_go <- stress_go %>% filter(!(grepl(pattern = "^GO:0000077", x = Gene)))
+stress_go <- stress_go %>% filter(!(grepl(pattern = "^GO:0000727", x = Gene)))
+stress_go <- stress_go %>% filter(!(grepl(pattern = "^GO:0035011", x = Gene)))
+stress_go <- stress_go %>% filter(!(grepl(pattern = "^GO:0019985", x = Gene)))
+stress_go <- stress_go %>% filter(!(grepl(pattern = "^GO:0030433", x = Gene)))
+stress_go <- stress_go %>% filter(!(grepl(pattern = "^GO:0034976", x = Gene)))
+stress_go <- stress_go %>% filter(!(grepl(pattern = "^GO:0051403", x = Gene)))
+
 # Transform to matrix 
 stress_go_mat <- as.matrix(stress_go[,-1])
 row.names(stress_go_mat) <- stress_go$Gene
@@ -85,13 +107,13 @@ ann_colors = list(Sample = c(AT = "#FB8072", ARP = "#80B1D3"))
 p <-pheatmap(stress_go_mat, cluster_cols = TRUE, 
              clustering_distance_rows = "euclidean",
              annotation_col = annotation_row, annotation_colors = ann_colors,
-             fontsize = 10, fontsize_row = 7, fontsize_col = 8,
-             cellwidth = 10, cellheight = 8, bg = "transparent")
+             fontsize = 10, fontsize_row = 9, fontsize_col = 9,
+             cellwidth = 10, cellheight = 10, bg = "transparent")
 
-# ggsave("GO_aer_stress.png", p,
-#        path = "../../airborne_arg_uwtp_result/Figure/humann3",
-#        width = 7, height = 7,
-#        units = "in", bg='transparent') # save to png format
+ggsave("GO_aer_stress.png", p,
+       path = "../../airborne_arg_uwtp_result/Figure/humann3",
+       width = 8, height = 7,
+       units = "in", bg='transparent') # save to png format
 
 
 # Statistic

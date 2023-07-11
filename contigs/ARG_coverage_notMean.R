@@ -336,10 +336,10 @@ p <- ggplot(ARG_Class, aes(x = Sample_type, y = coverage, fill = Class)) +
                              "#FDB462","#B3DE69","#FCCDE5", "#FFED6F","#BC80BD",
                              "#CCEBC5","#D9D9D9"))
 print(p)
-# ggsave("ARG_coverage_class.png", p,
-#        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
-#        width = 3.835, height = 5,
-#        units = "in", bg='transparent') # save to png format
+ggsave("ARG_coverage_class.png", p,
+       path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
+       width = 3.835, height = 5,
+       units = "in", bg='transparent') # save to png format
 
 
 ############### Order ################
@@ -415,10 +415,10 @@ p <- ggplot(ARG_Order, aes(x = Sample_type, y = coverage, fill = Order)) +
                              "#FDB462","#B3DE69","#FCCDE5", "#FFED6F","#BC80BD",
                              "#CCEBC5","#D9D9D9"))
 print(p)
-# ggsave("ARG_coverage_order.png", p,
-#        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
-#        width = 3.65, height = 5,
-#        units = "in", bg='transparent') # save to png format
+ggsave("ARG_coverage_order.png", p,
+       path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
+       width = 3.65, height = 5,
+       units = "in", bg='transparent') # save to png format
 
 
 
@@ -514,10 +514,10 @@ p <- ggplot(ARG_Family, aes(x = Sample_type, y = coverage, fill = Family)) +
                              "#FDB462","#B3DE69","#FCCDE5", "#FFED6F","#BC80BD",
                              "#CCEBC5","#D9D9D9"))
 print(p)
-# ggsave("ARG_coverage_family.png", p,
-#        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
-#        width = 3.72, height = 5,
-#        units = "in", bg='transparent') # save to png format
+ggsave("ARG_coverage_family.png", p,
+       path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
+       width = 3.72, height = 5,
+       units = "in", bg='transparent') # save to png format
 
 
 
@@ -598,10 +598,10 @@ p <- ggplot(ARG_Genus, aes(x = Sample_type, y = coverage, fill = Genus)) +
                              "#FDB462","#B3DE69","#FCCDE5", "#FFED6F","#BC80BD",
                              "#CCEBC5","#D9D9D9"))
 print(p)
-# ggsave("ARG_coverage_genus.png", p,
-#        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
-#        width = 3.64, height = 5,
-#        units = "in", bg='transparent') # save to png format
+ggsave("ARG_coverage_genus.png", p,
+       path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
+       width = 3.64, height = 5,
+       units = "in", bg='transparent') # save to png format
 
 
 ######### Species ##########
@@ -814,8 +814,8 @@ p <- ggplot(ARG_Species, aes(x = Sample_type, y = coverage, fill = Species)) +
                              "#FDB462","#B3DE69","#FCCDE5", "#FFED6F","#BC80BD",
                              "#CCEBC5","#D9D9D9"))
 print(p)
-# ggsave("ARG_coverage_species.png", p,
-#        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
-#        width = 5.32, height = 5,
-#        units = "in", bg='transparent') # save to png format
+ggsave("ARG_coverage_species.png", p,
+       path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
+       width = 5.32, height = 5,
+       units = "in", bg='transparent') # save to png format
 

@@ -7,12 +7,12 @@ library(openxlsx)
 # Merge bracken file
 ## Import ARP
 tmp <- read.table("../../airborne_arg_uwtp_result/kraken2/ARP/ARP1.S.bracken", 
-                  header = TRUE ,sep = "\t")
+                  header = TRUE ,sep = "\t", quote = "")
 tmp <- tmp %>% select(name, new_est_reads)
 colnames(tmp)[2] <- "ARP1"
 for (i in 2:5) {
   tmp2 <- read.table(paste("../../airborne_arg_uwtp_result/kraken2/ARP/ARP",i,".S.bracken", sep = ""), 
-                     header = TRUE ,sep = "\t") # Import
+                     header = TRUE ,sep = "\t", quote = "") # Import
   tmp2 <- tmp2 %>% select(name, new_est_reads) # Select name and reads column
   colnames(tmp2)[2] <- paste("ARP", i, sep = "") # Change column headers to sample name
   tmp <- full_join(tmp ,tmp2) # Merge each sample file
@@ -22,12 +22,12 @@ colnames(tmp)[1] <- "taxa"
 ARP_taxa<- tmp
 ## Import AT
 tmp <- read.table("../../airborne_arg_uwtp_result/kraken2/AT/AT1.S.bracken", 
-                  header = TRUE ,sep = "\t")
+                  header = TRUE ,sep = "\t", quote = "")
 tmp <- tmp %>% select(name, new_est_reads)
 colnames(tmp)[2] <- "AT1"
 for (i in 2:5) {
   tmp2 <- read.table(paste("../../airborne_arg_uwtp_result/kraken2/AT/AT",i,".S.bracken", sep = ""), 
-                     header = TRUE ,sep = "\t") # Import
+                     header = TRUE ,sep = "\t", quote = "") # Import
   tmp2 <- tmp2 %>% select(name, new_est_reads) # Select name and reads column
   colnames(tmp2)[2] <- paste("AT", i, sep = "") # Change column headers to sample name
   tmp <- full_join(tmp ,tmp2) # Merge each sample file
@@ -37,12 +37,12 @@ colnames(tmp)[1] <- "taxa"
 AT_taxa<- tmp
 ## Import ODP
 tmp <- read.table("../../airborne_arg_uwtp_result/kraken2/ODP/ODP1.S.bracken", 
-                  header = TRUE ,sep = "\t")
+                  header = TRUE ,sep = "\t", quote = "")
 tmp <- tmp %>% select(name, new_est_reads)
 colnames(tmp)[2] <- "ODP1"
 for (i in 2:5) {
   tmp2 <- read.table(paste("../../airborne_arg_uwtp_result/kraken2/ODP/ODP",i,".S.bracken", sep = ""), 
-                     header = TRUE ,sep = "\t") # Import
+                     header = TRUE ,sep = "\t", quote = "") # Import
   tmp2 <- tmp2 %>% select(name, new_est_reads) # Select name and reads column
   colnames(tmp2)[2] <- paste("ODP", i, sep = "") # Change column headers to sample name
   tmp <- full_join(tmp ,tmp2) # Merge each sample file

@@ -121,6 +121,17 @@ https://benlangmead.github.io/aws-indexes/k2
  ```
 $ ~/shell_script/kraken2.sh
  ```
+### R script after Taxanomic Profile
+```
+$ cd ./taxonomy
+$ Rscript phylum_barplot.R
+$ Rscript clss_barplot.R
+$ Rscript order_barplot.R
+$ Rscript family_barplot.R
+$ Rscript genus_barplot.R
+$ Rscript species_barplot.R
+$ Rscript taxa_alpha_diversity.R
+```
 ## ARGs Profile
 ### [ARGs-OAP](https://github.com/xinehc/args_oap)
 #### Installation
@@ -186,7 +197,7 @@ $ args_oap stage_two -i ~/args_oap/BacMet/stage_one_output -o ~/args_oap/BacMet/
 # Since default parameter in stage two is too strict for MGE, following parameters (--e 1e-5 --id 70) were used: 
 $ args_oap stage_two -i ~/args_oap/BacMet/stage_one_output -o ~/args_oap/BacMet/stage_two_output_evalue-5_id70 --e 1e-5 --id 70 -t 16 --database ~/args_oap/BacMet/BacMet_exp_metal.fasta --structure1 ~/args_oap/BacMet/metal_only_structure.txt
 ```
-### R script after Taxanomic Profile & ARGs Profile
+### R script after ARGs Profile
 ```
 $ cd ./ARG
 $ Rscript ARG_type_cell_abundance.R
@@ -210,7 +221,7 @@ cd ../reference_based_correlation
 $ Rscript Correlation_ARG_MGE.R
 $ Rscript Correlation_MRG_MGE.R
 cd ../LEFSe
-$ Rscript LEfSe.R
+$ Rscript arg_lefse.R
 ```
 ## Functional Profile
 ### [HUMAnN 3.0](https://github.com/biobakery/humann/tree/8d69f3c84ca7bfd7519ced7fcf94b8356c915090)
@@ -390,14 +401,6 @@ $ Rscript ARG_coverage_sankey.R
 ## Prediction of Plasmid Sequences
 ### [PlasFlow](https://github.com/smaegol/PlasFlow)
 ```
-# Installation & environment creation
-$   python=3.5
-$ c$onda activate plasflow
-$ conda config --set channel_priority flexible
-$ conda install plasflow -c smaegol
-$ conda install -c bioconda perl-bioperl perl-getopt-long
-
-$ pip install https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-0.10.0rc0-cp35-cp35m-linux_x86_64.whl
 ```
 ## Risk Assessment
 ### [MetaCompare](https://github.com/minoh0201/MetaCompare)

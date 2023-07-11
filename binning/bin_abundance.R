@@ -161,3 +161,14 @@ ggplot(bin_gene, aes(xmin = adjust_start, xmax = adjust_end, y = MAG, fill = Typ
   theme_genes() +
   theme(legend.position = "top") +
   guides(fill=guide_legend(nrow=2,byrow=TRUE))
+
+
+
+# See VF+ARG bin
+VF_SARG <- VF %>% filter(BinID %in% SARG$MAG)
+# VF number
+VF_bin <- VF_SARG$BinID %>% unique() 
+for (bin in VF_bin){ 
+tmp <- VF_SARG %>% filter(BinID == bin) %>% select(gene_abbr) %>% unique() %>% nrow()
+print(paste(bin,'(number):',tmp))
+}

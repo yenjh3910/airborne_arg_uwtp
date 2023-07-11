@@ -7,12 +7,12 @@ library(openxlsx)
 # Merge bracken file
 ## Import ARP
 tmp <- read.table("../../airborne_arg_uwtp_result/kraken2/ARP/ARP1.S.bracken", 
-                                 header = TRUE ,sep = "\t")
+                                 header = TRUE ,sep = "\t",quote = "")
 tmp <- tmp %>% select(name, new_est_reads)
 colnames(tmp)[2] <- "ARP1"
 for (i in 2:5) {
   tmp2 <- read.table(paste("../../airborne_arg_uwtp_result/kraken2/ARP/ARP",i,".S.bracken", sep = ""), 
-  header = TRUE ,sep = "\t") # Import
+  header = TRUE ,sep = "\t",quote = "") # Import
   tmp2 <- tmp2 %>% select(name, new_est_reads) # Select name and reads column
   colnames(tmp2)[2] <- paste("ARP", i, sep = "") # Change column headers to sample name
   tmp <- full_join(tmp ,tmp2) # Merge each sample file
@@ -22,12 +22,12 @@ colnames(tmp)[1] <- "Species"
 ARP_species<- tmp
 ## Import AT
 tmp <- read.table("../../airborne_arg_uwtp_result/kraken2/AT/AT1.S.bracken", 
-                  header = TRUE ,sep = "\t")
+                  header = TRUE,sep = "\t",quote = "")
 tmp <- tmp %>% select(name, new_est_reads)
 colnames(tmp)[2] <- "AT1"
 for (i in 2:5) {
   tmp2 <- read.table(paste("../../airborne_arg_uwtp_result/kraken2/AT/AT",i,".S.bracken", sep = ""), 
-                     header = TRUE ,sep = "\t") # Import
+                     header = TRUE ,sep = "\t",quote = "") # Import
   tmp2 <- tmp2 %>% select(name, new_est_reads) # Select name and reads column
   colnames(tmp2)[2] <- paste("AT", i, sep = "") # Change column headers to sample name
   tmp <- full_join(tmp ,tmp2) # Merge each sample file
@@ -37,12 +37,12 @@ colnames(tmp)[1] <- "Species"
 AT_species<- tmp
 ## Import ODP
 tmp <- read.table("../../airborne_arg_uwtp_result/kraken2/ODP/ODP1.S.bracken", 
-                  header = TRUE ,sep = "\t")
+                  header = TRUE ,sep = "\t",quote = "")
 tmp <- tmp %>% select(name, new_est_reads)
 colnames(tmp)[2] <- "ODP1"
 for (i in 2:5) {
   tmp2 <- read.table(paste("../../airborne_arg_uwtp_result/kraken2/ODP/ODP",i,".S.bracken", sep = ""), 
-                     header = TRUE ,sep = "\t") # Import
+                     header = TRUE ,sep = "\t",quote = "") # Import
   tmp2 <- tmp2 %>% select(name, new_est_reads) # Select name and reads column
   colnames(tmp2)[2] <- paste("ODP", i, sep = "") # Change column headers to sample name
   tmp <- full_join(tmp ,tmp2) # Merge each sample file
@@ -150,10 +150,14 @@ p <- ggplot(Y) +
   geom_hline(yintercept = 0, color = 'gray', linetype = 2, size = 0.3) +
   geom_abline(intercept = 0, slope = X[1,2]/X[1,1], size = 0.3) +
   geom_abline(intercept = 0, slope = X[2,2]/X[2,1], size = 0.3) +
-  annotate('text', label = sprintf('M^2 == 0.2799 '),
-           x = 0.20, y = 0.29, size = 5, parse = TRUE) +
-  annotate('text', label = 'P<0.01',
-           x = 0.20, y = 0.26, size = 5, parse = TRUE) +
+  # annotate('text', label = sprintf('M^2 == 0.0348 '),
+  #          x = 0.15, y = 0.29, size = 5, parse = TRUE) +
+  # annotate('text', label = 'P<0.01',
+  #          x = 0.15, y = 0.26, size = 5, parse = TRUE) +
+  annotate('text', label = sprintf(''),
+           x = 0.15, y = 0.29, size = 5, parse = TRUE) +
+  annotate('text', label = '',
+           x = 0.15, y = 0.26, size = 5, parse = TRUE) +
   theme(title = element_text(size=14),
         axis.title = element_text(size=15),
         legend.title= element_text(size=13),
@@ -163,9 +167,9 @@ p <- ggplot(Y) +
         legend.background = element_rect(fill='transparent')) #transparent legend bg)
 print(p)
 
-# # Save
-# ggsave("ARG_species_procrustes.png", p, path = "../../airborne_arg_uwtp_result/Figure/procrustes",
-#        width = 7, height = 5, units = "in", bg='transparent') # save to png format
+# Save
+ggsave("ARG_species_procrustes.png", p, path = "../../airborne_arg_uwtp_result/Figure/procrustes",
+       width = 7, height = 5, units = "in", bg='transparent') # save to png format
 
 # Create legend manually
 Sample <- c("AT", "ARP", "ODP")
@@ -178,6 +182,7 @@ p <- ggplot(df, aes(x=Sample, y=value, fill=Sample)) +
   theme(panel.background = element_rect(fill='transparent'),
         plot.background = element_rect(fill='transparent', color=NA),
         legend.background = element_rect(fill='transparent'))
+print(p)
 p<-ggplot(df) + 
   geom_point(aes(value, value, shape=legend_two,size = 3,alpha=0.5))+
   scale_fill_manual("Sample", values = color)+
@@ -185,3 +190,4 @@ p<-ggplot(df) +
   theme(panel.background = element_rect(fill='transparent'),
         plot.background = element_rect(fill='transparent', color=NA),
         legend.background = element_rect(fill='transparent'))
+print(p)

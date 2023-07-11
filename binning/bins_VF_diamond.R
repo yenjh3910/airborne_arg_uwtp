@@ -30,9 +30,10 @@ z$contigs <- paste(z$tmp1,z$tmp2,sep = "_")
 z <- z %>% select(!(tmp1)) %>% select(!(tmp2)) %>% select(!(tmp3))
 ## Filter by identity & evalue
 VF <- z %>% filter(pident >= 70) %>% filter(evalue <= 1e-10) %>% filter(evalue <= 1e-10)
-
-
-
+## Separate gene column
+VF$gene_abbr <- sub("\\).*",")",VF$gene)
+VF$gene_abbr <- sub("\\(","",VF$gene_abbr)
+VF$gene_abbr <- sub("\\)","",VF$gene_abbr)
 
 
 # ## Import contigs kraken file

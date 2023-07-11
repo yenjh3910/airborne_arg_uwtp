@@ -223,6 +223,13 @@ print(p)
 
 
 # mechanism percentage
-arg_proportion <- arg_mechanism %>% group_by(sample_type) %>% mutate(ratio = mean/sum(mean)) %>% 
-                  select(mechanism,sample_type,ratio)
-arg_proportion$ratio[1]-arg_proportion$ratio[7]
+arg_proportion <- arg_mechanism %>% group_by(sample_type) %>% mutate(percentage = mean/sum(mean)*100) %>% 
+                  select(mechanism,sample_type,percentage)
+arg_proportion$percentage[1]-arg_proportion$percentage[7]
+
+
+
+# Output mechanism reference
+mechanism_reference <- gather_arg_mechanism %>% select(subtype,mechanism) %>% unique()
+# write.csv(mechanism_reference, file = "./arg_mechanism_reference.csv",
+#           row.names = FALSE, quote = FALSE,)

@@ -109,11 +109,27 @@ p <-pheatmap(stress_go_mat, cluster_cols = TRUE,
              annotation_col = annotation_row, annotation_colors = ann_colors,
              fontsize = 10, fontsize_row = 9, fontsize_col = 9,
              cellwidth = 10, cellheight = 10, bg = "transparent")
+print(p)
+# ggsave("GO_aer_stress.png", p,
+#        path = "../../airborne_arg_uwtp_result/Figure/humann3",
+#        width = 8, height = 7,
+#        units = "in", bg='transparent') # save to png format
 
-ggsave("GO_aer_stress.png", p,
-       path = "../../airborne_arg_uwtp_result/Figure/humann3",
-       width = 8, height = 7,
-       units = "in", bg='transparent') # save to png format
+############################################################################
+# Prof.Tang ask to change legend color
+ann_colors = list(Sample = c(AT = "#F8766D", ARP = "#00BFC4"))
+# Plot
+p <-pheatmap(stress_go_mat, cluster_cols = TRUE, 
+             clustering_distance_rows = "euclidean",
+             annotation_col = annotation_row, annotation_colors = ann_colors,
+             fontsize = 10, fontsize_row = 9, fontsize_col = 9,
+             cellwidth = 10, cellheight = 10, bg = "transparent")
+print(p)
+# ggsave("GO_aer_stress_LegendColorChange.png", p,
+#        path = "../../airborne_arg_uwtp_result/Figure/humann3",
+#        width = 8, height = 7,
+#        units = "in", bg='transparent') # save to png format
+############################################################################
 
 
 # Statistic

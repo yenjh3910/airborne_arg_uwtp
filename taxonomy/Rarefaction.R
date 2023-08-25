@@ -77,14 +77,16 @@ brewer.pal(n=12,name="Set3")
 final <- p+scale_color_manual(values=c(rep("#80B1D3",5),rep("#FB8072",5),rep("#FDB462",5)))+
   scale_shape_manual(values=c(rep(17,5),rep(15,5),rep(18,5))) +
   scale_fill_manual(values=c(rep("#D9D9D9",15)))+
+  xlab("Number of sequence") + ylab("Observed species richness") +
   theme_bw()+
   theme(legend.position = 'none',
         axis.title = element_text(size = 16),
         axis.text = element_text(size = 10),
         panel.background = element_rect(fill='transparent'), #transparent panel bg
         plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
-        legend.background = element_rect(fill='transparent'))
-
+        legend.background = element_rect(fill='transparent'))+
+  geom_line(size=0.00001)
+print(final)
 # ggsave("rarefaction_curve.png", final,
 #        path = "../../airborne_arg_uwtp_result/Figure/taxonomy",
 #        width = 9, height = 4,

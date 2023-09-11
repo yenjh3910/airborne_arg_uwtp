@@ -167,9 +167,9 @@ p <- ggplot(Y) +
         legend.background = element_rect(fill='transparent')) #transparent legend bg)
 print(p)
 
-# Save
-ggsave("ARG_species_procrustes.png", p, path = "../../airborne_arg_uwtp_result/Figure/procrustes",
-       width = 7, height = 5, units = "in", bg='transparent') # save to png format
+# # Save
+# ggsave("ARG_species_procrustes.png", p, path = "../../airborne_arg_uwtp_result/Figure/procrustes",
+#        width = 7, height = 5, units = "in", bg='transparent') # save to png format
 
 # Create legend manually
 Sample <- c("AT", "ARP", "ODP")

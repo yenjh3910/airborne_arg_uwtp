@@ -105,8 +105,17 @@ ggplot(data=df.plot,aes(x=Axis.1,y=Axis.2,
 
 
 ## Import ARG subtype dataset
+library(tidyverse)
+library(openxlsx)
+library(vegan)
 arg_subtype <- read.xlsx("../../airborne_arg_uwtp_result/args_oap/ARG/stage_two_output/normalized_cell.subtype.xlsx",
                          sheet = 1)
+download_fq <- read.table("../../airborne_arg_uwtp_result/download_fq/normalized_cell.subtype.txt",
+                header = TRUE, sep = "\t", quote = "")
+colnames(download_fq) <- c('subtype',paste0('AS',1:(length(download_fq)-1)))
+arg_subtype <- full_join(arg_subtype, download_fq)
+arg_subtype[is.na(arg_subtype)] <- 0
+
 row.names(arg_subtype) <- arg_subtype[,1]
 arg_subtype <- arg_subtype[,-1]
 ## Transform dataframe
@@ -119,7 +128,7 @@ df.pcoa<-pcoa(arg_bray,correction = "cailliez")
 df.plot<-data.frame(df.pcoa$vectors)
 head(df.plot)
 
-df.plot$sample_type <- gsub("1|2|3|4|5","",row.names(df.plot))
+df.plot$sample_type <- gsub("[0-9]","",row.names(df.plot))
 
 ggplot(data=df.plot,aes(x=Axis.1,y=Axis.2,color=sample_type))+
   geom_point()+

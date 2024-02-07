@@ -104,18 +104,48 @@ ggplot(data=df.plot,aes(x=Axis.1,y=Axis.2,
 
 
 
-## Import ARG subtype dataset
+## Import and join ARG subtype dataset
 library(tidyverse)
 library(openxlsx)
 library(vegan)
 arg_subtype <- read.xlsx("../../airborne_arg_uwtp_result/args_oap/ARG/stage_two_output/normalized_cell.subtype.xlsx",
                          sheet = 1)
-download_fq <- read.table("../../airborne_arg_uwtp_result/download_fq/normalized_cell.subtype.txt",
+download_fq <- read.table("../../airborne_arg_uwtp_result/download_fq/nineyear_args_oap/normalized_cell.subtype.txt",
                 header = TRUE, sep = "\t", quote = "")
 colnames(download_fq) <- c('subtype',paste0('AS',1:(length(download_fq)-1)))
 arg_subtype <- full_join(arg_subtype, download_fq)
-arg_subtype[is.na(arg_subtype)] <- 0
 
+# ##commamox
+# download_fq <- read.table("../../airborne_arg_uwtp_result/download_fq/commamox/normalized_cell.subtype.txt",
+#                                                      header = TRUE, sep = "\t", quote = "")
+# colnames(download_fq) <- c('subtype',paste0('commamox',1:(length(download_fq)-1)))
+# arg_subtype <- full_join(arg_subtype, download_fq)
+
+#PRJEB14051
+download_fq <- read.table("../../airborne_arg_uwtp_result/download_fq/PRJEB14051/normalized_cell.subtype.txt",
+                          header = TRUE, sep = "\t", quote = "")
+colnames(download_fq) <- c('subtype',paste0('PRJEB14051',1:(length(download_fq)-1)))
+arg_subtype <- full_join(arg_subtype, download_fq)
+
+#PRJNA385831
+download_fq <- read.table("../../airborne_arg_uwtp_result/download_fq/PRJNA385831/normalized_cell.subtype.txt",
+                          header = TRUE, sep = "\t", quote = "")
+colnames(download_fq) <- c('subtype',paste0('PRJNA385831',1:(length(download_fq)-1)))
+arg_subtype <- full_join(arg_subtype, download_fq)
+
+## Effluent
+# download_fq <- read.table("../../airborne_arg_uwtp_result/download_fq/effluent_args_oap_1/normalized_cell.subtype.txt",
+#                           header = TRUE, sep = "\t", quote = "")
+# download_fq2 <- read.table("../../airborne_arg_uwtp_result/download_fq/effluent_args_oap_2/normalized_cell.subtype.txt",
+#                           header = TRUE, sep = "\t", quote = "")
+# download_fq3 <- read.table("../../airborne_arg_uwtp_result/download_fq/effluent_args_oap_3/normalized_cell.subtype.txt",
+#                            header = TRUE, sep = "\t", quote = "")
+# download_fq <- full_join(download_fq, download_fq2)
+# download_fq <- full_join(download_fq, download_fq3)
+# colnames(download_fq) <- c('subtype',paste0('EFF&INF',1:(length(download_fq)-1)))
+# arg_subtype <- full_join(arg_subtype, download_fq)
+
+arg_subtype[is.na(arg_subtype)] <- 0
 row.names(arg_subtype) <- arg_subtype[,1]
 arg_subtype <- arg_subtype[,-1]
 ## Transform dataframe

@@ -336,10 +336,10 @@ p <- ggplot(ARG_Class, aes(x = Sample_type, y = coverage, fill = Class)) +
                              "#FDB462","#B3DE69","#FCCDE5", "#FFED6F","#BC80BD",
                              "#CCEBC5","#D9D9D9"))
 print(p)
-ggsave("ARG_coverage_class.png", p,
-       path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
-       width = 3.835, height = 5,
-       units = "in", bg='transparent') # save to png format
+# ggsave("ARG_coverage_class.png", p,
+#        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
+#        width = 3.835, height = 5,
+#        units = "in", bg='transparent') # save to png format
 
 
 ############### Order ################
@@ -415,12 +415,36 @@ p <- ggplot(ARG_Order, aes(x = Sample_type, y = coverage, fill = Order)) +
                              "#FDB462","#B3DE69","#FCCDE5", "#FFED6F","#BC80BD",
                              "#CCEBC5","#D9D9D9"))
 print(p)
-ggsave("ARG_coverage_order.png", p,
-       path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
-       width = 3.65, height = 5,
-       units = "in", bg='transparent') # save to png format
+# ggsave("ARG_coverage_order.png", p,
+#        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
+#        width = 3.65, height = 5,
+#        units = "in", bg='transparent') # save to png format
 
-
+# Menuscript format
+p <- ggplot(ARG_Order, aes(x = Sample_type, y = coverage, fill = Order)) + 
+  geom_bar(stat="identity") + 
+  theme_bw() + 
+  xlab("") + ylab("Coverage (x/GB)")+
+  scale_x_discrete(labels=c("AT" = expression(Aeration~tank), 
+                            "ARP" = expression(Aeration~tank~PM[2.5]),
+                            "ODP" = expression(Outdoor~PM[2.5])))+
+  theme(axis.text.x = element_text(size = 11, angle = 70, hjust=1),
+        axis.text.y = element_text(size = 10),
+        axis.title = element_text(size = 11),
+        legend.title = element_text(size = 11),
+        legend.text = element_text(size = 11),
+        panel.background = element_rect(fill='transparent'), #transparent panel bg
+        plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
+        panel.grid.major = element_blank(), #remove major gridlines
+        panel.grid.minor = element_blank(), #remove minor gridlines
+        legend.background = element_rect(fill='transparent')) + #transparent legend bg)
+  scale_fill_manual(values=c("#8DD3C7","#FFFFB3","#BEBADA","#FB8072","#80B1D3",
+                             "#FDB462","#B3DE69","#FCCDE5", "#FFED6F","#BC80BD",
+                             "#CCEBC5","#D9D9D9"))
+# ggsave("ARG_coverage_order_menuscipt.png", p,
+#        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
+#        width = 3.65, height = 5,
+#        units = "in", bg='transparent') # save to png format
 
 ############### Family ################
 ARG_Family <- final_ARG_coverage  %>% ungroup() %>% group_by(Sample_type, Family) %>% 

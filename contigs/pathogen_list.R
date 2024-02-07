@@ -133,5 +133,5 @@ p <- ggplot(AerCoveragePathogen, aes(x = Sample_type, y = Species)) +
         plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
         legend.background = element_rect(fill='transparent'))
 print(p)
-ggsave("ARG_pathogen_bubble.png", p, path = "../../airborne_arg_uwtp_result/Figure/pathogen",
-        width = 6.78, height = 3.62, units = "in") # save to png format
+# ggsave("ARG_pathogen_bubble.png", p, path = "../../airborne_arg_uwtp_result/Figure/pathogen",
+#         width = 6.78, height = 3.62, units = "in") # save to png format

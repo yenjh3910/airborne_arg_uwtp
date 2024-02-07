@@ -57,15 +57,15 @@ tax_annontate <- rbind(species_annotate,genus_annotate)
 tax_annontate <- rbind(tax_annontate,family_annotate)
 # Gene 
 # ARG+MGE+VF
-ARG_MGE_VF_MAG <- bin_abundance %>% filter(MAG %in% SARG$BinID) %>% 
+ARG_MGE_VF_MAG <- bin_abundance %>% filter(MAG %in% SARG$MAG) %>% 
   filter(MAG %in% MGE$BinID) %>% 
   filter(MAG %in% VF$BinID) %>% select(MAG)
 # ARG+VF
-ARG_VF_MAG <- bin_abundance %>% filter(MAG %in% SARG$BinID) %>% 
+ARG_VF_MAG <- bin_abundance %>% filter(MAG %in% SARG$MAG) %>% 
   filter(MAG %in% VF$BinID) %>% 
   filter(!(MAG %in% MGE$BinID)) %>% select(MAG)
 # ARG+MGE
-ARG_MGE_MAG <- bin_abundance %>% filter(MAG %in% SARG$BinID) %>% 
+ARG_MGE_MAG <- bin_abundance %>% filter(MAG %in% SARG$MAG) %>% 
   filter(MAG %in% MGE$BinID) %>% 
   filter(!(MAG %in% VF$BinID)) %>% select(MAG)
 ## Join
@@ -108,7 +108,7 @@ rownames(annotation_col) = colnames(log_SARG_MAG)
 display.brewer.all()
 display.brewer.pal(n=12,name="Set3")
 brewer.pal(12, "Set3")
-ann_colors = list(Sample = c(AT = "#FB8072", ARP = "#80B1D3"),
+ann_colors = list(Sample = c(AT = "#fab0ab", ARP = "#76d9dd"),
                   Taxonomy = c(Family = "#FFED6F", Genus = "#FCCDE5", Species ="#CCEBC5"),
                   Genes = c('ARGs+MGEs+VFs' ="#8DD3C7",'ARGs+MGEs' ="#FDB462",'ARGs+VFs' ="#BEBADA"))
 # Remove taxa_prefix

@@ -141,3 +141,38 @@ z_mean_sd <- gat_stress_go %>% group_by(sample_type,Gene) %>%
   mutate(sd = sd(z)) %>%
   select(Gene,sample_type,mean,sd) %>%
   unique()
+
+# Bubble  chart
+z_mean_sd$Gene <- gsub("\\[BP\\] ", "", z_mean_sd$Gene)
+negative_z <- z_mean_sd %>% filter(mean<0) %>% mutate(PN = 'Negative')
+positive_z <- z_mean_sd %>% filter(mean>=0) %>% mutate(PN = 'Positive')
+z_mean_sd_PN <- rbind(positive_z,negative_z)
+
+z_mean_sd_PN$sample_type <- factor(z_mean_sd_PN$sample_type,                                    # Factor levels in decreasing order
+                    levels = c('AT','ARP'))
+z_mean_sd_PN$Gene <- factor(z_mean_sd_PN$Gene,                                    # Factor levels in decreasing order
+                            levels = factor(positive_z$Gene))
+z_mean_sd_PN$PN <- factor(z_mean_sd_PN$PN,                                    # Factor levels in decreasing order
+                          levels = c('Positive','Negative'))
+
+p<-ggplot(z_mean_sd_PN, aes(x = sample_type, y = Gene)) + 
+  geom_point(aes(size = mean, fill = PN), alpha = 0.75, shape = 21) +
+  theme_bw()+
+  scale_y_discrete(position = "right")+
+  labs(x="",y="",size = "Z-score", fill = "") +
+  scale_x_discrete(labels=c("AT" = expression(Aeration~tank), 
+                            "ARP" = expression(Aeration~tank~PM[2.5])))+
+  scale_fill_manual(values = c("#FFC300","#154360"))+
+  scale_size_continuous(breaks = c(-0.9,-0.5,0,0.5,0.9), range = c(0.5,4))+
+theme(axis.text.x = element_text(size = 10, angle = 50, hjust=1),
+        axis.text.y = element_text(size = 10),
+        legend.title = element_text(size = 11),
+        legend.text = element_text(size = 11),
+        legend.key=element_blank(),
+        panel.background = element_rect(fill='transparent'), #transparent panel bg
+        plot.background = element_rect(fill='transparent', color=NA), #transparent plot bg
+        legend.background = element_rect(fill='transparent'))
+  
+# ggsave("stress_bubbleplot.png", p, path = "../../airborne_arg_uwtp_result/Figure/humann3",
+#          width = 7.6, height = 8, units = "in") # save to png format
+  

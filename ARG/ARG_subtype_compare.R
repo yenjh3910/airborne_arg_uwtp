@@ -136,6 +136,7 @@ p <- ggplot(higher_arg_ARP, aes(x=subtype, y=ratio, fill=mechanism)) +
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         legend.background = element_rect(fill='transparent'))
+print(p)
 
 # ggsave("ARG_mechanism_overall.png", p,
 #        path = "../../airborne_arg_uwtp_result/Figure/ARG",
@@ -160,6 +161,7 @@ p<-ggplot(ARP_higher_mechanism, aes(x="", y=percentage, fill=mechanism)) +
                            nrow = 2))+
   theme(legend.position="none")
 
+print(p)
 # ggsave("ARG_air_dominance_mechanism_pie.png", p,
 #        path = "../../airborne_arg_uwtp_result/Figure/ARG",
 #        width = 5, height = 5,
@@ -302,3 +304,35 @@ efflux_species$type[efflux_species$type == "Macrolide-Lincosamide-Streptogramin"
 # # Export and edit in excel
 # write.csv(efflux_species, file = "../../airborne_arg_uwtp_result/contigs_bowtie2/SARG/efflux_pump_species.csv",
 #           row.names = FALSE, quote = FALSE)
+
+
+
+# Menuscript version
+p <- ggplot(higher_arg_ARP, aes(x=subtype, y=ratio, fill=mechanism)) +
+  geom_bar(stat="identity") + 
+  xlab("ARG subtypes") + ylab('Enriched ARG proportion (ARP/(ARP+AT))') + 
+  theme_bw() +
+  scale_fill_manual(values=c("#FB8072", "#80B1D3", "#FDB462",
+                             "#B3DE69","#BEBADA","#FCCDE5","#D9D9D9"))+
+  guides(fill=guide_legend(title="Mechanism",nrow=2,byrow=TRUE))+
+  coord_cartesian(ylim = c(0.5, 1))+
+  theme(axis.title = element_text(size = 25),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.text.y = element_text(size = 18),
+        #legend.key.size = unit(1.1, 'cm'),
+        legend.title = element_text(size = 17),
+        legend.text = element_text(size = 17),
+        legend.position = 'none',
+        panel.background = element_rect(fill='transparent'),
+        plot.background = element_rect(fill='transparent', color=NA),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.background = element_rect(fill='transparent'))
+
+print(p)
+
+# ggsave("top_ARG_air_dominance_mechanism_v2.png", p,
+#        path = "../../airborne_arg_uwtp_result/Figure/ARG",
+#        width = 16, height = 7,
+#        units = "in", bg='transparent') # save to png format

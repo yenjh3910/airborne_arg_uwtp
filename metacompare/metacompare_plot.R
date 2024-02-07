@@ -35,3 +35,18 @@ risk %>% select(sample_type,Risk.Score) %>%
          mutate(sd = sd(Risk.Score)) %>% 
          select(!(Risk.Score)) %>% 
          unique()
+
+# Menuscript version
+colors <- c("#00BFC4", "#F8766D", "#7CAE00")
+colors <- colors[as.factor(select_risk$sample_type)]
+s3d <-scatterplot3d(select_risk[,2:4], angle = 55,
+                    xlab = "Q(ARG)",
+                    ylab = "Q(ARG,MGE)",
+                    zlab = "Q(ARG,MGE,PATH)",
+                    pch = shapes,
+                    color = colors,
+                    type="h",
+                    x.ticklabs = x_ticks, y.ticklabs = y_ticks, z.ticklabs = z_ticks,
+                    cex.axis=0.7)
+legend("top", legend = levels(as.factor(select_risk$sample_type)),
+       col =  c("#00BFC4", "#F8766D", "#7CAE00"), pch = c(17,16,18))

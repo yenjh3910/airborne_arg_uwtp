@@ -52,7 +52,7 @@ brewer.pal(6, "Set3")
 
 # Plot
 p <- ggvenn(arg_subtype,
-       fill_color = c("#FB8072", "#80B1D3", "#FDB462"), 
+       fill_color = c("#FB8072", "#80B1D3", "#B3DE69"), 
        fill_alpha = 0.45,
        stroke_size = 0.3, stroke_alpha = 1,
        set_name_color = "white", set_name_size = 0.00000001, text_size = 4)

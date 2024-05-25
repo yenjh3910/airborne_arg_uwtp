@@ -550,9 +550,9 @@ $ conda activate gtdbtk-2.3.0
 # Setting environment-specific variables
 $ conda env config vars set GTDBTK_DATA_PATH=~/db/gtdbtk/release214
 
-# Checl install
-# gtdbtk check_install
-# gtdbtk test --out_dir gtdbtk_test
+# Check install
+$ gtdbtk check_install
+$ gtdbtk test --out_dir gtdbtk_test
 
 # Run
 $ gtdbtk classify_wf --genome_dir ~/metawrap_run/bin_refinement/metawrap_50_10_bins -x fa \
@@ -591,4 +591,17 @@ $ Rscript bins_MGE_diamond.R
 $ Rscript bins_VF_diamond.R
 $ Rscript bin_quality.R
 $ Rscript bin_abundance.R
+```
+### [PROKKA](https://github.com/tseemann/prokka)
+```
+# Create the prokka environment
+$ conda create --name prokka
+$ conda install -c conda-forge -c bioconda -c defaults prokka
+$ conda activate prokka
+
+# Check install
+$ prokka
+
+# Run
+$ ~/shell_script/prokka_bin.sh
 ```

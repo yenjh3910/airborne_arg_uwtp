@@ -60,7 +60,7 @@ for (i in 2:16) {
   individual_threshold <- sum(merge_taxa[,i])*THRESHOLD
   merge_taxa[,i] <- replace(merge_taxa[,i], merge_taxa[,i] < individual_threshold, 0)
 }
-# Fitst column as row name
+# First column as row name
 rownames(merge_taxa) <- merge_taxa$taxa
 merge_taxa <-  merge_taxa[,-1]
 ## Transform to percentage
@@ -94,7 +94,7 @@ all_taxa <- all_taxa %>% group_by(taxa,sample_type) %>%
   select(taxa,sample_type,mean_percent,sd_percent) %>% unique()
 spread_all_taxa <- all_taxa %>% select(!(sd_percent)) %>% spread(key = "sample_type", value = "mean_percent")
 
-# Order taxa as thier highest abundance
+# Order taxa as their highest abundance
 merge_taxa <- merge_taxa[,-16]
 merge_taxa <- merge_taxa %>% 
   arrange(factor(rownames(merge_taxa), levels = taxa_order))

@@ -172,3 +172,23 @@ for (bin in VF_bin){
 tmp <- VF_SARG %>% filter(BinID == bin) %>% select(gene_abbr) %>% unique() %>% nrow()
 print(paste(bin,'(number):',tmp))
 }
+
+
+
+# Calculate mean value
+bin_gather <- gather(bin_abundance,key='sample',value='abundance',AT4:ARP2)
+## Add sample type column
+bin_gather$sample_type <- bin_gather$sample
+bin_gather$sample_type <- gsub("1|2|3|4|5","",bin_gather$sample_type)
+## mean & sd
+mean_sd_bin <- bin_gather %>% group_by(MAG,sample_type) %>% 
+  mutate(mean = mean(abundance)) %>% 
+  mutate(sd = sd(abundance)) %>% 
+  select(MAG, sample_type, mean, sd) %>% 
+  unique()
+## Convert into spread
+bin_spread <- mean_sd_bin %>% select(!(sd)) %>% 
+  spread(mean_sd_bin, key='sample_type',value='mean')
+bin_spread <- data.frame(bin_spread$MAG,c(unlist(bin_spread$ARP)),c(unlist(bin_spread$AT)))
+#write.table(bin_spread, "../../airborne_arg_uwtp_result/metawrap_bin/bin_refinement/mag_mean.txt",
+#          ,sep=' ',quote = FALSE, row.names = FALSE)

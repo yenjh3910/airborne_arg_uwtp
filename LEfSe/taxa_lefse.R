@@ -84,6 +84,12 @@ colnames(two_sampletype_lda) <- c("Taxa","LogMaxMean","Class","LDA","pValue")
 two_sampletype_lda$Taxa <- gsub('___','.',two_sampletype_lda$Taxa) # Transform back later
 two_sampletype_lda$Taxa <- gsub('__',' ',two_sampletype_lda$Taxa) # Transform back later
 
+### Revise NTM five genera name ###
+two_sampletype_lda$Taxa <- gsub("Mycobacteroides", "Mycobacterium", two_sampletype_lda$Taxa)
+two_sampletype_lda$Taxa <- gsub("Mycolicibacillus", "Mycobacterium", two_sampletype_lda$Taxa)
+two_sampletype_lda$Taxa <- gsub("Mycolicibacterium", "Mycobacterium", two_sampletype_lda$Taxa)
+two_sampletype_lda$Taxa <- gsub("Mycolicibacter", "Mycobacterium", two_sampletype_lda$Taxa)
+
 p <- two_sampletype_lda %>% 
   drop_na(LDA) %>%
   filter(LDA > 3.4) %>% 

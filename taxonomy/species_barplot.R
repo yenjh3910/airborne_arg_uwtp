@@ -54,6 +54,13 @@ ODP_taxa<- tmp
 ARP_AT_taxa <- full_join(ARP_taxa, AT_taxa)
 merge_taxa <- full_join(ARP_AT_taxa, ODP_taxa)
 merge_taxa <- merge_taxa %>% replace(is.na(.), 0) # Replace NA with 0
+
+### Revise NTM five genera name ###
+merge_taxa$taxa <- gsub("Mycobacteroides", "Mycobacterium", merge_taxa$taxa)
+merge_taxa$taxa <- gsub("Mycolicibacillus", "Mycobacterium", merge_taxa$taxa)
+merge_taxa$taxa <- gsub("Mycolicibacterium", "Mycobacterium", merge_taxa$taxa)
+merge_taxa$taxa <- gsub("Mycolicibacter", "Mycobacterium", merge_taxa$taxa)
+
 # Filtering low abundance read
 THRESHOLD <- 0.00005 # 0.005 % as filtering threshold
 for (i in 2:16) {
@@ -61,6 +68,7 @@ for (i in 2:16) {
   merge_taxa[,i] <- replace(merge_taxa[,i], merge_taxa[,i] < individual_threshold, 0)
 }
 # First column as row name
+merge_taxa <- as.data.frame(merge_taxa)
 rownames(merge_taxa) <- merge_taxa$taxa
 merge_taxa <-  merge_taxa[,-1]
 ## Transform to percentage

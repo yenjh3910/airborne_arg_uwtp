@@ -23,7 +23,7 @@ gather_go <- gather(go, key = "sample", value = "cpm",
 # Calculate z-score 
 gather_go <- gather_go %>% group_by(Gene) %>% 
   mutate(z_score = (cpm-mean(cpm))/sd(cpm))
-# Caluclate p=value & view mean z-score
+# Calculate p=value & view mean z-score
 gather_go$sample_type <- gather_go$sample
 gather_go$sample_type <- gsub("1|2|3|4|5","",gather_go$sample)
 

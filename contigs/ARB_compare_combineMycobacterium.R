@@ -510,3 +510,63 @@ print(p)
 #        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
 #        width = 10, height = 9,
 #        units = "in", bg='transparent') # save to png format
+
+
+# Fill with order color
+reference <- final_ARG_coverage %>% select(Order,Genus) %>% 
+  unique() %>% filter(!(Genus=='Unclassified'))
+spread_ARG_Genus_fill_lol <- left_join(spread_ARG_Genus,reference)
+spread_ARG_Genus_fill_lol <- spread_ARG_Genus_fill_lol %>% filter(!(Genus=='Unclassified'))
+# Arrange Genus
+spread_ARG_Genus_fill_lol <- spread_ARG_Genus_fill_lol %>% 
+  arrange(desc(ratio))
+spread_ARG_Genus_fill_lol$Genus <- factor(spread_ARG_Genus_fill_lol$Genus , levels=spread_ARG_Genus_fill_lol$Genus)
+# Replace to other
+spread_ARG_Genus_fill_lol$Order[spread_ARG_Genus_fill_lol$Order=='Desulfovibrionales']<-'Others'
+spread_ARG_Genus_fill_lol$Order[spread_ARG_Genus_fill_lol$Order=='Hyphomicrobiales']<-'Others'
+spread_ARG_Genus_fill_lol$Order[spread_ARG_Genus_fill_lol$Order=='Kitasatosporales']<-'Others'
+spread_ARG_Genus_fill_lol$Order[spread_ARG_Genus_fill_lol$Order=='Propionibacteriales']<-'Others'
+spread_ARG_Genus_fill_lol$Order[spread_ARG_Genus_fill_lol$Order=='Rhodobacterales']<-'Others'
+spread_ARG_Genus_fill_lol$Order[spread_ARG_Genus_fill_lol$Order=='Thiotrichales']<-'Others'
+spread_ARG_Genus_fill_lol$Order[spread_ARG_Genus_fill_lol$Order=='Unclassified']<-'Others'
+# Rearrange again
+spread_ARG_Genus_fill_lol$Order <- factor(spread_ARG_Genus_fill_lol$Order, 
+                                          levels = c("Mycobacteriales",
+                                                     "Burkholderiales",
+                                                     "Xanthomonadales", 
+                                                     "Flavobacteriales",
+                                                     "Pseudomonadales",
+                                                     "Moraxellales",
+                                                     "Bacillales" ,
+                                                     "Rhodocyclales",
+                                                     "Aeromonadales",
+                                                     "Enterobacterales",
+                                                     "Lactobacillales",
+                                                     "Others"))
+# Lolipop Plot
+display.brewer.all()
+brewer.pal(n = 12, name = "Set3")
+p<-ggplot(spread_ARG_Genus_fill_lol, aes(x=Genus, y=ratio, color=Order)) +
+  geom_segment( aes(x=Genus, xend=Genus, y=0.5, yend=ratio), color="grey") +
+  geom_point(size=4,stroke=2)+
+  xlab("Genus") + ylab('Enriched ARG-ORF proportion (ARP/(ARP+AT))') + 
+  theme_bw()+
+  scale_color_manual(values=c("#8DD3C7","#FFFFB3","#BEBADA","#FB8072",
+                             "#80B1D3","#FDB462","#B3DE69","#FCCDE5",
+                             "#FFED6F","#BC80BD","#CCEBC5","#D9D9D9"))+
+  theme(axis.title.x = element_text(size = 25),
+        axis.title.y = element_text(size = 16),
+        axis.text.x=element_text(size = 18, angle = 70, hjust=1),
+        axis.ticks.x=element_blank(),
+        axis.text.y = element_text(size = 18),
+        legend.position = 'none',
+        panel.background = element_rect(fill='transparent'),
+        plot.background = element_rect(fill='transparent', color=NA),
+        #panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.background = element_rect(fill='transparent'))
+
+# ggsave("lolipop_ARG-ORF_proportion_lol.png", p,
+#        path = "../../airborne_arg_uwtp_result/Figure/ARG_coverage",
+#        width = 11, height = 8,
+#        units = "in", bg='transparent') # save to png format

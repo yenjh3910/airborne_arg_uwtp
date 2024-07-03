@@ -143,6 +143,8 @@ print(p)
 #        width = 12, height = 6,
 #        units = "in", bg='transparent') # save to png format
 
+# write.csv(higher_arg_ARP, file = "./higher_arg_ARP.csv",
+#           row.names = FALSE, quote = FALSE,)
 
 # Piechart
 higher_arg_ARP %>% group_by(mechanism) %>% count()

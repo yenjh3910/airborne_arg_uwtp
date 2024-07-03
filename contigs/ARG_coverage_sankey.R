@@ -231,6 +231,21 @@ my_color <- 'd3.scaleOrdinal() .domain(["d","p","c","o","f","g","s",
                                         "p_link","c_link","o_link","f_link","g_link","s_link"]) 
                                         .range(["#66C2A5","#FC8D62","#8DA0CB","#E78AC3","#A6D854","#FFD92F","#E5C494",
                                                 "#B3E2CD","#FDCDAC","#CBD5E8","#F4CAE4","#E6F5C9","#FFF2AE"])'
+### Revise NTM five genera name ###
+links$source <- gsub("Mycobacteroides", "Mycobacterium", links$source)
+links$source <- gsub("Mycolicibacillus", "Mycobacterium", links$source)
+links$source <- gsub("Mycolicibacterium", "Mycobacterium", links$source)
+links$source <- gsub("Mycolicibacter", "Mycobacterium", links$source)
+
+links$target <- gsub("Mycobacteroides", "Mycobacterium", links$target)
+links$target <- gsub("Mycolicibacillus", "Mycobacterium", links$target)
+links$target <- gsub("Mycolicibacterium", "Mycobacterium", links$target)
+links$target <- gsub("Mycolicibacter", "Mycobacterium", links$target)
+
+nodes$name <- gsub("Mycobacteroides", "Mycobacterium", nodes$name)
+nodes$name <- gsub("Mycolicibacillus", "Mycobacterium", nodes$name)
+nodes$name <- gsub("Mycolicibacterium", "Mycobacterium", nodes$name)
+nodes$name <- gsub("Mycolicibacter", "Mycobacterium", nodes$name)
 ## Plot
 p <- sankeyNetwork(Links = links, Nodes= nodes,
                  Source = "IDsource", Target = "IDtarget",
@@ -239,7 +254,7 @@ p <- sankeyNetwork(Links = links, Nodes= nodes,
                  sinksRight=FALSE,fontSize = 17,fontFamily = "Arial")
 print(p)
 # save the widget
-#saveWidget(p, "../../airborne_arg_uwtp_result/Figure/Sankey/ARP_top10_coverage_sankey.html")
+# saveWidget(p, "../../airborne_arg_uwtp_result/Figure/Sankey/ARP_top10_coverage_sankey.html")
 
 
 ######## Barplot of sankey  which should be added in PPT manually ########

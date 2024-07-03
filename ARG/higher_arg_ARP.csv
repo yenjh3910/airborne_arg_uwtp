@@ -1,0 +1,349 @@
+Type,Subtype,Enriched ARG proportion,Mechanism
+Multidrug,mefF,0.997360765,Antibiotic efflux
+Tetracycline,tet(L),0.985693692,Antibiotic efflux
+Tetracycline,tet(35),0.985312734,Antibiotic efflux
+Multidrug,bmr,0.985054231,Antibiotic efflux
+Multidrug,OpmH,0.984189297,Antibiotic efflux
+Multidrug,mdtM,0.983667619,Antibiotic efflux
+Quinolone,norB,0.983361129,Antibiotic efflux
+Quinolone,QnrD1,0.982447205,Antibiotic target protection
+MLS,lmrC,0.981448103,Antibiotic target protection
+Polymyxin,mcr-7.1,0.975966885,Antibiotic target alteration
+Tetracycline,tet(Z),0.975551906,Antibiotic efflux
+Aminoglycoside,Other streptomycin resistance protein,0.972301396,Others
+MLS,ole(C),0.971818885,Antibiotic efflux
+MLS,lnu(G),0.969584237,Antibiotic inactivation
+Polymyxin,pmrF,0.969020102,Antibiotic target alteration
+Beta-lactam,OXA-373,0.965699541,Antibiotic inactivation
+Chloramphenicol,cmlR,0.965291218,Antibiotic efflux
+Chloramphenicol,cmx,0.962400596,Antibiotic efflux
+Multidrug,Other major facilitator superfamily transporter,0.959418886,Antibiotic efflux
+Aminoglycoside,ANT(4')-Ib,0.958149686,Antibiotic inactivation
+Multidrug,acrE,0.957017207,Antibiotic efflux
+Polymyxin,mcr-3.3,0.95288582,Antibiotic target alteration
+Multidrug,MuxA,0.949835695,Antibiotic efflux
+Multidrug,adeI,0.946405537,Antibiotic efflux
+Multidrug,tolC,0.944347002,Antibiotic efflux
+Tetracycline,tet(30),0.944320945,Antibiotic efflux
+Beta-lactam,OXA-427,0.943453014,Antibiotic inactivation
+Multidrug,fexB,0.942647999,Antibiotic efflux
+Beta-lactam,CME-1,0.938262932,Antibiotic inactivation
+Multidrug,mefJ,0.937479964,Antibiotic efflux
+Quinolone,QnrVC5,0.936211495,Antibiotic target protection
+MLS,erm(X),0.933498797,Antibiotic target alteration
+Quinolone,qepA,0.932193671,Antibiotic efflux
+Aminoglycoside,aadA27,0.932080676,Antibiotic inactivation
+Quinolone,QnrVC7,0.931931332,Antibiotic target protection
+Tetracycline,tet(39),0.928409372,Antibiotic efflux
+Aminoglycoside,AAC(2')-Ic,0.926773505,Antibiotic inactivation
+Multidrug,mdtE,0.926645121,Antibiotic efflux
+Quinolone,QnrVC4,0.925392028,Antibiotic target protection
+Multidrug,mdfA,0.925348605,Antibiotic efflux
+Multidrug,mdtH,0.924628053,Antibiotic efflux
+Quinolone,lfrA,0.924447995,Antibiotic efflux
+MLS,vmlR,0.923163386,Antibiotic target protection
+Tetracycline,tet(34),0.923134313,Antibiotic inactivation
+Multidrug,OpmB,0.923102542,Antibiotic efflux
+Aminoglycoside,AAC(2')-Ib,0.922114467,Antibiotic inactivation
+Multidrug,mdtO,0.921855898,Antibiotic efflux
+MLS,erm(C),0.920780294,Antibiotic target alteration
+Multidrug,abeM,0.920542379,Antibiotic efflux
+Polymyxin,mcr-3.19,0.920065361,Antibiotic target alteration
+Tetracycline,tet(59),0.917088854,Antibiotic efflux
+Multidrug,oqxA,0.915292745,Antibiotic efflux
+Puromycin,puromycin resistance protein,0.915251831,Antibiotic inactivation
+Tetracycline,tetA(P),0.91511892,Antibiotic efflux
+Multidrug,OprN,0.914485869,Antibiotic efflux
+Mupirocin,mupA,0.914411913,Antibiotic target alteration
+Polymyxin,mcr-3.12,0.911980095,Antibiotic target alteration
+Multidrug,MexE,0.910932267,Antibiotic efflux
+Multidrug,efpA,0.910364982,Antibiotic efflux
+MLS,erm(T),0.910258124,Antibiotic target alteration
+MLS,lnu(B),0.910256303,Antibiotic inactivation
+Trimethoprim,dfrA12,0.908554155,Antibiotic target replacement
+Tetracycline,tetB(P),0.907837577,Antibiotic target protection
+Multidrug,tap,0.907593301,Antibiotic efflux
+Polymyxin,mcr-4.3,0.907532389,Antibiotic target alteration
+Beta-lactam,LRA-10,0.906699746,Antibiotic inactivation
+Multidrug,mdtL,0.906253258,Antibiotic efflux
+Multidrug,Escherichia coli acrA,0.904955783,Antibiotic efflux
+Rifamycin,RbpA,0.902614682,Antibiotic target protection
+Aminoglycoside,AAC(2')-Id,0.901590447,Antibiotic inactivation
+MLS,macA,0.90101431,Antibiotic efflux
+Multidrug,mdtK,0.90036933,Antibiotic efflux
+Tetracycline,tetA(60),0.899821676,Antibiotic efflux
+Polymyxin,eptA,0.899679342,Antibiotic target alteration
+Beta-lactam,ALG6-1,0.899400957,Antibiotic inactivation
+Quinolone,QnrS6,0.89926677,Antibiotic target protection
+Fosfomycin,Acinetobacter baumannii AbaF,0.897840527,Antibiotic efflux
+Polymyxin,mcr-3.7,0.895846481,Antibiotic target alteration
+MLS,lsa(B),0.89578521,Antibiotic target protection
+Multidrug,emrD,0.894756429,Antibiotic efflux
+Beta-lactam,BKC-1,0.894488482,Antibiotic inactivation
+Multidrug,mdsC,0.889737155,Antibiotic efflux
+Rifamycin,iri,0.8848044,Antibiotic inactivation
+Beta-lactam,Klebsiella pneumoniae OmpK37,0.884718041,Others
+Multidrug,emrB,0.884670529,Antibiotic efflux
+MLS,erm(Q),0.884451903,Antibiotic target alteration
+MLS,lsa(E),0.884410325,Antibiotic target protection
+Beta-lactam,OXA-334,0.882633049,Antibiotic inactivation
+Tetracycline,tet(V),0.881334934,Antibiotic efflux
+Tetracycline,tet(41),0.88048661,Antibiotic efflux
+Beta-lactam,blaS1,0.880426135,Antibiotic inactivation
+Polymyxin,mcr-3.5,0.880286038,Antibiotic target alteration
+MLS,mef(C),0.878279663,Antibiotic efflux
+Tetracycline,tet(42),0.875174008,Antibiotic efflux
+MLS,erm(31),0.874513808,Antibiotic target alteration
+Other_peptide_antibiotics,ArnT,0.872555854,Antibiotic target alteration
+Aminoglycoside,AAC(3)-Id,0.871065064,Antibiotic inactivation
+Multidrug,adeH,0.870891574,Antibiotic efflux
+Quinolone,mfpA,0.870455501,Antibiotic target protection
+Multidrug,mdtN,0.870179781,Antibiotic efflux
+Beta-lactam,OXA-464,0.866920265,Antibiotic inactivation
+Multidrug,RanB,0.866626385,Antibiotic efflux
+Tetracycline,tet(T),0.864601476,Antibiotic target protection
+Polymyxin,mcr-4.4,0.863114923,Antibiotic target alteration
+Multidrug,mdtP,0.862863547,Antibiotic efflux
+MLS,erm(46),0.860834595,Antibiotic target alteration
+Aminoglycoside,aadA9,0.8583044,Antibiotic inactivation
+Beta-lactam,MOX-3,0.851045252,Antibiotic inactivation
+Polymyxin,mcr-4.5,0.849680136,Antibiotic target alteration
+Trimethoprim,dfrA1,0.847970052,Antibiotic target replacement
+MLS,mph(G),0.844685905,Antibiotic inactivation
+Other_peptide_antibiotics,microcin efflux pumu gene yojI,0.843689971,Antibiotic efflux
+Chloramphenicol,catB11,0.843152205,Antibiotic inactivation
+Multidrug,MexA,0.842140638,Antibiotic efflux
+Beta-lactam,blaF,0.838774864,Antibiotic inactivation
+Beta-lactam,mreA,0.836517184,Antibiotic efflux
+Chloramphenicol,Agrobacterium fabrum chloramphenicol acetyltransferase,0.836293623,Antibiotic inactivation
+Beta-lactam,CfxA5,0.835491645,Antibiotic inactivation
+Aminoglycoside,APH(3'')-Ic,0.833183435,Antibiotic inactivation
+Multidrug,OprZ,0.830579283,Antibiotic efflux
+Tetracycline,tetB(48),0.830171764,Antibiotic efflux
+Polymyxin,ICR-Mo,0.829065828,Antibiotic target alteration
+Beta-lactam,CfxA3,0.826888496,Antibiotic inactivation
+Vancomycin,vanXO,0.826873338,Antibiotic target alteration
+Beta-lactam,IMP-8,0.825982883,Antibiotic inactivation
+Beta-lactam,RSD2-2,0.823683961,Antibiotic inactivation
+Tetracycline,tetB(60),0.821285647,Antibiotic efflux
+Vancomycin,vanI,0.820821528,Antibiotic target alteration
+Aminoglycoside,AAC(6')-31,0.820200929,Antibiotic inactivation
+Tetracycline,tet(Q),0.817817692,Antibiotic target protection
+Multidrug,Klebsiella pneumoniae acrA,0.816104152,Antibiotic efflux
+Chloramphenicol,catS,0.813926662,Antibiotic inactivation
+Multidrug,efmA,0.813400804,Antibiotic efflux
+Beta-lactam,TEM-192,0.812495683,Antibiotic inactivation
+Quinolone,QnrS2,0.812186929,Antibiotic target protection
+MLS,erm(47),0.811773678,Antibiotic target alteration
+Chloramphenicol,cmlA4,0.808554513,Antibiotic efflux
+Beta-lactam,OXA-103,0.805394998,Antibiotic inactivation
+Trimethoprim,dfrA3,0.805130102,Antibiotic target replacement
+Bacitracin,bcrA,0.804890195,Antibiotic efflux
+Bleomycin,BLMT,0.804813614,Antibiotic inactivation
+Beta-lactam,AIM-1,0.800745476,Antibiotic inactivation
+Multidrug,OprM,0.799092282,Antibiotic efflux
+Aminoglycoside,APH(4)-Ia,0.792700798,Antibiotic inactivation
+MLS,mph(F),0.791809873,Antibiotic inactivation
+Chloramphenicol,catA8,0.791236227,Antibiotic inactivation
+Multidrug,Escherichia coli emrE,0.789856476,Antibiotic efflux
+MLS,ere(B),0.789825133,Antibiotic inactivation
+Beta-lactam,THIN-B beta-lactamase,0.787357292,Antibiotic inactivation
+Tetracycline,tet(40),0.786320848,Antibiotic efflux
+Trimethoprim,dfrB4,0.786025942,Antibiotic target replacement
+Novobiocin,novA,0.785774833,Antibiotic efflux
+Beta-lactam,OXA-47,0.784660153,Antibiotic inactivation
+Beta-lactam,OXA-58,0.784096443,Antibiotic inactivation
+Beta-lactam,cepA,0.782543604,Antibiotic inactivation
+Aminoglycoside,APH(3')-Ib,0.781287184,Antibiotic inactivation
+Aminoglycoside,aadA13,0.780796538,Antibiotic inactivation
+Beta-lactam,OXA-398,0.77895082,Antibiotic inactivation
+MLS,erm(39),0.778507547,Antibiotic target alteration
+MLS,erm(G),0.777999937,Antibiotic target alteration
+Multidrug,opcM,0.777927706,Antibiotic efflux
+Aminoglycoside,ANT(6)-Ia,0.776300429,Antibiotic inactivation
+Aminoglycoside,APH(3')-IIa,0.776257882,Antibiotic inactivation
+Chloramphenicol,Pseudomonas aeruginos catB6,0.772114198,Antibiotic inactivation
+MLS,vat(B),0.767553695,Antibiotic inactivation
+MLS,mef(En2),0.765320805,Antibiotic efflux
+Sulfonamide,sul3,0.763907822,Antibiotic target replacement
+Beta-lactam,VIM-1,0.763048747,Antibiotic inactivation
+MLS,cfr(E),0.762962065,Antibiotic target alteration
+Chloramphenicol,Campylobacter coli chloramphenicol acetyltransferase,0.757736063,Antibiotic inactivation
+Aminoglycoside,AAC(3)-IIIc,0.755843288,Antibiotic inactivation
+Beta-lactam,MOX-7,0.749775943,Antibiotic inactivation
+Beta-lactam,IMP-42,0.74890767,Antibiotic inactivation
+Multidrug,smeF,0.748656829,Antibiotic efflux
+MLS,Erm(52),0.744975934,Antibiotic target alteration
+Beta-lactam,LRA-12,0.74190167,Antibiotic inactivation
+Aminoglycoside,AAC(3)-IIIb,0.741338065,Antibiotic inactivation
+Beta-lactam,OXA-239,0.738625408,Antibiotic inactivation
+Beta-lactam,CARB-7,0.734918975,Antibiotic inactivation
+Beta-lactam,CARB-5,0.734045874,Antibiotic inactivation
+Tetracycline,tetA(48),0.733301209,Antibiotic efflux
+Multidrug,mtrE,0.731900808,Antibiotic efflux
+MLS,lnu(D),0.729989105,Antibiotic inactivation
+Chloramphenicol,cmlA5,0.728128785,Antibiotic efflux
+Multidrug,Enterobacter cloacae acrA,0.71991245,Antibiotic efflux
+Aminoglycoside,APH(6)-Ia,0.719138913,Antibiotic inactivation
+Beta-lactam,GES-19,0.717693534,Antibiotic inactivation
+Multidrug,efrA,0.717046142,Antibiotic efflux
+Multidrug,emrK,0.715534827,Antibiotic efflux
+Aminoglycoside,ANT(9)-Ia,0.713352199,Antibiotic inactivation
+MLS,msr(C),0.713243754,Antibiotic target protection
+Multidrug,smeD,0.712428081,Antibiotic efflux
+Beta-lactam,IMP-40,0.711005021,Antibiotic inactivation
+Tetracycline,tet(Y),0.710614384,Antibiotic efflux
+Multidrug,MexB,0.710354181,Antibiotic efflux
+MLS,ere(D),0.709450173,Antibiotic inactivation
+Beta-lactam,OXA-281,0.70864785,Antibiotic inactivation
+Aminoglycoside,AAC(6')-Ib10,0.708171516,Antibiotic inactivation
+Aminoglycoside,APH(2'')-If,0.707393982,Antibiotic inactivation
+Beta-lactam,OXA-16,0.707317567,Antibiotic inactivation
+Beta-lactam,CfxA4,0.706470349,Antibiotic inactivation
+Beta-lactam,PRC-1,0.703625679,Antibiotic inactivation
+Chloramphenicol,catD,0.703165762,Antibiotic inactivation
+Chloramphenicol,catB10,0.70251355,Antibiotic inactivation
+Chloramphenicol,catQ,0.70238961,Antibiotic inactivation
+Beta-lactam,OXA-417,0.702263509,Antibiotic inactivation
+Beta-lactam,Laribacter hongkongensis ampC beta-lactamase,0.702263509,Antibiotic inactivation
+Tetracycline,otr(A),0.702046866,Antibiotic target protection
+MLS,mef(B),0.702045484,Antibiotic efflux
+MLS,mel,0.701698977,Antibiotic target protection
+Tetracycline,tet(M),0.700048433,Antibiotic target protection
+MLS,clcD,0.699907952,Antibiotic target alteration
+Tetracycline,tet(W/N/W),0.698316347,Antibiotic target alteration
+Aminoglycoside,aadA24,0.697308681,Antibiotic inactivation
+Rifamycin,arr-1,0.696866185,Antibiotic inactivation
+Beta-lactam,MOX-2,0.695449909,Antibiotic inactivation
+Tetracycline,tetB(46),0.693402685,Antibiotic efflux
+Chloramphenicol,cmlA6,0.69301674,Antibiotic efflux
+Beta-lactam,CfxA2,0.692320969,Antibiotic inactivation
+Vancomycin,vanO,0.686378284,Antibiotic target alteration
+Beta-lactam,IMP-10,0.685206701,Antibiotic inactivation
+Beta-lactam,LUT-6,0.684163296,Antibiotic inactivation
+Beta-lactam,ROB-1,0.683130802,Antibiotic inactivation
+Vancomycin,vanA,0.683020221,Antibiotic target alteration
+MLS,lnu(P),0.681468446,Antibiotic inactivation
+Multidrug,mexQ,0.681416674,Antibiotic efflux
+Multidrug,emrA,0.680121733,Antibiotic efflux
+MLS,LlmA 23S ribosomal RNA methyltransferase,0.67047492,Antibiotic target alteration
+Mupirocin,ileS,0.670166711,Antibiotic target alteration
+MLS,lnu(C),0.669799127,Antibiotic inactivation
+Aminoglycoside,aadA16,0.669217882,Antibiotic inactivation
+Tetracycline,tet(32),0.668228548,Antibiotic target protection
+Rifamycin,rphA,0.665192461,Antibiotic inactivation
+Beta-lactam,IMP-1,0.662679286,Antibiotic inactivation
+Aminoglycoside,AAC(6')-Il,0.662651807,Antibiotic inactivation
+Tetracycline,tet(O),0.661951695,Antibiotic target protection
+Vancomycin,vanTG,0.658723222,Antibiotic target alteration
+MLS,lmrD,0.656042116,Antibiotic efflux
+Aminoglycoside,ANT(3'')-IIc,0.653987382,Antibiotic inactivation
+Multidrug,acrF,0.652032234,Antibiotic efflux
+MLS,erm(A),0.651449709,Antibiotic target alteration
+Beta-lactam,GES-17,0.647337748,Antibiotic inactivation
+Beta-lactam,GES-13,0.645118063,Antibiotic inactivation
+Streptothricin,SAT-4,0.644515262,Antibiotic inactivation
+Multidrug,emeA,0.640402616,Antibiotic efflux
+Tetracycline,tet(44),0.639366275,Antibiotic target protection
+Multidrug,adeF,0.63900805,Antibiotic efflux
+Beta-lactam,AER-1,0.635944528,Antibiotic inactivation
+Tetracycline,tet(36),0.634279337,Antibiotic target protection
+Aminoglycoside,APH(6)-Ic,0.632177506,Antibiotic inactivation
+Beta-lactam,LEN-3,0.632039693,Antibiotic inactivation
+Aminoglycoside,APH(3')-IIIa,0.628624066,Antibiotic inactivation
+Trimethoprim,DfrA36,0.628245331,Antibiotic target replacement
+Aminoglycoside,aadA11,0.624739633,Antibiotic inactivation
+Aminoglycoside,AAC(3)-IIe,0.623840122,Antibiotic inactivation
+Tetracycline,tet(A),0.623255014,Antibiotic efflux
+Rifamycin,arr-8,0.620866728,Antibiotic inactivation
+Beta-lactam,IMP-18,0.618935742,Antibiotic inactivation
+Tetracycline,tet(33),0.616903403,Antibiotic efflux
+Multidrug,mdtF,0.616388446,Antibiotic efflux
+Beta-lactam,GES-6,0.613027512,Antibiotic inactivation
+Chloramphenicol,catB3,0.611132521,Antibiotic inactivation
+Multidrug,MexC,0.606590007,Antibiotic efflux
+Aminoglycoside,aadA22,0.606187554,Antibiotic inactivation
+Tetracycline,tet(X4),0.606122495,Antibiotic inactivation
+Multidrug,oprC,0.605542586,Antibiotic efflux
+Polymyxin,ugd,0.604973463,Antibiotic target alteration
+Aminoglycoside,aadA5,0.604860966,Antibiotic inactivation
+Multidrug,smeE,0.603637181,Antibiotic efflux
+Aminoglycoside,AAC(6')-Ib7,0.603500831,Antibiotic inactivation
+Chloramphenicol,cmlA1,0.600907769,Antibiotic efflux
+Tetracycline,tet(W),0.600835923,Antibiotic target protection
+Pleuromutilin_tiamulin,TaeA,0.598577626,Antibiotic efflux
+Aminoglycoside,AAC(6')-Ib3,0.59798399,Antibiotic inactivation
+Multidrug,mtrD,0.595908153,Antibiotic efflux
+Chloramphenicol,cmlB1,0.593669801,Antibiotic efflux
+Rifamycin,rphB,0.593513761,Antibiotic inactivation
+Multidrug,sdeY,0.592495523,Antibiotic efflux
+Tetracycline,tet(49),0.592079003,Antibiotic target protection
+Beta-lactam,OXA-23,0.590836633,Antibiotic inactivation
+Aminoglycoside,AAC(6')-30/AAC(6')-Ib' fusion protein,0.590710397,Antibiotic inactivation
+Beta-lactam,GES-21,0.590389996,Antibiotic inactivation
+Aminoglycoside,aadS,0.589216974,Antibiotic inactivation
+Beta-lactam,IMP-5,0.587625122,Antibiotic inactivation
+Beta-lactam,GES-22,0.584804034,Antibiotic inactivation
+Polymyxin,mcr-5.2,0.583646616,Antibiotic target alteration
+Multidrug,mexK,0.583357671,Antibiotic efflux
+Aminoglycoside,aadA8,0.583021224,Antibiotic inactivation
+Beta-lactam,CfxA6,0.58298703,Antibiotic inactivation
+Multidrug,qacE,0.582329351,Antibiotic efflux
+Tetracycline,tet(O/W),0.579748922,Antibiotic target alteration
+Multidrug,qacEdelta1,0.578159292,Antibiotic efflux
+Beta-lactam,GES-20,0.575810411,Antibiotic inactivation
+Beta-lactam,GES-4,0.573647097,Antibiotic inactivation
+Beta-lactam,OXA-483,0.573394281,Antibiotic inactivation
+Beta-lactam,OXA-145,0.573394281,Antibiotic inactivation
+Beta-lactam,OXA-392,0.570858478,Antibiotic inactivation
+Antibacterial_fatty_acid,farA,0.569481109,Antibiotic efflux
+MLS,cfr(B),0.567829645,Antibiotic target alteration
+Aminoglycoside,AAC(6')-Ib11,0.566187982,Antibiotic inactivation
+Tetracycline,tet(58),0.566187132,Antibiotic efflux
+Beta-lactam,CMY-6,0.562826382,Antibiotic inactivation
+Multidrug,bpeF,0.562619971,Antibiotic efflux
+Tetracycline,tet(43),0.560901306,Antibiotic efflux
+Multidrug,lmrP,0.560406473,Antibiotic efflux
+Beta-lactam,IMP-52,0.559227468,Antibiotic inactivation
+Beta-lactam,OXA-205,0.558175386,Antibiotic inactivation
+Polymyxin,rosB,0.558105814,Antibiotic efflux
+Beta-lactam,GES-3,0.5578493,Antibiotic inactivation
+Multidrug,MexF,0.554600348,Antibiotic efflux
+Tetracycline,tet(S),0.549199203,Antibiotic target protection
+Beta-lactam,PAU-1,0.548958064,Antibiotic inactivation
+Aminoglycoside,aad(6),0.548655408,Antibiotic inactivation
+Vancomycin,vanG,0.546475889,Antibiotic target alteration
+Multidrug,mdsB,0.545842716,Antibiotic efflux
+Tetracycline,tet(53),0.544922479,Antibiotic target protection
+Beta-lactam,GES-12,0.544464473,Antibiotic inactivation
+Multidrug,OprJ,0.544144517,Antibiotic efflux
+Aminoglycoside,ANT(6)-Ib,0.540514188,Antibiotic inactivation
+Polymyxin,arnA,0.54037654,Antibiotic target alteration
+Chloramphenicol,Pseudomonas aeruginos catB7,0.540203651,Antibiotic inactivation
+Aminoglycoside,aadA,0.540004612,Antibiotic inactivation
+Beta-lactam,RSA-1,0.537807594,Antibiotic inactivation
+Aminoglycoside,aadA23,0.537306695,Antibiotic inactivation
+Sulfonamide,sul1,0.536382347,Antibiotic target replacement
+Chloramphenicol,catB2,0.536367527,Antibiotic inactivation
+Aminoglycoside,amrB,0.536367403,Antibiotic efflux
+Beta-lactam,OXA-664,0.534446275,Antibiotic inactivation
+Chloramphenicol,Salmonella enterica cmlA,0.530344705,Antibiotic efflux
+Multidrug,patB,0.527535419,Antibiotic efflux
+Aminoglycoside,APH(3')-Ia,0.522905292,Antibiotic inactivation
+Aminoglycoside,aadA8b,0.520393516,Antibiotic inactivation
+Trimethoprim,dfrB2,0.519022052,Antibiotic target replacement
+Beta-lactam,OXA-53,0.518552111,Antibiotic inactivation
+MLS,lsa(C),0.518243627,Antibiotic target protection
+Polymyxin,mcr-5.1,0.517217598,Antibiotic target alteration
+Beta-lactam,GES-14,0.515611622,Antibiotic inactivation
+Beta-lactam,OXA-10,0.511566063,Antibiotic inactivation
+Multidrug,MexD,0.510890499,Antibiotic efflux
+Multidrug,mexW,0.510775143,Antibiotic efflux
+MLS,macB,0.50986974,Antibiotic efflux
+Beta-lactam,IMP-55,0.509637199,Antibiotic inactivation
+Beta-lactam,NPS-1,0.508905464,Antibiotic inactivation
+MLS,erm(B),0.50754314,Antibiotic target alteration
+Beta-lactam,OXA-142,0.506358937,Antibiotic inactivation
+Beta-lactam,OXA-246,0.505805999,Antibiotic inactivation
+Multidrug,ceoB,0.504719579,Antibiotic efflux
+Multidrug,RanA,0.503164587,Antibiotic efflux
